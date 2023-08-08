@@ -1,30 +1,60 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+    <div v-if="data">
+        <HeaderTabs />
+        <div class="myproducts_background">
+            <div class="products">
+                <MyProduct v-for="product in data['products']" :key="product" :product="product"/>
+            </div>
+        </div>
+    </div>
 </template>
 
+<script lang="ts">
+import axios from 'axios'
+import HeaderTabs from './components/HeaderTabs.vue'
+import MyProduct from './components/MyProduct.vue'
+
+export default {
+    name: 'App',
+    components: {
+        HeaderTabs,
+        MyProduct
+    },
+    data() {
+        return {
+            data: null,
+            products: null,
+        }
+    },
+    mounted() {
+        axios
+        .get('https://preco-bom-ddcc1-default-rtdb.firebaseio.com/.json', {
+            responseType: 'json'
+        })
+        .then((response: any) => (this.data = response.data))
+    }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+    margin: 0;
+    background-color: rgb(3, 0, 28);
+    font-size: 18px;
 }
 
-nav {
-  padding: 30px;
+.myproducts_background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+.products {
+    width: 500px;
 
-nav a.router-link-exact-active {
-  color: #42b983;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 </style>
