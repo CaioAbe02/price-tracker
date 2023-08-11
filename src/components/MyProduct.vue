@@ -1,5 +1,5 @@
 <template v-if="product">
-    <div class="product_card">
+    <router-link :to="`/products/${product.id}`" class="product_card">
         <div class="discount_icon">
             <font-awesome
                 icon="fa-solid fa-percent"
@@ -12,21 +12,24 @@
         <span class="product_name">{{ product.name }}</span>
         <span class="product_price" :style="{ color: getColor() }">R${{ product.new_prices.slice(-1)[0].toFixed(2) }}</span>
         <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
-    </div>
+    </router-link>
 </template>
 
-<script>
+<script lang="ts">
+/* eslint-disable */
 
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
     name: 'MyProduct',
     props: {
         product: {
             required: true,
-            type: Object
-        }
+            type: Object,
+        },
     },
     methods: {
-        getDiscount() {
+        getDiscount(): string {
             const new_price = this.product.new_prices.slice(-1)[0]
             const original_price = this.product.original_price
             const discount = (100 - (original_price / new_price) * 100).toFixed(2)
@@ -41,7 +44,7 @@ export default {
                 return "0%"
             }
         },
-        getColor() {
+        getColor(): string {
             const difference = this.product.new_prices.slice(-1) - this.product.original_price
 
             if (difference > 0) {
@@ -55,7 +58,7 @@ export default {
             }
         }
     }
-}
+})
 </script>
 
 <style scoped>
@@ -69,7 +72,8 @@ export default {
     align-items: center;
 
     padding-top: 10px;
-    padding-left: 120px;
+
+    text-decoration: none;
 }
 
 .discount_icon {
