@@ -1,9 +1,13 @@
+/* eslint-disable */
+
 import {
-    faPercent
+    faPercent,
+    faPlus
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
-    faPercent
+    faPercent,
+    faPlus
 }
 
 export default icons;

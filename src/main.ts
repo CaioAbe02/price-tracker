@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import { store, key } from './store';
 import icons from './fontawesome'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -9,4 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add({ ...icons })
 
-createApp(App).component("font-awesome", FontAwesomeIcon).use(store).use(router).mount('#app');
+createApp(App)
+    .component("font-awesome", FontAwesomeIcon)
+    .use(router)
+    .use(store, key)
+    .mount('#app');
