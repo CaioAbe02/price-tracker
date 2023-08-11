@@ -1,22 +1,33 @@
 <template>
     <div class="tabs">
-        <button class="tab">My products</button>
-        <button class="tab">Products</button>
+        <router-link to="/" class="link">My Products</router-link>
+        <router-link to="/products" class="link">Products</router-link>
     </div>
 </template>
 
-<script>
+<script lang="ts">
+/* eslint-disable */
+
 export default {
-    name: 'HeaderTabs'
+    name: 'HeaderTabs',
 }
 </script>
 
 <style scoped>
 .tabs {
     height: 50px;
-    background-color: blue;
+    background-color: #5B8FB9;
 
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 10px;
+
 }
 </style>
