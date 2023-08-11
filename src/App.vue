@@ -1,60 +1,32 @@
 <template>
-    <div v-if="data">
+    <div>
         <HeaderTabs />
-        <div class="myproducts_background">
-            <div class="products">
-                <MyProduct v-for="product in data['products']" :key="product" :product="product"/>
-            </div>
-        </div>
+        <router-view></router-view>
     </div>
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-import HeaderTabs from './components/HeaderTabs.vue'
-import MyProduct from './components/MyProduct.vue'
+/* eslint-disable */
+import { defineComponent } from 'vue';
+import HeaderTabs from './components/HeaderTabs.vue';
+import MyProduct from './components/MyProduct.vue';
 
-export default {
+export default defineComponent({
     name: 'App',
     components: {
         HeaderTabs,
-        MyProduct
+        MyProduct,
     },
-    data() {
-        return {
-            data: null,
-            products: null,
-        }
-    },
-    mounted() {
-        axios
-        .get('https://preco-bom-ddcc1-default-rtdb.firebaseio.com/.json', {
-            responseType: 'json'
-        })
-        .then((response: any) => (this.data = response.data))
-    }
-}
+})
 </script>
 
 <style>
 * {
     margin: 0;
-    background-color: rgb(3, 0, 28);
+    background-color: #03001C;
     font-size: 18px;
 }
-
-.myproducts_background {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.products {
-    width: 500px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+*::-webkit-scrollbar {
+  width: 0;
 }
 </style>
