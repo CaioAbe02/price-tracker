@@ -1,11 +1,10 @@
 <template>
     <div class="product" v-if="product">
         <ProductInfos :product="product" />
-        <div class="graph">
-            <canvas id="myChart"></canvas>
-        </div>
+        <ProductPricesGraph :product="product"/>
         <button @click="addOrRemoveProduct(product)" class="add_product_button">{{ buttonText }}</button>
-        <h1 class="product_name">{{ product.id }}</h1>
+        <button @click="updateProducts()">Update</button>
+        <button @click="redirectToUrl(product.url)">Site</button>
     </div>
 </template>
 
@@ -14,15 +13,17 @@
 
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
-import Chart from 'chart.js/auto';
 import IProduct from '@/interfaces/IProduct';
 import ProductInfos from '@/components/ShowProduct/ProductInfos.vue'
+import { GET_PRODUCTS, UPDATE_PRODUCT } from '@/store/action-types';
+import ProductPricesGraph from '@/components/ShowProduct/ProductPricesGraph.vue';
 
 export default defineComponent({
     name: 'ShowProduct',
     components: {
-        ProductInfos,
-    },
+    ProductInfos,
+    ProductPricesGraph
+},
     props: {
         id: {
             type: Number,
@@ -31,7 +32,7 @@ export default defineComponent({
     data() {
         return {
             myProducts: [] as number[],
-            isProductFavorite: false
+            isProductFavorite: false,
         }
     },
     methods: {
@@ -43,15 +44,31 @@ export default defineComponent({
                 this.myProducts.push(product.id) // add
             }
             this.saveProducts()
+            this.$router.push("/")
         },
         saveProducts() {
             const parsed = JSON.stringify(this.myProducts)
             localStorage.setItem('myProductsIds', parsed)
         },
+        async updateProducts() {
+            try {
+                const last_price = this.product.new_prices.slice(-1)[0]
+                const response = await this.store.dispatch(UPDATE_PRODUCT, this.product)
+
+                if (response == "Product updated successfully") {
+                    window.location.reload()
+                }
+                // this.$router.push("/")
+            } catch (error) {
+                console.error('Erro ao adicionar produto:', error);
+            }
+        },
+        redirectToUrl(url: string) {
+            window.open(url, '_blank')
+        }
     },
     computed: {
         buttonText() {
-            console.log(this.myProducts.includes(this.product.id))
             if (this.myProducts.includes(this.product.id)) {
                 return "Remove product"
             }
@@ -63,6 +80,7 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
+        store.dispatch(GET_PRODUCTS)
 
         return {
             products: computed(() => store.state.products),
@@ -70,21 +88,6 @@ export default defineComponent({
         }
     },
     mounted() {
-        // Graph
-        const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-            labels: this.product.new_prices_dates,
-            datasets: [{
-                label: 'Price',
-                data: this.product.new_prices,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-            },
-        });
-
         // Local Storage
         if(localStorage.getItem('myProductsIds')) {
             try {
@@ -99,12 +102,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.graph {
-    width: 1000px;
-    margin: 0 auto;
-}
-
-.add_product_button {
+.add_product_button, button {
     color: white;
 }
 </style>
