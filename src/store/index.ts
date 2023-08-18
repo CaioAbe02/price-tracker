@@ -4,8 +4,10 @@ import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { Store, createStore, useStore as vuexUseStore } from 'vuex';
 import IProduct from '@/interfaces/IProduct';
-import { GET_PRODUCTS } from './action-types';
+import { GET_PRODUCTS, ADD_PRODUCT, UPDATE_PRODUCT } from './action-types';
 import { DEFINE_PRODUCTS } from './mutation-types';
+
+const BASE_URL = "http://127.0.0.1:5000"
 
 interface State {
   products: IProduct[]
@@ -24,11 +26,37 @@ export const store = createStore<State>({
   },
   actions: {
     [GET_PRODUCTS]({ commit }) {
-      const url = "https://preco-bom-ddcc1-default-rtdb.firebaseio.com/.json"
+      const url = `${BASE_URL}/products`
       axios.get(url)
-        .then(response => commit(DEFINE_PRODUCTS, response.data.products))
-    }
-  }
+        .then(response => commit(DEFINE_PRODUCTS, response.data))
+    },
+    [ADD_PRODUCT](context, newProduct) {
+      const url = `${BASE_URL}/products`
+      axios.post(url, newProduct)
+        .then(response => {
+          // commit(DEFINE_PRODUCTS, response.data);
+          console.log(response)
+        })
+        .catch(error => {
+          console.error('Error:', error)
+        });
+    },
+    [UPDATE_PRODUCT](context, updatedProduct: IProduct) {
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/products/${updatedProduct.id}`;
+        axios.put(url, updatedProduct)
+          .then(response => {
+            // commit(DEFINE_PRODUCTS, response.data);
+            // console.log(response.data.message)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            reject(error)
+          });
+      })
+    },
+  },
 })
 
 export function useStore(): Store<State> {
