@@ -1,6 +1,5 @@
 <template>
-    <h1>Add product</h1>
-    <section>
+    <div>
         <form @submit.prevent="addProduct">
             <div>
                 <label for="newProduct.name">
@@ -22,7 +21,7 @@
                 </button>
             </div>
         </form>
-    </section>
+    </div>
 </template>
 
 <script lang="ts">
