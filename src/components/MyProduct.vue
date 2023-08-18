@@ -1,4 +1,4 @@
-<template v-if="product">
+<template>
     <router-link :to="`/products/${product.id}`" class="product_card">
         <div class="discount_icon">
             <font-awesome
@@ -10,14 +10,16 @@
             />
         </div>
         <span class="product_name">{{ product.name }}</span>
-        <span class="product_price" :style="{ color: getColor() }">R${{ product.new_prices.slice(-1)[0].toFixed(2) }}</span>
+        <span class="product_price" :style="{ color: getColor() }">R${{ Number(product.new_prices.slice(-1)[0]).toFixed(2) }}</span>
         <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
+        <span class="product_tags">{{ product.tags }}</span>
     </router-link>
 </template>
 
 <script lang="ts">
 /* eslint-disable */
 
+import IProduct from '@/interfaces/IProduct'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -25,7 +27,7 @@ export default defineComponent({
     props: {
         product: {
             required: true,
-            type: Object,
+            type: Object as ()=>IProduct,
         },
     },
     methods: {
@@ -45,7 +47,7 @@ export default defineComponent({
             }
         },
         getColor(): string {
-            const difference = this.product.new_prices.slice(-1) - this.product.original_price
+            const difference = this.product.new_prices.slice(-1)[0] - this.product.original_price
 
             if (difference > 0) {
                 return '#D82E3F'
@@ -66,7 +68,8 @@ export default defineComponent({
     display: grid;
     grid-template-areas:
         'icon name name'
-        'icon price discount';
+        'icon price discount'
+        'icon tags tags';
     grid-template-columns: auto 120px auto;
     justify-content: left;
     align-items: center;
@@ -78,6 +81,11 @@ export default defineComponent({
 
 .discount_icon {
     grid-area: icon;
+    align-self: stretch;
+
+    display: flex;
+    align-items: center;
+
     padding-right: 15px;
 }
 
@@ -94,5 +102,11 @@ export default defineComponent({
 
 .product_discount {
     grid-area: discount;
+}
+
+.product_tags {
+    grid-area: tags;
+
+    color: #B3B6B7;
 }
 </style>
