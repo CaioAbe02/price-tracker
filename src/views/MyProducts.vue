@@ -1,7 +1,7 @@
 <template>
-    <div class="myproducts_background">
+    <div class="myproducts_background" v-if="products">
         <div class="products">
-            <MyProduct v-for="product in products.filter((product) => myProductsIds.includes(product.id))" :key="product.id" :product="product"/>
+            <MyProduct v-for="product in myProducts" :key="product.id" :product="product"/>
         </div>
     </div>
 </template>
@@ -13,6 +13,7 @@ import { defineComponent, computed } from 'vue';
 import MyProduct from '@/components/MyProduct.vue';
 import { useStore } from '@/store';
 import { GET_PRODUCTS } from '@/store/action-types';
+import IProduct from '@/interfaces/IProduct';
 
 export default defineComponent({
     name: 'MyProducts',
@@ -24,6 +25,40 @@ export default defineComponent({
             myProductsIds: [] as number[],
         }
     },
+    setup() {
+        const store = useStore()
+        store.dispatch(GET_PRODUCTS)
+
+        return {
+            products: computed(() => store.state.products),
+            store
+        }
+    },
+    computed: {
+        myProducts(): IProduct[] {
+            const myProducts = [] as IProduct[]
+            const BreakError = "Product found"
+            if (this.products.length > 0) {
+                this.myProductsIds.forEach((id: number) => {
+                    try {
+                        this.products.forEach((product: IProduct) => {
+                            if (id == product.id) {
+                                myProducts.push(product)
+                                throw BreakError
+                            }
+                        })
+                    }
+                    catch(error) {
+                        if (error !== BreakError) {
+                            throw error
+                        }
+                    }
+                })
+            }
+            // return this.products.filter((product: IProduct) => this.myProductsIds.includes(product.id))
+            return myProducts
+        },
+    },
     mounted() {
         if(localStorage.getItem('myProductsIds')) {
             try {
@@ -32,15 +67,6 @@ export default defineComponent({
             catch(e) {
                 localStorage.removeItem('myProductsIds')
             }
-        }
-    },
-    setup() {
-        const store = useStore()
-        store.dispatch(GET_PRODUCTS)
-
-        return {
-            products: computed(() => store.state.products),
-            store
         }
     },
 })
@@ -56,7 +82,6 @@ export default defineComponent({
 
 .products {
     width: 500px;
-    margin-left: 200px;
 
     display: flex;
     flex-direction: column;
