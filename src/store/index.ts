@@ -4,7 +4,7 @@ import axios from 'axios';
 import { InjectionKey } from 'vue';
 import { Store, createStore, useStore as vuexUseStore } from 'vuex';
 import IProduct from '@/interfaces/IProduct';
-import { GET_PRODUCTS, ADD_PRODUCT, UPDATE_PRODUCT } from './action-types';
+import { GET_PRODUCTS, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE } from './action-types';
 import { DEFINE_PRODUCTS } from './mutation-types';
 
 const BASE_URL = "http://127.0.0.1:5000"
@@ -41,9 +41,24 @@ export const store = createStore<State>({
           console.error('Error:', error)
         });
     },
-    [UPDATE_PRODUCT](context, updatedProduct: IProduct) {
+    [EDIT_PRODUCT](context, updatedProduct: IProduct) {
       return new Promise((resolve, reject) => {
-        const url = `${BASE_URL}/products/${updatedProduct.id}`;
+        const url = `${BASE_URL}/products/edit/${updatedProduct.id}`;
+        axios.put(url, updatedProduct)
+          .then(response => {
+            // commit(DEFINE_PRODUCTS, response.data);
+            // console.log(response.data.message)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            reject(error)
+          });
+      })
+    },
+    [UPDATE_PRODUCT_PRICE](context, updatedProduct: IProduct) {
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/products/update_price/${updatedProduct.id}`;
         axios.put(url, updatedProduct)
           .then(response => {
             // commit(DEFINE_PRODUCTS, response.data);
