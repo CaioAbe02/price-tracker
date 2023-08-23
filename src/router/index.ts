@@ -4,6 +4,7 @@ import GlobalProducts from '@/views/GlobalProducts.vue';
 import ShowProduct from '@/views/ShowProduct.vue';
 import AddProduct from '@/views/AddProduct.vue';
 import UpdateProducts from '@/views/UpdateProducts.vue';
+import EditProduct from '@/views/EditProduct.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/products/update',
     name: 'UpdateProduct',
     component: UpdateProducts,
+  },
+  {
+    path: '/products/edit/:id',
+    name: 'EditProduct',
+    component: EditProduct,
+    props: true,
   },
 ];
 
