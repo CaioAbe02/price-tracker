@@ -65,4 +65,8 @@ export default defineComponent ({
 h1, label, input, button {
     color:white;
 }
+
+input {
+    background-color: var(--background-color);
+}
 </style>
