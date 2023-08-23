@@ -15,6 +15,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "axios": "^1.4.0",
     "chart.js": "^4.3.3",
+    "cheerio": "^1.0.0-rc.12",
     "core-js": "^3.8.3",
     "vue": "^3.3.4",
     "vue-class-component": "^8.0.0-0",
