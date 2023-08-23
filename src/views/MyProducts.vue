@@ -78,6 +78,8 @@ export default defineComponent({
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    background-color: var(--background-color);
 }
 
 .products {
