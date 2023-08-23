@@ -20,5 +20,6 @@ module.exports = {
     'max-len': 'off',
     'camelcase': 'off',
     'prefer-destructuring': 'off',
+    'vuejs-accessibility/click-events-have-key-events': 'off',
   },
 };
