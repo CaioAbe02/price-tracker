@@ -1,5 +1,5 @@
 <template>
-    <div class="product" v-if="product">
+    <div class="product" v-if="Object.keys(product).length > 0">
         <ProductInfos :product="product" />
         <ProductPricesGraph :product="product"/>
         <button @click="addOrRemoveProduct(product)" class="add_product_button">{{ buttonText }}</button>
@@ -13,9 +13,10 @@
 
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
+import axios from 'axios';
 import IProduct from '@/interfaces/IProduct';
 import ProductInfos from '@/components/ShowProduct/ProductInfos.vue'
-import { GET_PRODUCTS, UPDATE_PRODUCT } from '@/store/action-types';
+import { GET_PRODUCTS, UPDATE_PRODUCT_PRICE } from '@/store/action-types';
 import ProductPricesGraph from '@/components/ShowProduct/ProductPricesGraph.vue';
 
 export default defineComponent({
@@ -23,7 +24,7 @@ export default defineComponent({
     components: {
     ProductInfos,
     ProductPricesGraph
-},
+    },
     props: {
         id: {
             type: Number,
@@ -31,13 +32,14 @@ export default defineComponent({
     },
     data() {
         return {
+            product: {} as IProduct,
             myProducts: [] as number[],
             isProductFavorite: false,
         }
     },
     methods: {
         addOrRemoveProduct(product: IProduct) {
-            if (this.myProducts.includes(this.product.id)) {
+            if (this.myProducts.includes(product.id)) {
                 this.myProducts = this.myProducts.filter(prod => prod !== product.id) // remove
             }
             else {
@@ -53,12 +55,11 @@ export default defineComponent({
         async updateProducts() {
             try {
                 const last_price = this.product.new_prices.slice(-1)[0]
-                const response = await this.store.dispatch(UPDATE_PRODUCT, this.product)
+                const response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, this.product)
 
                 if (response == "Product updated successfully") {
                     window.location.reload()
                 }
-                // this.$router.push("/")
             } catch (error) {
                 console.error('Erro ao adicionar produto:', error);
             }
@@ -74,9 +75,6 @@ export default defineComponent({
             }
             return "Add product"
         },
-        product(): IProduct {
-            return this.products.find(prod => prod.id == this.id)!
-        }
     },
     setup() {
         const store = useStore()
@@ -87,7 +85,16 @@ export default defineComponent({
             store
         }
     },
-    mounted() {
+    async mounted() {
+        // get product
+        try {
+            const response = await axios.get(`https://price-tracker-api.onrender.com/products/${this.id}`)
+            this.product = response.data
+        }
+        catch (error) {
+            console.error(error)
+        }
+
         // Local Storage
         if(localStorage.getItem('myProductsIds')) {
             try {
