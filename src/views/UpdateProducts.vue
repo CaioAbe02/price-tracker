@@ -9,7 +9,7 @@
 /* eslint-disable */
 
 import { defineComponent, computed } from 'vue';
-import { GET_PRODUCTS, UPDATE_PRODUCT } from '@/store/action-types';
+import { GET_PRODUCTS, UPDATE_PRODUCT_PRICE } from '@/store/action-types';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
 
@@ -38,7 +38,7 @@ export default defineComponent({
         async updateProducts() {
             for (const product of this.products) {
                 try {
-                    const response = await this.store.dispatch(UPDATE_PRODUCT, product)
+                    const response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
                     let status = ""
 
                     if (response.message == "Product price not found") {
