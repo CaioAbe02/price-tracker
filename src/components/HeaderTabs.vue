@@ -2,6 +2,7 @@
     <div class="tabs">
         <router-link to="/" class="link">My Products</router-link>
         <router-link to="/products" class="link">Products</router-link>
+        <router-link to="/products/update" class="link">Update products</router-link>
     </div>
 </template>
 
@@ -16,7 +17,9 @@ export default {
 <style scoped>
 .tabs {
     height: 50px;
-    background-color: #5B8FB9;
+    background-color: var(--header-color);
+
+    margin-bottom: 10px;
 
     display: flex;
     justify-content: center;
