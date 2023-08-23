@@ -2,12 +2,16 @@
 
 import {
     faPercent,
-    faPlus
+    faPlus,
+    faStar,
+    faPen
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
     faPercent,
-    faPlus
+    faPlus,
+    faStar,
+    faPen
 }
 
 export default icons;
