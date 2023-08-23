@@ -1,8 +1,6 @@
 <template>
     <div class="myproducts_background">
-        <div class="products">
-            <MyProduct v-for="product in sortedProducts" :key="product.id" :product="product"/>
-        </div>
+        <GlobalProductsTable />
         <router-link to="/products/new" class="add_product_button">
             <font-awesome
                 icon="fa-solid fa-plus"
@@ -22,17 +20,14 @@ import { computed, defineComponent } from 'vue';
 import { GET_PRODUCTS } from '@/store/action-types';
 import { useStore } from '@/store';
 import MyProduct from '@/components/MyProduct.vue';
+import GlobalProductsTable from '@/components/GlobalProductsTable.vue'
 import IProduct from '@/interfaces/IProduct';
 
 export default defineComponent({
     name: 'Products',
     components: {
         MyProduct,
-    },
-    data() {
-        return {
-            sortedProducts: [] as IProduct[]
-        }
+        GlobalProductsTable,
     },
     setup() {
         const store = useStore()
@@ -43,24 +38,13 @@ export default defineComponent({
             store
         }
     },
-    mounted() {
-        this.sortedProducts = this.products.sort((product1, product2) => {
-            const name1 = product1.name.toUpperCase()
-            const name2 = product2.name.toUpperCase()
-
-            if (name1 < name2) {
-                return -1
-            }
-            if (name1 > name2) {
-                return 1
-            }
-            return 0
-        })
-    }
 })
 </script>
 
 <style scoped>
+th, td {
+    color: white;
+}
 .myproducts_background {
     display: flex;
     flex-direction: column;
