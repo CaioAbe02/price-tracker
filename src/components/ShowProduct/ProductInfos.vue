@@ -10,8 +10,7 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent, computed } from 'vue';
-import { useStore } from '@/store';
+import { defineComponent } from 'vue';
 import IProduct from '../../interfaces/IProduct';
 
 export default defineComponent({
@@ -20,14 +19,6 @@ export default defineComponent({
         product: {
             required: true,
             type: Object as ()=>IProduct
-        }
-    },
-    setup() {
-        const store = useStore()
-
-        return {
-            products: computed(() => store.state.products),
-            store
         }
     },
     methods: {
