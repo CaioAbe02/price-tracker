@@ -1,34 +1,61 @@
 <template>
-    <router-link :to="`/products/${product.id}`" class="product_card">
-        <div class="discount_icon">
+    <div class="product_card">
+        <router-link :to="`/products/${product.id}`" class="product_infos">
+            <div class="discount_icon" @click="goToProductPage(product.id)">
+                <font-awesome
+                    icon="fa-solid fa-percent"
+                    size=lg
+                    border
+                    style="--fa-border-radius: 100%; --fa-border-width: 3px;"
+                    :style="{ '--fa-border-color': getColor(), color: getColor() }"
+                />
+            </div>
+            <span class="product_name">{{ product.name }}</span>
+            <div class="product_price_info">
+                <span class="product_current_price" :style="{ color: getColor() }">R${{ Number(product.new_prices.slice(-1)[0]).toFixed(2) }}</span>
+                <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
+            </div>
+            <ProductTags :tags="product.tags" class="product_tags"/>
+        </router-link>
+        <div class="actions_buttons">
             <font-awesome
-                icon="fa-solid fa-percent"
+                icon="fa-solid fa-star"
+                size="lg"
+                :style="{ color: getStarColor(product.id) }"
+                class="product_favorite"
+                @click="addOrRemoveProduct(product.id)"
+            />
+            <font-awesome
+                icon="fa-solid fa-pen"
                 size=lg
-                border
-                style="--fa-border-radius: 100%; --fa-border-width: 3px;"
-                :style="{ '--fa-border-color': getColor(), color: getColor() }"
+                class="product_edit"
             />
         </div>
-        <span class="product_name">{{ product.name }}</span>
-        <span class="product_price" :style="{ color: getColor() }">R${{ Number(product.new_prices.slice(-1)[0]).toFixed(2) }}</span>
-        <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
-        <span class="product_tags">{{ product.tags }}</span>
-    </router-link>
+    </div>
 </template>
 
 <script lang="ts">
 /* eslint-disable */
 
-import IProduct from '@/interfaces/IProduct'
 import { defineComponent } from 'vue'
+import IProduct from '@/interfaces/IProduct'
+import ProductTags from './ShowProduct/ProductTags.vue'
 
 export default defineComponent({
     name: 'MyProduct',
+    components: {
+        ProductTags,
+    },
     props: {
         product: {
             required: true,
             type: Object as ()=>IProduct,
         },
+    },
+    data() {
+        return {
+            myProductsIds: [] as number[]
+        }
     },
     methods: {
         getDiscount(): string {
@@ -58,33 +85,70 @@ export default defineComponent({
             else {
                 return '#FFE135'
             }
+        },
+        goToProductPage(product_id: number) {
+            this.$router.push(`/products/${product_id}`)
+        },
+        addOrRemoveProduct(product_id: number) {
+            if (this.myProductsIds.includes(product_id)) {
+                this.myProductsIds = this.myProductsIds.filter(id => id !== product_id) // remove
+            }
+            else {
+                this.myProductsIds.push(product_id) // add
+            }
+            this.saveProducts()
+        },
+        saveProducts() {
+            const parsed = JSON.stringify(this.myProductsIds)
+            localStorage.setItem('myProductsIds', parsed)
+        },
+        getStarColor(product_id: number): string {
+            if (this.myProductsIds.includes(product_id)) {
+                return "yellow"
+            }
+            return "white"
+        },
+    },
+    mounted() {
+        if(localStorage.getItem('myProductsIds')) {
+            try {
+                this.myProductsIds = JSON.parse(localStorage.getItem('myProductsIds') || '')
+            }
+            catch(e) {
+                localStorage.removeItem('myProductsIds')
+            }
         }
-    }
+    },
 })
 </script>
 
 <style scoped>
 .product_card {
+    display: flex;
+    justify-content: space-between;
+
+    background-color: var(--card-background);
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 10px 0px;
+}
+
+.product_infos {
     display: grid;
     grid-template-areas:
-        'icon name name'
-        'icon price discount'
-        'icon tags tags';
-    grid-template-columns: auto 120px auto;
+        'icon name'
+        'icon price'
+        'icon tags';
     justify-content: left;
     align-items: center;
-
-    padding-top: 10px;
 
     text-decoration: none;
 }
 
 .discount_icon {
     grid-area: icon;
-    align-self: stretch;
-
-    display: flex;
-    align-items: center;
+    align-self: center;
 
     padding-right: 15px;
 }
@@ -96,17 +160,43 @@ export default defineComponent({
     font-weight: bold;
 }
 
-.product_price {
+.product_price_info {
     grid-area: price;
-}
 
-.product_discount {
-    grid-area: discount;
+    display: flex;
+    column-gap: 50px;
+
+    padding: 5px 0px;
 }
 
 .product_tags {
     grid-area: tags;
 
     color: #B3B6B7;
+}
+
+.actions_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.product_favorite {
+    color: yellow;
+    cursor: pointer;
+}
+
+.product_favorite:hover {
+    color: white;
+}
+
+.product_edit {
+    color: white;
+}
+
+.product_infos > span {
+    background-color: #2A3142;
 }
 </style>
