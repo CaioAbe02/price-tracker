@@ -23,10 +23,20 @@ export default defineComponent({
 <style>
 * {
     margin: 0;
-    background-color: #03001C;
+    font-family: Mukta, sans-serif;
     font-size: 18px;
 }
 *::-webkit-scrollbar {
   width: 0;
+}
+
+html {
+    background-color: var(--background-color);
+}
+
+:root {
+    --header-color: #36394C;
+    --background-color: #252735;
+    --card-background: #2A3142;
 }
 </style>
