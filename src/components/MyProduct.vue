@@ -21,9 +21,8 @@
             <font-awesome
                 icon="fa-solid fa-star"
                 size="lg"
-                :style="{ color: getStarColor(product.id) }"
                 class="product_favorite"
-                @click="addOrRemoveProduct(product.id)"
+                @click="$emit('favoriteButton', product.id)"
             />
             <font-awesome
                 icon="fa-solid fa-pen"
@@ -52,11 +51,6 @@ export default defineComponent({
             required: true,
             type: Object as ()=>IProduct,
         },
-    },
-    data() {
-        return {
-            myProductsIds: [] as number[]
-        }
     },
     methods: {
         getDiscount(): string {
@@ -93,35 +87,6 @@ export default defineComponent({
         goToEditPage(product_id: number) {
             this.$router.push(`/products/edit/${product_id}`)
         },
-        addOrRemoveProduct(product_id: number) {
-            if (this.myProductsIds.includes(product_id)) {
-                this.myProductsIds = this.myProductsIds.filter(id => id !== product_id) // remove
-            }
-            else {
-                this.myProductsIds.push(product_id) // add
-            }
-            this.saveProducts()
-        },
-        saveProducts() {
-            const parsed = JSON.stringify(this.myProductsIds)
-            localStorage.setItem('myProductsIds', parsed)
-        },
-        getStarColor(product_id: number): string {
-            if (this.myProductsIds.includes(product_id)) {
-                return "yellow"
-            }
-            return "white"
-        },
-    },
-    mounted() {
-        if(localStorage.getItem('myProductsIds')) {
-            try {
-                this.myProductsIds = JSON.parse(localStorage.getItem('myProductsIds') || '')
-            }
-            catch(e) {
-                localStorage.removeItem('myProductsIds')
-            }
-        }
     },
 })
 </script>

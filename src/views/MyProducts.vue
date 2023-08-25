@@ -1,7 +1,7 @@
 <template>
     <div class="myproducts_background" v-if="products">
         <div class="products">
-            <MyProduct v-for="product in myProducts" :key="product.id" :product="product"/>
+            <MyProduct v-for="product in myProducts" :key="product.id" :product="product" @favoriteButton="favoriteProduct"/>
         </div>
     </div>
 </template>
@@ -34,6 +34,38 @@ export default defineComponent({
             store
         }
     },
+    mounted() {
+        if(localStorage.getItem('myProductsIds')) {
+            try {
+                this.myProductsIds = JSON.parse(localStorage.getItem('myProductsIds') || '')
+            }
+            catch(e) {
+                localStorage.removeItem('myProductsIds')
+            }
+        }
+    },
+    methods: {
+        favoriteProduct(product_id: number) {
+            const index = this.myProductsIds.indexOf(product_id)
+            if (index != -1) {
+                this.removeProduct(product_id)
+            }
+            else {
+                this.addProduct(product_id)
+            }
+            this.saveProducts()
+        },
+        addProduct(product_id: number) {
+            this.myProductsIds.push(product_id)
+        },
+        removeProduct(product_id: number) {
+            this.myProductsIds = this.myProductsIds.filter(id => id !== product_id)
+        },
+        saveProducts() {
+            const parsed = JSON.stringify(this.myProductsIds)
+            localStorage.setItem('myProductsIds', parsed)
+        },
+    },
     computed: {
         myProducts(): IProduct[] {
             const myProducts = [] as IProduct[]
@@ -55,19 +87,8 @@ export default defineComponent({
                     }
                 })
             }
-            // return this.products.filter((product: IProduct) => this.myProductsIds.includes(product.id))
             return myProducts
         },
-    },
-    mounted() {
-        if(localStorage.getItem('myProductsIds')) {
-            try {
-                this.myProductsIds = JSON.parse(localStorage.getItem('myProductsIds') || '')
-            }
-            catch(e) {
-                localStorage.removeItem('myProductsIds')
-            }
-        }
     },
 })
 </script>
