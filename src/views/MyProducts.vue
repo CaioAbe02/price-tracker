@@ -82,11 +82,22 @@ export default defineComponent({
     background-color: var(--background-color);
 }
 
-.products {
-    width: 500px;
+@media (max-width: 500px) {
+    .products {
+        max-width: 500px;
+    }
+}
 
+@media (min-width: 500px) {
+    .products {
+        width: 500px;
+    }
+}
+
+.products {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 }
 </style>
