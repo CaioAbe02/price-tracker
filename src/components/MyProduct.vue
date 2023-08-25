@@ -29,6 +29,7 @@
                 icon="fa-solid fa-pen"
                 size=lg
                 class="product_edit"
+                @click="goToEditPage(product.id)"
             />
         </div>
     </div>
@@ -88,6 +89,9 @@ export default defineComponent({
         },
         goToProductPage(product_id: number) {
             this.$router.push(`/products/${product_id}`)
+        },
+        goToEditPage(product_id: number) {
+            this.$router.push(`/products/edit/${product_id}`)
         },
         addOrRemoveProduct(product_id: number) {
             if (this.myProductsIds.includes(product_id)) {
@@ -194,6 +198,7 @@ export default defineComponent({
 
 .product_edit {
     color: white;
+    cursor: pointer;
 }
 
 .product_infos > span {
