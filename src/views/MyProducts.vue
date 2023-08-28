@@ -1,7 +1,29 @@
 <template>
     <div class="myproducts_background" v-if="products">
         <div class="products">
-            <MyProduct v-for="product in myProducts" :key="product.id" :product="product" @favoriteButton="favoriteProduct"/>
+            <div class="product" v-for="product in myProducts" :key="product.id">
+                <div class="move_buttons">
+                    <font-awesome
+                        icon="fa-solid fa-caret-up"
+                        size="lg"
+                        class="product_up"
+                        @click="moveProductUp(product.id)"
+                        v-if="product.id != myProductsIds[0]"
+                    />
+                    <font-awesome
+                        icon="fa-solid fa-caret-down"
+                        size="lg"
+                        class="product_down"
+                        @click="moveProductDown(product.id)"
+                        v-if="product.id != myProductsIds.slice(-1)[0]"
+                    />
+                </div>
+                <MyProduct
+                    :product="product"
+                    @favoriteButton="favoriteProduct"
+                    @moveUp="moveProductUp"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -61,6 +83,20 @@ export default defineComponent({
         removeProduct(product_id: number) {
             this.myProductsIds = this.myProductsIds.filter(id => id !== product_id)
         },
+        moveProductUp(product_id: number) {
+            const index = this.myProductsIds.indexOf(product_id)
+            this.myProductsIds[index] = this.myProductsIds[index - 1]
+            this.myProductsIds[index - 1] = product_id
+
+            this.saveProducts()
+        },
+        moveProductDown(product_id: number) {
+            const index = this.myProductsIds.indexOf(product_id)
+            this.myProductsIds[index] = this.myProductsIds[index + 1]
+            this.myProductsIds[index + 1] = product_id
+
+            this.saveProducts()
+        },
         saveProducts() {
             const parsed = JSON.stringify(this.myProductsIds)
             localStorage.setItem('myProductsIds', parsed)
@@ -103,22 +139,27 @@ export default defineComponent({
     background-color: var(--background-color);
 }
 
-@media (max-width: 500px) {
-    .products {
-        max-width: 500px;
-    }
+.product {
+    display: flex;
+    align-items: center;
 }
 
-@media (min-width: 500px) {
-    .products {
-        width: 500px;
-    }
+.move_buttons {
+    display: flex;
+    flex-direction: column;
+
+    padding-right: 10px;
+}
+
+.product_up, .product_down {
+    color: white;
+
+    cursor: pointer;
 }
 
 .products {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 </style>
