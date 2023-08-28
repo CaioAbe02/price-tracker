@@ -92,6 +92,32 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media (max-width: 600px) {
+    .product_card {
+        width: calc(100vw - 200px);
+    }
+
+    .product_infos {
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    .product_card {
+        width: 300px;
+    }
+
+    .product_infos {
+        padding-right: 20px;
+    }
+}
+
+@media (min-width: 600px) {
+    .product_card {
+        width: 500px;
+    }
+}
+
 .product_card {
     display: flex;
     justify-content: space-between;
