@@ -3,7 +3,7 @@
         <ProductInfos :product="product" />
         <ProductPricesGraph :product="product"/>
         <button @click="addOrRemoveProduct(product)" class="add_product_button">{{ buttonText }}</button>
-        <button @click="updateProducts()">Update</button>
+        <button @click="updateProducts()">{{ textUpdateButton }}</button>
         <button @click="redirectToUrl(product.url)">Site</button>
     </div>
 </template>
@@ -35,6 +35,7 @@ export default defineComponent({
             product: {} as IProduct,
             myProducts: [] as number[],
             isProductFavorite: false,
+            textUpdateButton: 'Update'
         }
     },
     methods: {
@@ -53,16 +54,31 @@ export default defineComponent({
             localStorage.setItem('myProductsIds', parsed)
         },
         async updateProducts() {
+            this.textUpdateButton = 'Updating'
             try {
-                const last_price = this.product.new_prices.slice(-1)[0]
-                const response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, this.product)
+                let response
+                for (let i = 0; i < 10; i++) {
+                    response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, this.product)
 
-                if (response == "Product updated successfully") {
-                    window.location.reload()
+                    if (response.message != "Product price not found") {
+                        break
+                    }
+                }
+                console.log(response)
+
+                if (response.message == "Product price updated successfully") {
+                    try {
+                            const response = await axios.get(`https://price-tracker-api.onrender.com/products/${this.id}`)
+                            this.product = response.data
+                        }
+                    catch (error) {
+                        console.error(error)
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao adicionar produto:', error);
             }
+            this.textUpdateButton = 'Update'
         },
         redirectToUrl(url: string) {
             window.open(url, '_blank')
