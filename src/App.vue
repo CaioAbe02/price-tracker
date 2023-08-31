@@ -38,5 +38,8 @@ html {
     --header-color: #36394C;
     --background-color: #252735;
     --card-background: #2A3142;
+    --input-border: #374151;
+    --input-label: #E5E7E9;
+    --purple: #CCCCFF;
 }
 </style>
