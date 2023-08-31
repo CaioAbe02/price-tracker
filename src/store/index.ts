@@ -31,15 +31,20 @@ export const store = createStore<State>({
         .then(response => commit(DEFINE_PRODUCTS, response.data))
     },
     [ADD_PRODUCT](context, newProduct) {
-      const url = `${BASE_URL}/products`
-      axios.post(url, newProduct)
-        .then(response => {
-          // commit(DEFINE_PRODUCTS, response.data);
-          console.log(response)
-        })
-        .catch(error => {
-          console.error('Error:', error)
-        });
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/products`
+        axios.post(url, newProduct)
+          .then(response => {
+            // commit(DEFINE_PRODUCTS, response.data);
+            console.log(response)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error)
+            reject(error)
+          });
+
+      })
     },
     [EDIT_PRODUCT](context, updatedProduct: IProduct) {
       return new Promise((resolve, reject) => {
