@@ -65,8 +65,14 @@ export default defineComponent({
 
     },
     methods: {
-        editProduct() {
-            this.store.dispatch(EDIT_PRODUCT, this.editedProduct)
+        async editProduct() {
+            try {
+                await this.store.dispatch(EDIT_PRODUCT, this.editedProduct)
+                this.$router.go(-1)
+            }
+            catch (error) {
+                console.error(error)
+            }
         },
     },
 })
