@@ -7,7 +7,7 @@ import IProduct from '@/interfaces/IProduct';
 import { GET_PRODUCTS, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE } from './action-types';
 import { DEFINE_PRODUCTS } from './mutation-types';
 
-const BASE_URL = "https://price-tracker-api.onrender.com"
+const BASE_URL = process.env.VUE_APP_API_URL
 
 interface State {
   products: IProduct[]
