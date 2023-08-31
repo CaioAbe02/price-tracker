@@ -52,7 +52,7 @@ export default defineComponent({
     },
     async mounted() {
         try {
-            const response = await axios.get(`https://price-tracker-api.onrender.com/products/${this.id}`)
+            const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
             this.product = response.data
 
             this.editedProduct.id = this.product.id

@@ -68,7 +68,7 @@ export default defineComponent({
 
                 if (response.message == "Product price updated successfully") {
                     try {
-                            const response = await axios.get(`https://price-tracker-api.onrender.com/products/${this.id}`)
+                            const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
                             this.product = response.data
                         }
                     catch (error) {
