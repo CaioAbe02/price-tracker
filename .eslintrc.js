@@ -21,5 +21,6 @@ module.exports = {
     'camelcase': 'off',
     'prefer-destructuring': 'off',
     'vuejs-accessibility/click-events-have-key-events': 'off',
+    'vuejs-accessibility/label-has-for': 'off'
   },
 };
