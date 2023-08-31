@@ -2,25 +2,21 @@
     <div class="card">
         <h1>Register product</h1>
         <form @submit.prevent="addProduct">
-            <div class="inputs">
-                <label for="newProduct.name">
-                    Name
-                    <input type="text" v-model="newProduct.name">
-                </label>
-                <label for="newProduct.url">
-                    Url
-                    <input type="text" v-model="newProduct.url">
-                </label>
-                <label for="newProduct.tags">
-                    Tags
-                    <input type="text" v-model="newProduct.tags">
-                </label>
+            <div class="input_group">
+                <label for="newProduct.name">Name</label>
+                <input type="text" v-model="newProduct.name">
             </div>
-            <div>
-                <button type="submit">
-                    Submit
-                </button>
+            <div class="input_group">
+                <label for="newProduct.url">Url</label>
+                <input type="text" v-model="newProduct.url">
             </div>
+            <div class="input_group">
+                <label for="newProduct.tags">Tags</label>
+                <input type="text" v-model="newProduct.tags">
+            </div>
+            <button type="submit">
+                Submit
+            </button>
         </form>
     </div>
 </template>
@@ -54,52 +50,59 @@ export default defineComponent ({
         }
     },
     methods: {
-        addProduct() {
-            this.newProduct.id = this.products.length
-            this.store.dispatch(ADD_PRODUCT, this.newProduct)
+        async addProduct() {
+            try {
+                this.newProduct.id = this.products.length
+                await this.store.dispatch(ADD_PRODUCT, this.newProduct)
+                this.$router.push('/products/')
+
+            }
+            catch(error) {
+                console.error(error)
+            }
         }
     }
 })
 </script>
 
-<style scoped>
-.card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+<style scoped>.card {
     background-color: var(--card-background);
-    max-width: 350px;
+    max-width: 500px;
     border-radius: 10px;
 
     margin: 0 auto;
-    padding: 30px 0px;
+    padding: 40px;
+}
+
+form {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
     font-size: 1.5rem;
     color: white;
-
-    padding-top: 10px;
-    padding-bottom: 30px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
 }
 
 label {
-    color: var(--input-label);
+    display: block;
+    margin-bottom: 5px;
 
-    padding: 5px 0px;
+    color: var(--input-label);
+}
+
+.input_group {
+    margin-top: 5px;
 }
 
 input {
     display: flex;
     flex-direction: column;
 
+    width: 100%;
+    box-sizing: border-box;
     background-color: var(--card-background);
     border: 1px solid var(--input-border);
     border-radius: 5px;
@@ -115,22 +118,17 @@ input:focus {
     border: 1px solid var(--purple);
 }
 
-.inputs {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 button {
+    align-self: center;
     background-color: var(--purple);
 
     padding: 7px 15px;
     border-width: 0px;
     border-radius: 5px;
 
-    margin-top: 30px;
-    margin-bottom: 10px;
+    margin-top: 40px;
+
+    cursor: pointer;
 }
 
 </style>
