@@ -104,7 +104,6 @@ export default defineComponent({
     async mounted() {
         // get product
         try {
-            console.log(process.env.VUE_APP_API_URL)
             const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
             this.product = response.data
         }
