@@ -7,6 +7,7 @@ import {
     faPen,
     faCaretUp,
     faCaretDown,
+    faMinus,
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
@@ -16,6 +17,7 @@ const icons = {
     faPen,
     faCaretUp,
     faCaretDown,
+    faMinus,
 }
 
 export default icons;

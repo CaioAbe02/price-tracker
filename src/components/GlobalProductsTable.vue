@@ -7,60 +7,84 @@
                         Name
                         <font-awesome
                             icon="fa-solid fa-caret-up"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byName && !orderDesc"
                         />
                         <font-awesome
                             icon="fa-solid fa-caret-down"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byName && orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-minus"
+                            size=sm
+                            class="minus_icon"
+                            v-if="!byName"
                         />
                     </th>
                     <th @click="sortByOriginalPrice()" style="cursor: pointer;">
                         Original price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byOriginalPrice && !orderDesc"
                         />
                         <font-awesome
                             icon="fa-solid fa-caret-down"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byOriginalPrice && orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-minus"
+                            size=sm
+                            class="minus_icon"
+                            v-if="!byOriginalPrice"
                         />
                     </th>
                     <th @click="sortByCurrentPrice()" style="cursor: pointer;">
                         Current price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byCurrentPrice && !orderDesc"
                         />
                         <font-awesome
                             icon="fa-solid fa-caret-down"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byCurrentPrice && orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-minus"
+                            size=sm
+                            class="minus_icon"
+                            v-if="!byCurrentPrice"
                         />
                     </th>
                     <th @click="sortByDiscount()" style="cursor: pointer;">
                         Discount
                         <font-awesome
                             icon="fa-solid fa-caret-up"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byDiscount && !orderDesc"
                         />
                         <font-awesome
                             icon="fa-solid fa-caret-down"
-                            size=lg
+                            size=sm
                             class="caret_icon"
                             v-if="byDiscount && orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-minus"
+                            size=sm
+                            class="minus_icon"
+                            v-if="!byDiscount"
                         />
                     </th>
                     <th>Tags</th>
@@ -85,7 +109,7 @@
                         <ProductTags :tags="product.tags"/>
                     </td>
                     <td data-label="Actions">
-                        <div>
+                        <div class="actions">
                             <font-awesome
                                 icon="fa-solid fa-star"
                                 size=lg
@@ -318,8 +342,19 @@ tbody, td, tfoot, th, thead, tr {
     cursor: pointer;
 }
 
+.actions {
+    display: flex;
+    justify-content: center;
+    column-gap: 5px;
+}
+
 .star_icon:hover {
     color: yellow !important;
+    cursor: pointer;
+}
+
+.edit_icon:hover {
+    color: var(--purple);
     cursor: pointer;
 }
 
