@@ -2,7 +2,7 @@
     <div v-for="data in updated_products" :key="data.product.id">
         <span :style="{color: data.color}">{{ getProductText(data) }}</span>
     </div>
-    <button @click="updateProducts()">Update</button>
+    <button @click="updateProducts()">{{ textButton }}</button>
 </template>
 
 <script lang="ts">
@@ -22,7 +22,8 @@ export default defineComponent({
     name: 'UpdateProducts',
     data() {
         return {
-            updated_products: [] as Data[]
+            updated_products: [] as Data[],
+            textButton: "Update"
         }
     },
     setup() {
@@ -38,6 +39,7 @@ export default defineComponent({
         async updateProducts() {
             for (const product of this.products) {
                 try {
+                    this.textButton = "Updating"
                     const response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
                     let status = ""
 
@@ -64,6 +66,7 @@ export default defineComponent({
                     console.error('Erro ao adicionar produto:', error);
                 }
             }
+            this.textButton = "Update"
         },
         getProductText(data: Data) {
             if (data.color == "red") {

@@ -1,25 +1,22 @@
 <template>
-    <div>
+    <div class="card">
+        <h1>Register product</h1>
         <form @submit.prevent="addProduct">
-            <div>
-                <label for="newProduct.name">
-                    Name
-                    <input type="text" v-model="newProduct.name">
-                </label>
-                <label for="newProduct.url">
-                    Url
-                    <input type="text" v-model="newProduct.url">
-                </label>
-                <label for="newProduct.tags">
-                    Tags
-                    <input type="text" v-model="newProduct.tags">
-                </label>
+            <div class="input_group">
+                <label for="newProduct.name">Name</label>
+                <input type="text" v-model="newProduct.name">
             </div>
-            <div>
-                <button type="submit">
-                    Add product
-                </button>
+            <div class="input_group">
+                <label for="newProduct.url">Url</label>
+                <input type="text" v-model="newProduct.url">
             </div>
+            <div class="input_group">
+                <label for="newProduct.tags">Tags</label>
+                <input type="text" v-model="newProduct.tags">
+            </div>
+            <button type="submit">
+                Submit
+            </button>
         </form>
     </div>
 </template>
@@ -53,20 +50,85 @@ export default defineComponent ({
         }
     },
     methods: {
-        addProduct() {
-            this.newProduct.id = this.products.length
-            this.store.dispatch(ADD_PRODUCT, this.newProduct)
+        async addProduct() {
+            try {
+                this.newProduct.id = this.products.length
+                await this.store.dispatch(ADD_PRODUCT, this.newProduct)
+                this.$router.push('/products/')
+
+            }
+            catch(error) {
+                console.error(error)
+            }
         }
     }
 })
 </script>
 
-<style scoped>
-h1, label, input, button {
-    color:white;
+<style scoped>.card {
+    background-color: var(--card-background);
+    max-width: 500px;
+    border-radius: 10px;
+
+    margin: 0 auto;
+    padding: 40px;
+}
+
+form {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+
+    color: var(--input-label);
+}
+
+.input_group {
+    margin-top: 5px;
 }
 
 input {
-    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--card-background);
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    outline: 0;
+
+    padding: 10px 15px;
+    margin-top: 2.5px;
+
+    color: white;
 }
+
+input:focus {
+    border: 1px solid var(--purple);
+}
+
+button {
+    align-self: center;
+    background-color: var(--purple);
+
+    padding: 7px 15px;
+    border-width: 0px;
+    border-radius: 5px;
+
+    margin-top: 40px;
+
+    cursor: pointer;
+}
+
 </style>

@@ -7,7 +7,7 @@ import IProduct from '@/interfaces/IProduct';
 import { GET_PRODUCTS, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE } from './action-types';
 import { DEFINE_PRODUCTS } from './mutation-types';
 
-const BASE_URL = "https://price-tracker-api.onrender.com"
+const BASE_URL = process.env.VUE_APP_API_URL
 
 interface State {
   products: IProduct[]
@@ -31,15 +31,20 @@ export const store = createStore<State>({
         .then(response => commit(DEFINE_PRODUCTS, response.data))
     },
     [ADD_PRODUCT](context, newProduct) {
-      const url = `${BASE_URL}/products`
-      axios.post(url, newProduct)
-        .then(response => {
-          // commit(DEFINE_PRODUCTS, response.data);
-          console.log(response)
-        })
-        .catch(error => {
-          console.error('Error:', error)
-        });
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/products`
+        axios.post(url, newProduct)
+          .then(response => {
+            // commit(DEFINE_PRODUCTS, response.data);
+            console.log(response)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error)
+            reject(error)
+          });
+
+      })
     },
     [EDIT_PRODUCT](context, updatedProduct: IProduct) {
       return new Promise((resolve, reject) => {
