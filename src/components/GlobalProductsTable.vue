@@ -3,32 +3,88 @@
         <table>
             <thead>
                 <tr>
-                    <th @click="sortByName()">Name</th>
-                    <th>Original price</th>
-                    <th>Current price</th>
-                    <th>Discount</th>
+                    <th @click="sortByName()" style="cursor: pointer;">
+                        Name
+                        <font-awesome
+                            icon="fa-solid fa-caret-up"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byName && !orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-caret-down"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byName && orderDesc"
+                        />
+                    </th>
+                    <th @click="sortByOriginalPrice()" style="cursor: pointer;">
+                        Original price
+                        <font-awesome
+                            icon="fa-solid fa-caret-up"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byOriginalPrice && !orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-caret-down"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byOriginalPrice && orderDesc"
+                        />
+                    </th>
+                    <th @click="sortByCurrentPrice()" style="cursor: pointer;">
+                        Current price
+                        <font-awesome
+                            icon="fa-solid fa-caret-up"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byCurrentPrice && !orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-caret-down"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byCurrentPrice && orderDesc"
+                        />
+                    </th>
+                    <th @click="sortByDiscount()" style="cursor: pointer;">
+                        Discount
+                        <font-awesome
+                            icon="fa-solid fa-caret-up"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byDiscount && !orderDesc"
+                        />
+                        <font-awesome
+                            icon="fa-solid fa-caret-down"
+                            size=lg
+                            class="caret_icon"
+                            v-if="byDiscount && orderDesc"
+                        />
+                    </th>
                     <th>Tags</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="product in sortedProducts" :key="product.id" class="product_row">
-                    <td @click="goToProductPage(product.id)" class="product_name">
+                <tr v-for="product in sortedProducts(byName, byOriginalPrice, byCurrentPrice, byDiscount)" :key="product.id" class="product_row">
+                    <td @click="goToProductPage(product.id)" class="product_name" data-label="Name">
                         {{ product.name }}
                     </td>
-                    <td>
+                    <td data-label="Original Price">
                         R${{ product.original_price.toFixed(2) }}
                     </td>
-                    <td :style="{ color: getColor(product) }">
+                    <td :style="{ color: getColor(product) }" data-label="Current Price" >
                         R${{ product.new_prices.slice(-1)[0].toFixed(2) }}
                     </td>
-                    <td :style="{ color: getColor(product) }" >
+                    <td :style="{ color: getColor(product) }" data-label="Discount">
                         {{ getDiscount(product) }}
                     </td>
-                    <td>
-                        <ProductTags :tags="product.tags" />
+                    <td data-label="Tags">
+                        <ProductTags :tags="product.tags"/>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                         <div>
                             <font-awesome
                                 icon="fa-solid fa-star"
@@ -68,7 +124,11 @@ export default defineComponent({
     data() {
         return {
             myProductsIds: [] as number[],
-            nameDesc: true,
+            byName: true,
+            byOriginalPrice: false,
+            byCurrentPrice: false,
+            byDiscount: false,
+            orderDesc: true,
         }
     },
     setup() {
@@ -80,37 +140,57 @@ export default defineComponent({
             store
         }
     },
-    computed: {
-        sortedProducts(byName: true): IProduct[] {
-            if (byName) {
-                return this.products.sort((product1, product2) => {
-                    const name1 = product1.name.toUpperCase()
-                    const name2 = product2.name.toUpperCase()
+    methods: {
+        sortedProducts(byName: boolean, byOriginalPrice: boolean, byCurrentPrice: boolean, byDiscount: boolean): IProduct[] {
+            return this.products.sort((product1, product2) => {
+                let name1, name2
 
-                    if (this.nameDesc) {
-                        if (name1 < name2) {
-                            return -1
-                        }
-                        if (name1 > name2) {
-                            return 1
-                        }
-                        return 0
-                    }
+                if (byName) {
+                    name1 = product1.name.toUpperCase()
+                    name2 = product2.name.toUpperCase()
+                }
+
+                else if (byOriginalPrice) {
+                    name1 = product1.original_price
+                    name2 = product2.original_price
+                }
+
+                else if (byCurrentPrice) {
+                    name1 = product1.new_prices.slice(-1)[0]
+                    name2 = product2.new_prices.slice(-1)[0]
+                }
+
+                else if (byDiscount) {
+                    name1 = parseFloat(this.getDiscount(product1).slice(0, -1))
+                    name2 = parseFloat((this.getDiscount(product2).slice(0, -1)))
+                }
+
+                else {
+                    name1 = ""
+                    name2 = ""
+
+                }
+
+                if (this.orderDesc) {
                     if (name1 < name2) {
-                        return 1
-                    }
-
-                    if (name1> name2) {
                         return -1
                     }
-
+                    if (name1 > name2) {
+                        return 1
+                    }
                     return 0
-                })
-            }
-            return []
-        }
-    },
-    methods: {
+                }
+                if (name1 < name2) {
+                    return 1
+                }
+
+                if (name1> name2) {
+                    return -1
+                }
+
+                return 0
+            })
+        },
         getDiscount(product: IProduct): string {
             const new_price = product.new_prices.slice(-1)[0]
             const original_price = product.original_price
@@ -165,8 +245,33 @@ export default defineComponent({
             localStorage.setItem('myProductsIds', parsed)
         },
         sortByName() {
-            this.nameDesc = !this.nameDesc
-        }
+            this.orderDesc = !this.orderDesc
+            this.byName = true
+            this.byOriginalPrice = false
+            this.byCurrentPrice = false
+            this.byDiscount = false
+        },
+        sortByOriginalPrice() {
+            this.orderDesc = !this.orderDesc
+            this.byName = false
+            this.byOriginalPrice = true
+            this.byCurrentPrice = false
+            this.byDiscount = false
+        },
+        sortByCurrentPrice() {
+            this.orderDesc = !this.orderDesc
+            this.byName = false
+            this.byOriginalPrice = false
+            this.byCurrentPrice = true
+            this.byDiscount = false
+        },
+        sortByDiscount() {
+            this.orderDesc = !this.orderDesc
+            this.byName = false
+            this.byOriginalPrice = false
+            this.byCurrentPrice = false
+            this.byDiscount = true
+        },
     },
     mounted() {
         if(localStorage.getItem('myProductsIds')) {
@@ -186,7 +291,7 @@ export default defineComponent({
     background-color: var(--card-background);
 
     border-radius: 10px;
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
 }
 
 table {
@@ -216,6 +321,46 @@ tbody, td, tfoot, th, thead, tr {
 .star_icon:hover {
     color: yellow !important;
     cursor: pointer;
+}
+
+@media (max-width: 850px) {
+    .table_card {
+        background-color: var(--background-color);
+    }
+
+    .product_row {
+        padding: 0px 10px;
+        border-radius: 10px;
+    }
+
+    table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table tr {
+        background-color: var(--card-background);
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    table td {
+        display: block;
+        text-align: right;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 }
 
 </style>
