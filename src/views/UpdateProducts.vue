@@ -39,9 +39,17 @@ export default defineComponent({
         async updateProducts() {
             for (const product of this.products) {
                 try {
-                    this.textButton = "Updating"
-                    const response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
+                    let response
                     let status = ""
+                    this.textButton = "Updating"
+
+                    for (let i = 0; i < 10; i++) {
+                        response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
+
+                        if (response.message == "Product price updated successfully") {
+                            break
+                        }
+                    }
 
                     if (response.message == "Product price not found") {
                         console.log(`%c Price for ${product.name} not found`, 'color: red')
