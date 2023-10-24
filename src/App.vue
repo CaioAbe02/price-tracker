@@ -41,5 +41,6 @@ html {
     --input-border: #374151;
     --input-label: #E5E7E9;
     --purple: #CCCCFF;
+    --placeholder: #797D7F;
 }
 </style>
