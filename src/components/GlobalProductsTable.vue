@@ -134,7 +134,7 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, PropType } from 'vue';
 import { useStore } from '@/store';
 import { GET_PRODUCTS } from '@/store/action-types';
 import IProduct from '@/interfaces/IProduct';
@@ -145,6 +145,12 @@ export default defineComponent({
     components: {
         ProductTags,
     },
+    props: {
+        products: {
+            required: true,
+            type: Array as PropType<IProduct[]>,
+        }
+    },
     data() {
         return {
             myProductsIds: [] as number[],
@@ -153,15 +159,6 @@ export default defineComponent({
             byCurrentPrice: false,
             byDiscount: false,
             orderDesc: true,
-        }
-    },
-    setup() {
-        const store = useStore()
-        store.dispatch(GET_PRODUCTS)
-
-        return {
-            products: computed(() => store.state.products),
-            store
         }
     },
     methods: {
@@ -312,10 +309,15 @@ export default defineComponent({
 
 <style scoped>
 .table_card {
-    background-color: var(--card-background);
+    display: flex;
+    justify-content: center;
 
+    max-width: fit-content;
+
+    background-color: var(--card-background);
     border-radius: 10px;
     padding: 0px 20px 20px 20px;
+    margin: 0 auto;
 }
 
 table {
