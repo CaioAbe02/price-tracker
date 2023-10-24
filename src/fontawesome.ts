@@ -8,6 +8,7 @@ import {
     faCaretUp,
     faCaretDown,
     faMinus,
+    faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
@@ -18,6 +19,7 @@ const icons = {
     faCaretUp,
     faCaretDown,
     faMinus,
+    faMagnifyingGlass,
 }
 
 export default icons;
