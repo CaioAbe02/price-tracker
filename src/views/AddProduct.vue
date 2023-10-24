@@ -15,7 +15,7 @@
                 <input type="text" v-model="newProduct.tags">
             </div>
             <button type="submit">
-                Submit
+                {{ textButton }}
             </button>
         </form>
     </div>
@@ -37,7 +37,8 @@ export default defineComponent ({
                 name: '',
                 url: '',
                 tags: ''
-            }
+            },
+            textButton: 'Submit'
         }
     },
     setup() {
@@ -51,13 +52,25 @@ export default defineComponent ({
     },
     methods: {
         async addProduct() {
+            this.textButton = "Submiting"
             try {
+                let response
+
                 this.newProduct.id = this.products.length
-                await this.store.dispatch(ADD_PRODUCT, this.newProduct)
+                for (let i = 0; i < 100; i++) {
+                    response = await this.store.dispatch(ADD_PRODUCT, this.newProduct)
+
+                    if (response.message == "Product added successfully") {
+                        break
+                    }
+                }
+                this.textButton = "Submit"
+                console.log(response)
                 this.$router.push('/products/')
 
             }
             catch(error) {
+                this.textButton = "Submit"
                 console.error(error)
             }
         }
