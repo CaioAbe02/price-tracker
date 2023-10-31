@@ -58,7 +58,6 @@ export default defineComponent({
             for (const product of this.products) {
                 try {
                     let response
-                    let status = ""
                     this.textButton = "Updating"
 
                     let updated_product: {product: IProduct, color: string} = {
@@ -136,7 +135,6 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     row-gap: 10px;
-
 }
 
 .card {
