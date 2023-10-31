@@ -12,11 +12,6 @@ import {
     faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 
-import {
-    faCircleXmark,
-    faCircleCheck,
-} from '@fortawesome/free-regular-svg-icons'
-
 const icons = {
     faPercent,
     faPlus,
@@ -27,8 +22,6 @@ const icons = {
     faMinus,
     faMagnifyingGlass,
     faSpinner,
-    faCircleXmark,
-    faCircleCheck,
 }
 
 export default icons;
