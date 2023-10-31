@@ -4,17 +4,9 @@
         <div class="card" v-for="data in updated_products" :key="data.product.id">
             <div class="product_icon">
                 <font-awesome
-                    :icon= getIcon(data.color)
+                    icon= "fa-solid fa-percent"
                     size=2xl
                     :style="{ color: getColor(data.color) }"
-                    v-if="data.color != 'gray'"
-                />
-                <font-awesome
-                    icon="fa-solid fa-spinner"
-                    size=2xl
-                    spin
-                    :style="{ color: getColor('gray') }"
-                    v-if="data.color == 'gray'"
                 />
             </div>
             <span class="product_name">{{ data.product.name }}</span>
