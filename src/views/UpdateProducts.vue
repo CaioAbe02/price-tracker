@@ -56,42 +56,40 @@ export default defineComponent({
     methods: {
         async updateProducts() {
             for (const product of this.products) {
-                if (product.name.includes("Kabum")) {
-                    try {
-                        let response
-                        let status = ""
-                        this.textButton = "Updating"
+                try {
+                    let response
+                    let status = ""
+                    this.textButton = "Updating"
 
-                        let updated_product: {product: IProduct, color: string} = {
-                            product: product,
-                            color: 'gray'
-                        }
-                        this.updated_products.push(updated_product)
-
-                        for (let i = 0; i < 10; i++) {
-                            response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
-
-                            if (response.message == "Product price updated successfully") {
-                                break
-                            }
-                        }
-
-                        if (response.message == "Product price not found") {
-                            console.log(`%c Price for ${product.name} not found`, 'color: red')
-                            updated_product.color = "red"
-                        }
-                        else if (response.message == "Product price updated successfully") {
-                            console.log(`%c New price to ${product.name}: R$${Number(response.product.new_price).toFixed(2)}`, 'color: green')
-                            updated_product.color = "green"
-                        }
-                        else {
-                            console.log(`%c ${product.name} did not change the price`, 'color: white')
-                            updated_product.color = "white"
-                        }
-
-                    } catch (error) {
-                        console.error('Erro ao atualizar produto:', error);
+                    let updated_product: {product: IProduct, color: string} = {
+                        product: product,
+                        color: 'gray'
                     }
+                    this.updated_products.push(updated_product)
+
+                    for (let i = 0; i < 10; i++) {
+                        response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
+
+                        if (response.message == "Product price updated successfully") {
+                            break
+                        }
+                    }
+
+                    if (response.message == "Product price not found") {
+                        console.log(`%c Price for ${product.name} not found`, 'color: red')
+                        updated_product.color = "red"
+                    }
+                    else if (response.message == "Product price updated successfully") {
+                        console.log(`%c New price to ${product.name}: R$${Number(response.product.new_price).toFixed(2)}`, 'color: green')
+                        updated_product.color = "green"
+                    }
+                    else {
+                        console.log(`%c ${product.name} did not change the price`, 'color: white')
+                        updated_product.color = "white"
+                    }
+
+                } catch (error) {
+                    console.error('Erro ao atualizar produto:', error);
                 }
             }
             this.textButton = "Update"
