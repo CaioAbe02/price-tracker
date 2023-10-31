@@ -9,7 +9,13 @@ import {
     faCaretDown,
     faMinus,
     faMagnifyingGlass,
+    faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
+
+import {
+    faCircleXmark,
+    faCircleCheck,
+} from '@fortawesome/free-regular-svg-icons'
 
 const icons = {
     faPercent,
@@ -20,6 +26,9 @@ const icons = {
     faCaretDown,
     faMinus,
     faMagnifyingGlass,
+    faSpinner,
+    faCircleXmark,
+    faCircleCheck,
 }
 
 export default icons;
