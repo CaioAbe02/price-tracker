@@ -106,14 +106,12 @@ export default defineComponent({
             else if (status == 'gray') {
                 return 'gray'
             }
-
             return 'white'
         },
         getIcon(color: string): string {
             if (color == 'red') {
                 return 'fa-regular fa-circle-xmark'
             }
-
             return 'fa-regular fa-circle-check'
         }
     }
