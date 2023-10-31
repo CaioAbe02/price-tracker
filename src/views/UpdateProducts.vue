@@ -1,18 +1,8 @@
 <template>
-    <div class="container">
-        <button @click="updateProducts()">{{ textButton }}</button>
-        <div class="card" v-for="data in updated_products" :key="data.product.id">
-            <div class="product_icon">
-                <font-awesome
-                    icon= "fa-solid fa-percent"
-                    size=2xl
-                    :style="{ color: getColor(data.color) }"
-                />
-            </div>
-            <span class="product_name">{{ data.product.name }}</span>
-            <span class="product_price" :style="{ color: getColor(data.color) }">{{ getProductText(data) }}</span>
-        </div>
+    <div v-for="data in updated_products" :key="data.product.id">
+        <span :style="{color: data.color}">{{ getProductText(data) }}</span>
     </div>
+    <button @click="updateProducts()">{{ textButton }}</button>
 </template>
 
 <script lang="ts">
@@ -23,7 +13,7 @@ import { GET_PRODUCTS, UPDATE_PRODUCT_PRICE } from '@/store/action-types';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
 
-interface UpdatedProduct {
+interface Data {
     product: IProduct,
     color: string
 }
@@ -32,7 +22,7 @@ export default defineComponent({
     name: 'UpdateProducts',
     data() {
         return {
-            updated_products: [] as UpdatedProduct[],
+            updated_products: [] as Data[],
             textButton: "Update"
         }
     },
@@ -50,13 +40,8 @@ export default defineComponent({
             for (const product of this.products) {
                 try {
                     let response
+                    let status = ""
                     this.textButton = "Updating"
-
-                    let updated_product: {product: IProduct, color: string} = {
-                        product: product,
-                        color: 'gray'
-                    }
-                    this.updated_products.push(updated_product)
 
                     for (let i = 0; i < 10; i++) {
                         response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
@@ -68,110 +53,47 @@ export default defineComponent({
 
                     if (response.message == "Product price not found") {
                         console.log(`%c Price for ${product.name} not found`, 'color: red')
-                        updated_product.color = "red"
+                        status = "red"
                     }
                     else if (response.message == "Product price updated successfully") {
                         console.log(`%c New price to ${product.name}: R$${Number(response.product.new_price).toFixed(2)}`, 'color: green')
-                        updated_product.color = "green"
+                        status = "green"
                     }
                     else {
-                        console.log(`%c ${product.name} did not change the price`, 'color: white')
-                        updated_product.color = "white"
+                        console.log(`%c ${product.name} did not change the price`, 'color: yellow')
+                        status = "yellow"
                     }
 
+                    const data: {product: IProduct, color: string} = {
+                        product: product,
+                        color: status
+                    }
+                    this.updated_products.push(data)
+
                 } catch (error) {
-                    console.error('Erro ao atualizar produto:', error);
+                    console.error('Erro ao adicionar produto:', error);
                 }
             }
             this.textButton = "Update"
         },
-        getProductText(updated_product: UpdatedProduct) {
-            if (updated_product.color == "red") {
-                return ('Price not found')
+        getProductText(data: Data) {
+            if (data.color == "red") {
+                return (`Price for ${data.product.name} not found`)
             }
-            else if (updated_product.color == "white" || updated_product.color == "green") {
-                return (`R$${updated_product.product.new_prices.slice(-1)[0].toFixed(2)}`)
+            else if (data.color == "yellow") {
+                return (`${data.product.name} did not change the price`)
             }
-            else if (updated_product.color == "gray") {
-                return ('Updating...')
+            else if (data.color == "green") {
+                return (`New price to ${data.product.name}: R$${data.product.new_prices.slice(-1)[0].toFixed(2)}`)
             }
-        },
-        getColor(status: string): string {
-            if (status == 'red') {
-                return 'red'
-            }
-            else if (status == 'green') {
-                return 'green'
-            }
-            else if (status == 'gray') {
-                return 'gray'
-            }
-            return 'white'
-        },
-        getIcon(color: string): string {
-            if (color == 'red') {
-                return 'fa-regular fa-circle-xmark'
-            }
-            return 'fa-regular fa-circle-check'
         }
     }
 })
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 10px;
-}
-
-.card {
-    display: grid;
-    grid-template-areas:
-        'icon name'
-        'icon price';
-    align-items: center;
-    justify-items: start;
-    justify-content: start;
-    row-gap: 5px;
-
-    background-color: var(--card-background);
-    padding: 10px;
-    border-radius: 10px;
-
-    min-width: 400px;
-    max-width: 400px;
-}
-
-
-.product_icon {
-    grid-area: icon;
-    justify-self: center;
-
-    padding-right: 10px;
-}
-
-.product_name {
-    grid-area: name;
-
+button,
+span {
     color: white;
-    font-weight: bold;
-}
-
-.product_price {
-    grid-area: price;
-}
-
-button {
-    align-self: center;
-    background-color: var(--purple);
-
-    padding: 7px 15px;
-    border-width: 0px;
-    border-radius: 5px;
-
-    cursor: pointer;
 }
 </style>
