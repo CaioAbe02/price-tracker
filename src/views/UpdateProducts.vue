@@ -10,7 +10,7 @@
                     v-if="data.color != 'gray'"
                 />
                 <font-awesome
-                    icon="fa-solid fa-spinner fa-spin"
+                    icon="fa-solid fa-spinner"
                     size=2xl
                     spin
                     :style="{ color: getColor('gray') }"
