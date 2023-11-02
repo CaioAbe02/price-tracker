@@ -41,6 +41,10 @@ html {
     --input-border: #374151;
     --input-label: #E5E7E9;
     --purple: #CCCCFF;
+    --green: #02a499;
+    --yellow: #f8b425;
+    --red: #ec4561;
+    --tag_background: #434658;
     --placeholder: #797D7F;
 }
 </style>
