@@ -37,7 +37,7 @@ export default defineComponent({
     color: white;
     font-size: 0.8rem;
 
-    background-color: #434658;
+    background-color: var(--tag_background);
     border-radius: 5px;
 
     padding: 3px 5px;
