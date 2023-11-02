@@ -21,13 +21,13 @@
             <font-awesome
                 icon="fa-solid fa-star"
                 size="lg"
-                class="product_favorite"
+                class="action_icon product_favorite"
                 @click="$emit('favoriteButton', product.id)"
             />
             <font-awesome
                 icon="fa-solid fa-pen"
                 size=lg
-                class="product_edit"
+                class="action_icon product_edit"
                 @click="goToEditPage(product.id)"
             />
         </div>
@@ -69,17 +69,21 @@ export default defineComponent({
             }
         },
         getColor(): string {
-            const difference = this.product.new_prices.slice(-1)[0] - this.product.original_price
+            const new_price = this.product.new_prices.slice(-1)[0]
+            const original_price = this.product.original_price
+            const lowest_price = Math.min(...this.product.new_prices)
+            const difference = original_price - new_price
 
-            if (difference > 0) {
-                return '#D82E3F'
+            if (new_price == lowest_price && difference != 0) {
+                return 'var(--yellow)'
+            }
+            else if (difference > 0) {
+                return 'var(--green)'
             }
             else if (difference < 0) {
-                return '#28CC2D'
+                return 'var(--red)'
             }
-            else {
-                return '#FFE135'
-            }
+            return 'white'
         },
         goToProductPage(product_id: number) {
             this.$router.push(`/products/${product_id}`)
@@ -127,6 +131,12 @@ export default defineComponent({
 
     padding: 10px;
     margin: 10px 0px;
+
+    transition: all .2s ease-in-out;
+}
+
+.product_card:hover {
+    transform: scale(1.02);
 }
 
 .product_infos {
@@ -178,9 +188,17 @@ export default defineComponent({
     row-gap: 10px;
 }
 
-.product_favorite {
-    color: yellow;
+.action_icon {
     cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.action_icon:hover {
+    transform: scale(1.2);
+}
+
+.product_favorite {
+    color: var(--yellow);
 }
 
 .product_favorite:hover {
@@ -189,7 +207,10 @@ export default defineComponent({
 
 .product_edit {
     color: white;
-    cursor: pointer;
+}
+
+.product_edit:hover {
+    color: var(--purple);
 }
 
 .product_infos > span {
