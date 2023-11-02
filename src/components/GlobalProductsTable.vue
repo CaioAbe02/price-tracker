@@ -113,14 +113,14 @@
                             <font-awesome
                                 icon="fa-solid fa-star"
                                 size=lg
-                                :style="{ color: getStarColor(product.id) }"
-                                class="star_icon"
+                                :class=getStarColor(product.id)
+                                class="action_icon star_icon"
                                 @click="addOrRemoveProduct(product.id)"
                             />
                             <font-awesome
                                 icon="fa-solid fa-pen"
                                 size=lg
-                                class="edit_icon"
+                                class="action_icon edit_icon"
                                 @click="goToEditPage(product.id)"
                             />
                         </div>
@@ -234,23 +234,27 @@ export default defineComponent({
             this.$router.push(`/products/edit/${product_id}`)
         },
         getColor(product: IProduct): string {
-            const difference = product.new_prices.slice(-1)[0] - product.original_price
+            const new_price = product.new_prices.slice(-1)[0]
+            const original_price = product.original_price
+            const lowest_price = Math.min(...product.new_prices)
+            const difference = new_price - original_price
 
-            if (difference > 0) {
-                return '#D82E3F'
+            if (new_price == lowest_price && difference != 0) {
+                return 'var(--yellow)'
+            }
+            else if (difference > 0) {
+                return 'var(--red)'
             }
             else if (difference < 0) {
-                return '#28CC2D'
+                return 'var(--green)'
             }
-            else {
-                return '#FFE135'
-            }
+            return 'white'
         },
         getStarColor(product_id: number): string {
             if (this.myProductsIds.includes(product_id)) {
-                return "yellow"
+                return "star_icon_favorite"
             }
-            return "white"
+            return "star_icon_not_favorite"
         },
         addOrRemoveProduct(product_id: number) {
             if (this.myProductsIds.includes(product_id)) {
@@ -350,9 +354,25 @@ tbody, td, tfoot, th, thead, tr {
     column-gap: 5px;
 }
 
+.action_icon {
+    transition: all .2s ease-in-out;
+}
+
+.action_icon:hover {
+    transform: scale(1.2);
+}
+
 .star_icon:hover {
-    color: yellow !important;
+    color: var(--yellow);
     cursor: pointer;
+}
+
+.star_icon_favorite {
+    color: var(--yellow);
+}
+
+.star_icon_not_favorite {
+    color: white;
 }
 
 .edit_icon:hover {
