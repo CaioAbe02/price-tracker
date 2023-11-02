@@ -2,9 +2,10 @@
     <div class="product" v-if="Object.keys(product).length > 0">
         <ProductInfos :product="product" />
         <ProductPricesGraph :product="product"/>
-        <button @click="addOrRemoveProduct(product)" class="add_product_button">{{ buttonText }}</button>
-        <button @click="updateProducts()">{{ textUpdateButton }}</button>
-        <button @click="redirectToUrl(product.url)">Site</button>
+        <div class="buttons">
+            <button @click="updateProducts()">{{ textUpdateButton }}</button>
+            <button @click="redirectToUrl(product.url)">Site</button>
+        </div>
     </div>
 </template>
 
@@ -39,20 +40,6 @@ export default defineComponent({
         }
     },
     methods: {
-        addOrRemoveProduct(product: IProduct) {
-            if (this.myProducts.includes(product.id)) {
-                this.myProducts = this.myProducts.filter(prod => prod !== product.id) // remove
-            }
-            else {
-                this.myProducts.push(product.id) // add
-            }
-            this.saveProducts()
-            this.$router.push("/")
-        },
-        saveProducts() {
-            const parsed = JSON.stringify(this.myProducts)
-            localStorage.setItem('myProductsIds', parsed)
-        },
         async updateProducts() {
             this.textUpdateButton = 'Updating'
             try {
@@ -110,22 +97,28 @@ export default defineComponent({
         catch (error) {
             console.error(error)
         }
-
-        // Local Storage
-        if(localStorage.getItem('myProductsIds')) {
-            try {
-                this.myProducts = JSON.parse(localStorage.getItem('myProductsIds') || '')
-            }
-            catch(e) {
-                localStorage.removeItem('myProductsIds')
-            }
-        }
     }
 })
 </script>
 
 <style scoped>
-.add_product_button, button {
-    color: white;
+.buttons {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+
+    padding: 10px;
+}
+
+button {
+    align-self: center;
+    background-color: var(--purple);
+    color: var(--background-color);
+
+    padding: 7px 15px;
+    border-width: 0px;
+    border-radius: 5px;
+
+    cursor: pointer;
 }
 </style>
