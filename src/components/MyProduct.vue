@@ -12,7 +12,7 @@
             </div>
             <span class="product_name">{{ product.name }}</span>
             <div class="product_price_info">
-                <span class="product_current_price" :style="{ color: getColor() }">R${{ Number(product.new_prices.slice(-1)[0]).toFixed(2) }}</span>
+                <span class="product_current_price" :style="{ color: getColor() }">R${{ new_price.toFixed(2) }}</span>
                 <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
             </div>
             <ProductTags :tags="product.tags" class="product_tags"/>
@@ -52,16 +52,21 @@ export default defineComponent({
             type: Object as ()=>IProduct,
         },
     },
+    data() {
+        return {
+            new_price: this.product.new_prices.slice(-1)[0],
+            original_price: this.product.original_price,
+            lowest_price: Math.min(...this.product.new_prices)
+        }
+    },
     methods: {
         getDiscount(): string {
-            const new_price = this.product.new_prices.slice(-1)[0]
-            const original_price = this.product.original_price
-            const discount = (100 - (original_price / new_price) * 100).toFixed(2)
+            const discount = (100 - (this.original_price / this.new_price) * 100).toFixed(2)
 
-            if (new_price > original_price) {
+            if (this.new_price > this.original_price) {
                 return (`+${discount}%`)
             }
-            else if (new_price < original_price) {
+            else if (this.new_price <this. original_price) {
                 return (`${discount}%`)
             }
             else {
@@ -69,12 +74,9 @@ export default defineComponent({
             }
         },
         getColor(): string {
-            const new_price = this.product.new_prices.slice(-1)[0]
-            const original_price = this.product.original_price
-            const lowest_price = Math.min(...this.product.new_prices)
-            const difference = original_price - new_price
+            const difference = this.original_price - this.new_price
 
-            if (new_price == lowest_price && difference != 0) {
+            if (this.new_price == this.lowest_price && difference != 0) {
                 return 'var(--yellow)'
             }
             else if (difference > 0) {
@@ -132,11 +134,12 @@ export default defineComponent({
     padding: 10px;
     margin: 10px 0px;
 
-    transition: all .2s ease-in-out;
-}
+    transition: all 0.1s;
 
-.product_card:hover {
-    transform: scale(1.02);
+    &:hover {
+        transform: scale(1.02);
+    }
+
 }
 
 .product_infos {
@@ -191,26 +194,26 @@ export default defineComponent({
 .action_icon {
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-.action_icon:hover {
-    transform: scale(1.2);
+    &:hover {
+        transform: scale(1.2);
+    }
 }
 
 .product_favorite {
     color: var(--yellow);
-}
 
-.product_favorite:hover {
-    color: white;
+    &:hover {
+        color: white;
+    }
 }
 
 .product_edit {
     color: white;
-}
 
-.product_edit:hover {
-    color: var(--purple);
+    &:hover {
+        color: var(--purple);
+    }
 }
 
 .product_infos > span {
