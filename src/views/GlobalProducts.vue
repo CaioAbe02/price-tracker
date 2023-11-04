@@ -1,10 +1,6 @@
 <template>
     <SearchInput @inputSearchQuery="setSearchQuery" />
     <GlobalProductsTable :products="filteredProducts" />
-    <router-link to="/products/new" class="add_product_button">
-        <font-awesome icon="fa-solid fa-plus" class="add_product_icon" size=lg border
-            style="--fa-border-radius: 100%; --fa-border-width: 3px; color: white" />
-    </router-link>
 </template>
 
 <script lang="ts">
@@ -52,15 +48,6 @@ export default defineComponent({
 
             const searchItems = this.searchQuery.toLowerCase().split(' ')
 
-            console.log(
-                this.products.filter(product => {
-                    return searchItems.some(item => {
-                        return product.name.toLowerCase().includes(item)
-                    })
-                })
-            )
-            console.log("------")
-
             return this.products.filter(product => {
                 return searchItems.every(item => {
                     return product.name.toLowerCase().includes(item) ||
@@ -73,9 +60,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.add_product_button {
-    position: fixed;
-    right: 2%;
-    bottom: 2%;
-}
 </style>

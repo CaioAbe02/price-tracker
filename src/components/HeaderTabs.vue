@@ -36,6 +36,18 @@
         >
             Update products
         </router-link>
+        <router-link
+            to="/products/new"
+            class="tab"
+            :class="isActive('registerProduct')"
+            @click="setActivetab('registerProduct')"
+            @mouseover="mouseOver('registerProduct')"
+            @mouseleave="mouseLeave()"
+            @focus="mouseOver('registerProduct')"
+            @focusout="mouseLeave()"
+        >
+            Register product
+        </router-link>
     </div>
 </template>
 
