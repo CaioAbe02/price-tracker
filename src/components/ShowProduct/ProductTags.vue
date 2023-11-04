@@ -31,6 +31,7 @@ export default defineComponent({
     flex-direction: row;
     flex-wrap: wrap;
     row-gap: 10px;
+    column-gap: 7px;
 }
 
 .tag {
@@ -41,17 +42,5 @@ export default defineComponent({
     border-radius: 5px;
 
     padding: 3px 5px;
-    margin-right: 7px;
-}
-
-@media (max-width: 850px) {
-    .tagsContainer {
-        justify-content: end;
-    }
-
-    .tag {
-        margin-right: 0px;
-        margin-left: 7px;
-    }
 }
 </style>
