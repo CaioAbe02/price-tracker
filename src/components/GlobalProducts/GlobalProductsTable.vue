@@ -134,11 +134,9 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent, computed, PropType } from 'vue';
-import { useStore } from '@/store';
-import { GET_PRODUCTS } from '@/store/action-types';
+import { defineComponent, PropType } from 'vue';
 import IProduct from '@/interfaces/IProduct';
-import ProductTags from './ShowProduct/ProductTags.vue';
+import ProductTags from '../ShowProduct/ProductTags.vue';
 
 export default defineComponent({
     name: 'GlobalProductsTable',
@@ -379,45 +377,4 @@ tbody, td, tfoot, th, thead, tr {
     color: var(--purple);
     cursor: pointer;
 }
-
-@media (max-width: 850px) {
-    .table_card {
-        background-color: var(--background-color);
-    }
-
-    .product_row {
-        padding: 0px 10px;
-        border-radius: 10px;
-    }
-
-    table thead {
-        border: none;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-    }
-
-    table tr {
-        background-color: var(--card-background);
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    table td {
-        display: block;
-        text-align: right;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-}
-
 </style>
