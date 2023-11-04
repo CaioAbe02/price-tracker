@@ -19,18 +19,14 @@
                 <span class="card_title">Current price</span>
                 <div class="price_info">
                     <span :class=getPriceColor()>R${{ new_price.toFixed(2) }}</span>
-                    <div class="discount_tag" :class="getTagColor()">
-                        <span class="discount">{{ getDiscount(original_price, new_price) }}</span>
-                    </div>
+                    <DiscountTag :original_price="original_price" :new_prices="product.new_prices" />
                 </div>
             </div>
             <div class="card">
                 <span class="card_title">Lowest price</span>
                 <div class="price_info">
                     <span class="price_yellow">R${{lowest_price.toFixed(2) }}</span>
-                    <div class="discount_tag discount_tag_yellow">
-                        <span class="discount">{{ getDiscount(original_price, lowest_price) }}</span>
-                    </div>
+                    <DiscountTag :original_price="original_price" :new_prices="product.new_prices" :isLowestPrice="true" />
                 </div>
             </div>
         </div>
@@ -41,10 +37,14 @@
 /* eslint-disable */
 
 import { defineComponent } from 'vue';
+import DiscountTag from '../DiscountTag.vue';
 import IProduct from '../../interfaces/IProduct';
 
 export default defineComponent({
     name: 'ProductInfos',
+    components: {
+        DiscountTag,
+    },
     props: {
         product: {
             required: true,
@@ -95,33 +95,6 @@ export default defineComponent({
         saveProducts() {
             const parsed = JSON.stringify(this.myProductsIds)
             localStorage.setItem('myProductsIds', parsed)
-        },
-        getDiscount(original_price: number, new_price: number): string {
-            const discount = (100 - (original_price / new_price) * 100).toFixed(2)
-
-            if (new_price > original_price) {
-                return (`+${discount}%`)
-            }
-            else if (new_price < original_price) {
-                return (`${discount}%`)
-            }
-            else {
-                return "0%"
-            }
-        },
-        getTagColor(): string {
-            const difference = this.original_price - this.new_price
-
-            if (this.new_price == this.lowest_price && difference != 0) {
-                return 'discount_tag_yellow'
-            }
-            else if (difference > 0) {
-                return 'discount_tag_green'
-            }
-            else if (difference < 0) {
-                return 'discount_tag_red'
-            }
-            return 'discount_tag_white'
         },
         getPriceColor(): string {
             const difference = this.original_price - this.new_price
@@ -199,6 +172,7 @@ h1 {
 
 .price_info {
     display: flex;
+    align-items: center;
     column-gap: 7px;
 }
 
@@ -216,34 +190,6 @@ h1 {
 
 .price_white {
     color: white;
-}
-
-.discount_tag {
-    display: flex;
-    align-items: center;
-
-    border-radius: 5px;
-    padding: 3px 4px;
-}
-
-.discount_tag_green {
-    background-color: var(--green);
-}
-
-.discount_tag_yellow {
-    background-color: var(--yellow);
-}
-
-.discount_tag_red {
-    background-color: var(--red);
-}
-
-.discount_tag_white {
-    background-color: var(--tag_background);
-}
-
-.discount {
-    font-size: 0.8rem;
 }
 
 span {
