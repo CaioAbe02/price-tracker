@@ -1,6 +1,15 @@
 <template>
-    <div class="card">
+    <div class="card" @click="goToProductPage()">
         <div class="product_name">
+            <div class="icon_favorite">
+                <font-awesome
+                    icon="fa-solid fa-star"
+                    size="lg"
+                    class="favorite_icon"
+                    :class=isProductFavorite()
+                    @click="favoriteProduct(product.id)"
+                />
+            </div>
             <span>{{ product.name }}</span>
         </div>
         <div class="row">
@@ -48,12 +57,49 @@ export default defineComponent({
     },
     data() {
         return {
+            myProductsIds: [] as number[],
             original_price: this.product.original_price,
             current_price: this.product.new_prices.slice(-1)[0],
             lowest_price: Math.min(...this.product.new_prices),
         }
     },
+    mounted() {
+        if(localStorage.getItem('myProductsIds')) {
+            try {
+                this.myProductsIds = JSON.parse(localStorage.getItem('myProductsIds') || '')
+            }
+            catch(e) {
+                localStorage.removeItem('myProductsIds')
+            }
+        }
+    },
     methods: {
+        isProductFavorite(): string {
+            if (this.myProductsIds.includes(this.product.id)) {
+                return 'favorite_icon_favorite'
+            }
+            return 'favorite_icon_not_favorite'
+        },
+        favoriteProduct(product_id: number) {
+            const index = this.myProductsIds.indexOf(product_id)
+            if (index != -1) {
+                this.removeProduct(product_id)
+            }
+            else {
+                this.addProduct(product_id)
+            }
+            this.saveProducts()
+        },
+        addProduct(product_id: number) {
+            this.myProductsIds.push(product_id)
+        },
+        removeProduct(product_id: number) {
+            this.myProductsIds = this.myProductsIds.filter(id => id !== product_id)
+        },
+        saveProducts() {
+            const parsed = JSON.stringify(this.myProductsIds)
+            localStorage.setItem('myProductsIds', parsed)
+        },
         getDiscount(): string {
             const discount = (100 - (this.original_price / this.current_price) * 100).toFixed(2)
 
@@ -79,6 +125,9 @@ export default defineComponent({
             }
             return 'text_white'
         },
+        goToProductPage() {
+            this.$router.push(`/products/${this.product.id}`)
+        },
     },
 })
 </script>
@@ -93,8 +142,20 @@ export default defineComponent({
 }
 
 .product_name {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+
     padding-bottom: 10px;
     border-bottom: 2px solid #343b51;
+}
+
+.favorite_icon_favorite {
+    color: var(--yellow);
+}
+
+.favorite_icon_not_favorite {
+    color: white;
 }
 
 .product_name span {
