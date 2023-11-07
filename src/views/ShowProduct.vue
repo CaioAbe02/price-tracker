@@ -71,14 +71,6 @@ export default defineComponent({
             window.open(url, '_blank')
         }
     },
-    computed: {
-        buttonText() {
-            if (this.myProducts.includes(this.product.id)) {
-                return "Remove product"
-            }
-            return "Add product"
-        },
-    },
     setup() {
         const store = useStore()
         store.dispatch(GET_PRODUCTS)
@@ -102,6 +94,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.product {
+    max-width: 1000px;
+    padding: 0 10px;
+    margin: 0 auto;
+}
+
 .buttons {
     display: flex;
     justify-content: center;

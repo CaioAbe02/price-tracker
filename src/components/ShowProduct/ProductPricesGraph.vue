@@ -63,7 +63,9 @@ export default defineComponent({
 
 <style scoped>
 .graph {
-    width: 1000px;
+    display: flex;
+    justify-content: center;
+
     margin: 0 auto;
 }
 </style>

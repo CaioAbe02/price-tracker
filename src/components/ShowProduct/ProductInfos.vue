@@ -13,7 +13,7 @@
         <div class="cards">
             <div class="card">
                 <span class="card_title">Original price</span>
-                <span class="original_price">R${{ original_price.toFixed(2) }}</span>
+                <span>R${{ original_price.toFixed(2) }}</span>
             </div>
             <div class="card">
                 <span class="card_title">Current price</span>
@@ -116,7 +116,6 @@ export default defineComponent({
 
 <style scoped>
 .infos {
-    width: 1000px;
     margin: 0 auto;
 }
 
@@ -194,5 +193,20 @@ h1 {
 
 span {
     color: white;
+}
+
+@media (max-width: 560px) {
+    .cards {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
+    .card {
+        flex-direction: row;
+        justify-content: space-between;
+
+        padding: 15px 10px;
+    }
 }
 </style>
