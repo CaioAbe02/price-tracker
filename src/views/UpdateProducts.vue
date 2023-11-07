@@ -68,8 +68,9 @@ export default defineComponent({
 
                     for (let i = 0; i < 10; i++) {
                         response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
+                        console.log(response.message)
 
-                        if (response.message == "Product price updated successfully") {
+                        if (response.message != "Product price not found" || !product.name.toLowerCase().includes("amazon")) {
                             break
                         }
                     }
