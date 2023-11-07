@@ -4,7 +4,6 @@
             to="/"
             class="tab"
             :class="isActive('favoriteProducts')"
-            @click="setActivetab('favoriteProducts')"
             @mouseover="mouseOver('favoriteProducts')"
             @mouseleave="mouseLeave()"
             @focus="mouseOver('favoriteProducts')"
@@ -16,7 +15,6 @@
             to="/products"
             class="tab"
             :class="isActive('products')"
-            @click="setActivetab('products')"
             @mouseover="mouseOver('products')"
             @mouseleave="mouseLeave()"
             @focus="mouseOver('products')"
@@ -28,7 +26,6 @@
             to="/products/update"
             class="tab"
             :class="isActive('updateProducts')"
-            @click="setActivetab('updateProducts')"
             @mouseover="mouseOver('updateProducts')"
             @mouseleave="mouseLeave()"
             @focus="mouseOver('updateProducts')"
@@ -40,7 +37,6 @@
             to="/products/new"
             class="tab"
             :class="isActive('registerProduct')"
-            @click="setActivetab('registerProduct')"
             @mouseover="mouseOver('registerProduct')"
             @mouseleave="mouseLeave()"
             @focus="mouseOver('registerProduct')"
@@ -60,8 +56,25 @@ export default defineComponent ({
     name: 'HeaderTabs',
     data() {
         return {
-            activeTab: 'favoriteProducts',
             hoverTab: ''
+        }
+    },
+    computed: {
+        activeTab() {
+            const path = this.$route.path
+
+            if (path == '/') {
+                return 'favoriteProducts'
+            }
+            if (path == '/products') {
+                return 'products'
+            }
+            if (path == '/products/update') {
+                return 'updateProducts'
+            }
+            if (path == '/products/new') {
+                return 'registerProduct'
+            }
         }
     },
     methods: {
@@ -73,9 +86,6 @@ export default defineComponent ({
                 return 'tab_active'
             }
             return ''
-        },
-        setActivetab(tab: string) {
-            this.activeTab = tab
         },
         mouseOver(tab: string) {
             this.hoverTab = tab
