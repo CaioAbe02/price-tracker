@@ -99,11 +99,17 @@
                     <td data-label="Original Price">
                         R${{ product.original_price.toFixed(2) }}
                     </td>
-                    <td :style="{ color: getColor(product) }" data-label="Current Price" >
+                    <td v-if="product.available" :style="{ color: getColor(product) }" data-label="Current Price" >
                         R${{ product.new_prices.slice(-1)[0].toFixed(2) }}
                     </td>
-                    <td :style="{ color: getColor(product) }" data-label="Discount">
+                    <td v-else :style="{ color: getColor(product) }">
+                        Unavailable
+                    </td>
+                    <td v-if="product.available" :style="{ color: getColor(product) }" data-label="Discount">
                         {{ getDiscount(product) }}
+                    </td>
+                    <td v-else :style="{ color: getColor(product) }">
+                        Unavailable
                     </td>
                     <td data-label="Tags">
                         <ProductTags :tags="product.tags"/>
@@ -240,7 +246,7 @@ export default defineComponent({
             if (new_price == lowest_price && difference != 0) {
                 return 'var(--yellow)'
             }
-            else if (difference > 0) {
+            else if (difference > 0 || !product.available) {
                 return 'var(--red)'
             }
             else if (difference < 0) {

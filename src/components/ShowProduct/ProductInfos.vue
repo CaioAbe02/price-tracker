@@ -17,9 +17,12 @@
             </div>
             <div class="card">
                 <span class="card_title">Current price</span>
-                <div class="price_info">
-                    <span :class=getPriceColor()>R${{ new_price.toFixed(2) }}</span>
-                    <DiscountTag :original_price="original_price" :new_prices="product.new_prices" />
+                <div class="current_price">
+                    <div v-if="product.available" class="price_info">
+                        <span :class=getPriceColor()>R${{ new_price.toFixed(2) }}</span>
+                        <DiscountTag :original_price="original_price" :new_prices="product.new_prices" />
+                    </div>
+                    <span v-else :class=getPriceColor()>Unavailable!</span>
                 </div>
             </div>
             <div class="card">
@@ -102,11 +105,11 @@ export default defineComponent({
             if (this.new_price == this.lowest_price && difference != 0) {
                 return 'price_yellow'
             }
+            else if (difference < 0 || !this.product.available) {
+                return 'price_red'
+            }
             else if (difference > 0) {
                 return 'price_green'
-            }
-            else if (difference < 0) {
-                return 'price_red'
             }
             return 'price_white'
         }
