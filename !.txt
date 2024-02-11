@@ -1,9 +1,12 @@
 ✨feat:
 ♻️refactor:
 🗑️delete:
+🔥remove:
 📦️packages:
 🚨lint:
 📝!:
 🩹fix:
 🐛bug:
 🎨css:
+📁folder:
+🔧change:
