@@ -243,11 +243,14 @@ export default defineComponent({
             const lowest_price = Math.min(...product.new_prices)
             const difference = new_price - original_price
 
-            if (new_price == lowest_price && difference != 0) {
-                return 'var(--yellow)'
+            if (!product.available) {
+                return 'gray'
             }
-            else if (difference > 0 || !product.available) {
+            else if (difference > 0) {
                 return 'var(--red)'
+            }
+            else if (new_price == lowest_price && difference != 0) {
+                return 'var(--yellow)'
             }
             else if (difference < 0) {
                 return 'var(--green)'
