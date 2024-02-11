@@ -10,6 +10,10 @@
                 <label for="editedProduct.tags">Tags</label>
                 <input type="text" v-model="editedProduct.tags">
             </div>
+            <div class="input_group">
+                <label for="editedProduct.tags">Link</label>
+                <input type="text" v-model="editedProduct.url">
+            </div>
             <button type="submit">
                 Submit
             </button>
@@ -39,7 +43,8 @@ export default defineComponent({
             editedProduct: {
                 id: 0,
                 name: "",
-                tags: ""
+                tags: "",
+                url: ""
             }
         }
     },
@@ -58,6 +63,7 @@ export default defineComponent({
             this.editedProduct.id = this.product.id
             this.editedProduct.name = this.product.name
             this.editedProduct.tags = this.product.tags
+            this.editedProduct.url = this.product.url
         }
         catch (error) {
             console.error(error)
