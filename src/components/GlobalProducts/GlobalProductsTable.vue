@@ -112,7 +112,7 @@
                         Unavailable
                     </td>
                     <td data-label="Tags">
-                        <ProductTags :tags="product.tags"/>
+                        <ProductTags :tags="product.tags" @click="sendSearchQuery(product.tags)"/>
                     </td>
                     <td data-label="Actions">
                         <div class="actions">
@@ -304,6 +304,9 @@ export default defineComponent({
             this.byCurrentPrice = false
             this.byDiscount = true
         },
+        sendSearchQuery(product_tag: string) {
+            this.$emit('inputSearchQuery', product_tag)
+        }
     },
     mounted() {
         if(localStorage.getItem('myProductsIds')) {
@@ -323,20 +326,20 @@ export default defineComponent({
     display: flex;
     justify-content: center;
 
-    max-width: fit-content;
-
     background-color: var(--card-background);
     border-radius: 10px;
-    padding: 0px 20px 20px 20px;
-    margin: 0 auto;
+    padding: 0 20px;
 }
 
 table {
     border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
 }
 
 th, td {
     color: white;
+    text-align: left;
 
     padding: 10px 10px;
 }
