@@ -12,8 +12,26 @@
             </div>
             <span class="product_name">{{ product.name }}</span>
             <div class="product_price_info">
-                <span class="product_current_price" :style="{ color: getColor() }">R${{ new_price.toFixed(2) }}</span>
-                <span class="product_discount" :style="{ color: getColor() }">{{ getDiscount() }}</span>
+                <span
+                    class="product_current_price"
+                    :style="{ color: getColor() }"
+                    v-if="product.available"
+                >
+                    R${{ new_price.toFixed(2) }}
+                </span>
+                <span
+                    class="product_discount"
+                    :style="{ color: getColor() }"
+                    v-if="product.available"
+                >
+                    {{ getDiscount() }}
+                </span>
+                <span
+                    class="product_unavailable"
+                    v-if="!product.available"
+                >
+                    Unavailable
+                </span>
             </div>
             <ProductTags :tags="product.tags" class="product_tags"/>
         </router-link>
@@ -76,7 +94,10 @@ export default defineComponent({
         getColor(): string {
             const difference = this.original_price - this.new_price
 
-            if (this.new_price == this.lowest_price && difference != 0) {
+            if (!this.product.available) {
+                return 'gray'
+            }
+            else if (this.new_price == this.lowest_price && difference != 0) {
                 return 'var(--yellow)'
             }
             else if (difference > 0) {
@@ -175,6 +196,10 @@ export default defineComponent({
     column-gap: 50px;
 
     padding: 5px 0px;
+}
+
+.product_unavailable {
+    color: gray;
 }
 
 .product_tags {
