@@ -1,7 +1,9 @@
 <template>
-    <SearchInput @inputSearchQuery="setSearchQuery" />
-    <GlobalProductsTable :products="filteredProducts" v-if="windowWidth > 850"/>
-    <GlobalProductsCards :products="filteredProducts" v-if="windowWidth <= 850"/>
+    <div class="products">
+        <SearchInput @inputSearchQuery="setSearchQuery" class="search"/>
+        <GlobalProductsTable :products="filteredProducts" @inputSearchQuery="setSearchQuery" v-if="windowWidth > 850"/>
+        <GlobalProductsCards :products="filteredProducts" v-if="windowWidth <= 850"/>
+    </div>
 </template>
 
 <script lang="ts">
@@ -74,4 +76,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.products {
+    margin: 0 150px;
+}
 </style>
