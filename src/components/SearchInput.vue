@@ -33,19 +33,16 @@ export default defineComponent({
 .search {
     display: flex;
     align-items: center;
-    justify-content: center;
 
-    width: 320px;
-
-    margin: 0 auto;
+    max-width: 500px;
     margin-bottom: 10px;
 }
 
 .search_icon {
     color: var(--placeholder);
 
-    position: relative;
-    left: 33px;
+    position: absolute;
+    left: 162px;
 }
 
 input {
