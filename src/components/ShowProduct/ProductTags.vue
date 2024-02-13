@@ -1,6 +1,6 @@
 <template>
     <div class="tagsContainer">
-        <span v-for="tag in tagsArray" :key="tag" class="tag">{{ tag }}</span>
+        <span v-for="tag in tagsArray" :key="tag" class="tag" @click="sendSearchQuery(tag)">{{ tag }}</span>
     </div>
 </template>
 
@@ -20,6 +20,11 @@ export default defineComponent({
     computed: {
         tagsArray() {
             return this.tags.split(",").map(tag => tag.trim())
+        }
+    },
+    methods: {
+        sendSearchQuery(tag: string) {
+            this.$emit('searchTag', tag)
         }
     }
 })
@@ -42,5 +47,7 @@ export default defineComponent({
     border-radius: 5px;
 
     padding: 3px 5px;
+
+    cursor: pointer;
 }
 </style>
