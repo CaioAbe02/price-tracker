@@ -112,7 +112,7 @@
                         Unavailable
                     </td>
                     <td data-label="Tags">
-                        <ProductTags :tags="product.tags" @click="sendSearchQuery(product.tags)"/>
+                        <ProductTags :tags="product.tags" @searchTag="sendSearchTag"/>
                     </td>
                     <td data-label="Actions">
                         <div class="actions">
@@ -304,8 +304,8 @@ export default defineComponent({
             this.byCurrentPrice = false
             this.byDiscount = true
         },
-        sendSearchQuery(product_tag: string) {
-            this.$emit('inputSearchQuery', product_tag)
+        sendSearchTag(product_tag: string) {
+            this.$emit('searchTagQuery', product_tag)
         }
     },
     mounted() {
