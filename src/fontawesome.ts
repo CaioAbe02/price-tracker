@@ -10,6 +10,7 @@ import {
     faMinus,
     faMagnifyingGlass,
     faSpinner,
+    faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -29,6 +30,7 @@ const icons = {
     faSpinner,
     faCircleXmark,
     faCircleCheck,
+    faXmark,
 }
 
 export default icons;
