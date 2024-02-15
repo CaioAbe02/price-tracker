@@ -11,6 +11,9 @@ import {
     faMagnifyingGlass,
     faSpinner,
     faXmark,
+    faArrowTrendUp,
+    faArrowTrendDown,
+    faArrowRightLong,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -31,6 +34,9 @@ const icons = {
     faCircleXmark,
     faCircleCheck,
     faXmark,
+    faArrowTrendUp,
+    faArrowTrendDown,
+    faArrowRightLong,
 }
 
 export default icons;
