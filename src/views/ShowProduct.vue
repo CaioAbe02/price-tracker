@@ -3,8 +3,31 @@
         <ProductInfos :product="product" />
         <ProductPricesGraph :product="product"/>
         <div class="buttons">
-            <button @click="updateProducts()">{{ textUpdateButton }}</button>
-            <button @click="redirectToUrl(product.url)">Site</button>
+            <button @click="updateProducts()">
+                <font-awesome
+                    icon="fa-solid fa-rotate"
+                    size=sm
+                    class="action_icon product_edit"
+                    :spin="isUpdating"
+                />
+                {{ textUpdateButton }}
+            </button>
+            <button @click="redirectToUrl(product.url)">
+                <font-awesome
+                    icon="fa-solid fa-arrow-up-right-from-square"
+                    size=sm
+                    class="action_icon product_edit"
+                />
+                Site
+            </button>
+            <button @click="goToEditPage(product.id)">
+                <font-awesome
+                    icon="fa-solid fa-pen"
+                    size=sm
+                    class="action_icon product_edit"
+                />
+                Edit
+            </button>
         </div>
     </div>
 </template>
@@ -21,8 +44,8 @@ import ProductPricesGraph from '@/components/ShowProduct/ProductPricesGraph.vue'
 export default defineComponent({
     name: 'ShowProduct',
     components: {
-    ProductInfos,
-    ProductPricesGraph
+        ProductInfos,
+        ProductPricesGraph
     },
     props: {
         id: {
@@ -35,6 +58,7 @@ export default defineComponent({
             myProducts: [] as number[],
             isProductFavorite: false,
             textUpdateButton: 'Update',
+            isUpdating: false,
         }
     },
     setup(props) {
@@ -47,6 +71,7 @@ export default defineComponent({
     },
     methods: {
         async updateProducts() {
+            this.isUpdating = true
             this.textUpdateButton = 'Updating'
             try {
                 let response
@@ -63,10 +88,14 @@ export default defineComponent({
                 console.error('Erro ao adicionar produto:', error);
             }
             this.textUpdateButton = 'Update'
+            this.isUpdating = false
         },
         redirectToUrl(url: string) {
             window.open(url, '_blank')
-        }
+        },
+        goToEditPage(product_id: number) {
+            this.$router.push(`/products/edit/${product_id}`)
+        },
     },
 })
 </script>
@@ -87,6 +116,10 @@ export default defineComponent({
 }
 
 button {
+    display: flex;
+    column-gap: 7px;
+    align-items: center;
+
     align-self: center;
     background-color: var(--purple);
     color: var(--background-color);
