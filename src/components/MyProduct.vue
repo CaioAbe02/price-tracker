@@ -1,13 +1,10 @@
 <template>
     <div class="product_card">
         <router-link :to="`/products/${product.id}`" class="product_infos">
-            <div class="discount_icon" @click="goToProductPage(product.id)">
+            <div class="product_icon" @click="goToProductPage(product.id)" :style="{ 'background-color': getColor() }">
                 <font-awesome
-                    icon="fa-solid fa-percent"
+                    :icon="getIcon()"
                     size=lg
-                    border
-                    style="--fa-border-radius: 100%; --fa-border-width: 3px;"
-                    :style="{ '--fa-border-color': getColor(), color: getColor() }"
                 />
             </div>
             <span class="product_name">{{ product.name }}</span>
@@ -108,6 +105,23 @@ export default defineComponent({
             }
             return 'white'
         },
+        getIcon(): string {
+            const difference = this.original_price - this.new_price
+
+            if (!this.product.available) {
+                return 'fa-solid fa-xmark'
+            }
+            else if (this.new_price == this.lowest_price && difference != 0) {
+                return 'fa-solid fa-arrow-trend-down'
+            }
+            else if (difference > 0) {
+                return 'fa-solid fa-arrow-trend-down'
+            }
+            else if (difference < 0) {
+                return 'fa-solid fa-arrow-trend-up'
+            }
+            return 'fa-solid fa-arrow-right-long'
+        },
         goToProductPage(product_id: number) {
             this.$router.push(`/products/${product_id}`)
         },
@@ -175,11 +189,25 @@ export default defineComponent({
     text-decoration: none;
 }
 
-.discount_icon {
+.product_icon {
     grid-area: icon;
     align-self: center;
 
-    padding-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.product_icon > svg {
+    border-radius: 100%;
+    padding: 7px;
+    color: var(--card-background);
 }
 
 .product_name {
