@@ -11,6 +11,8 @@ import {
     faMagnifyingGlass,
     faSpinner,
     faXmark,
+    faRotate,
+    faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -31,6 +33,8 @@ const icons = {
     faCircleXmark,
     faCircleCheck,
     faXmark,
+    faRotate,
+    faArrowUpRightFromSquare,
 }
 
 export default icons;
