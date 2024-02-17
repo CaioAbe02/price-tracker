@@ -42,7 +42,7 @@ export default defineComponent({
     color: var(--placeholder);
 
     position: absolute;
-    left: 162px;
+    left: calc(5% + 12px);
 }
 
 input {
