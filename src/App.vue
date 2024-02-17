@@ -2,7 +2,7 @@
     <div>
         <HeaderTabs />
         <router-view v-slot="{ Component }">
-            <keep-alive include="Products">
+            <keep-alive exclude="ShowProduct">
                 <component :is="Component" />
             </keep-alive>
         </router-view>
@@ -12,15 +12,26 @@
 
 <script lang="ts">
 /* eslint-disable */
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import HeaderTabs from './components/HeaderTabs.vue';
 import MyProduct from './components/MyProduct.vue';
+import { useStore } from '@/store';
+import { GET_PRODUCTS } from './store/action-types';
 
 export default defineComponent({
     name: 'App',
     components: {
         HeaderTabs,
         MyProduct,
+    },
+    setup() {
+        const store = useStore()
+        store.dispatch(GET_PRODUCTS)
+
+        return {
+            products: computed(() => store.state.products),
+            store
+        }
     },
 })
 </script>
