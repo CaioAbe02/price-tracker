@@ -25,7 +25,7 @@
 /* eslint-disable */
 
 import { defineComponent, computed } from 'vue';
-import { ADD_PRODUCT, GET_PRODUCTS } from '@/store/action-types';
+import { ADD_PRODUCT } from '@/store/action-types';
 import { useStore } from '@/store';
 
 export default defineComponent ({
@@ -43,7 +43,6 @@ export default defineComponent ({
     },
     setup() {
         const store = useStore()
-        store.dispatch(GET_PRODUCTS)
 
         return {
             products: computed(() => store.state.products),

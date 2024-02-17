@@ -13,7 +13,6 @@
 /* eslint-disable */
 
 import { computed, defineComponent } from 'vue';
-import { GET_PRODUCTS } from '@/store/action-types';
 import { useStore } from '@/store';
 import MyProduct from '@/components/MyProduct.vue';
 import GlobalProductsTable from '@/components/GlobalProducts/GlobalProductsTable.vue'
@@ -40,7 +39,6 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        store.dispatch(GET_PRODUCTS)
 
         return {
             products: computed(() => store.state.products),

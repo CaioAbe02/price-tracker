@@ -34,7 +34,6 @@
 import { defineComponent, computed } from 'vue';
 import MyProduct from '@/components/MyProduct.vue';
 import { useStore } from '@/store';
-import { GET_PRODUCTS } from '@/store/action-types';
 import IProduct from '@/interfaces/IProduct';
 
 export default defineComponent({
@@ -49,7 +48,6 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        store.dispatch(GET_PRODUCTS)
 
         return {
             products: computed(() => store.state.products),
