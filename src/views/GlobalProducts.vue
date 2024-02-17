@@ -101,7 +101,7 @@ export default defineComponent({
 
 <style scoped>
 .products {
-    margin: 0 150px;
+    margin: 0 5%;
 }
 
 .tags_filter {
