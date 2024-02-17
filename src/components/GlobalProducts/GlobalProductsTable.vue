@@ -24,7 +24,7 @@
                             v-if="!byName"
                         />
                     </th>
-                    <th @click="sortByOriginalPrice()" style="cursor: pointer;">
+                    <th class="original_price_row"  @click="sortByOriginalPrice()" style="cursor: pointer;">
                         Original price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -45,7 +45,7 @@
                             v-if="!byOriginalPrice"
                         />
                     </th>
-                    <th @click="sortByCurrentPrice()" style="cursor: pointer;">
+                    <th class="current_price_row" @click="sortByCurrentPrice()" style="cursor: pointer;">
                         Current price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -66,7 +66,7 @@
                             v-if="!byCurrentPrice"
                         />
                     </th>
-                    <th @click="sortByDiscount()" style="cursor: pointer;">
+                    <th class="discount_row" @click="sortByDiscount()" style="cursor: pointer;">
                         Discount
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -88,7 +88,7 @@
                         />
                     </th>
                     <th>Tags</th>
-                    <th>Actions</th>
+                    <th class="actions_col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -358,9 +358,22 @@ tbody, td, tfoot, th, thead, tr {
     cursor: pointer;
 }
 
+.original_price_row {
+    min-width: 140px;
+}
+
+.current_price_row {
+    min-width: 140px;
+}
+
+.discount_row {
+    min-width: 100px;
+
+}
+
 .actions {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     column-gap: 5px;
 }
 
