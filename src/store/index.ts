@@ -25,9 +25,9 @@ export const store = createStore<State>({
     }
   },
   actions: {
-    [GET_PRODUCTS]({ commit }) {
+    async [GET_PRODUCTS]({ commit }) {
       const url = `${BASE_URL}/products`
-      axios.get(url)
+      await axios.get(url)
         .then(response => commit(DEFINE_PRODUCTS, response.data))
     },
     [ADD_PRODUCT](context, newProduct) {
@@ -36,7 +36,7 @@ export const store = createStore<State>({
         axios.post(url, newProduct)
           .then(response => {
             // commit(DEFINE_PRODUCTS, response.data);
-            console.log(response)
+            //console.log(response)
             resolve(response.data)
           })
           .catch(error => {
