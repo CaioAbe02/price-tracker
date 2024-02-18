@@ -28,6 +28,31 @@
                 />
                 Edit
             </button>
+            <button @click="updateProducts()">
+                <font-awesome
+                    icon="fa-solid fa-rotate"
+                    size=sm
+                    class="action_icon product_edit"
+                    :spin="isUpdating"
+                />
+                {{ textUpdateButton }}
+            </button>
+            <button @click="redirectToUrl(product.url)">
+                <font-awesome
+                    icon="fa-solid fa-arrow-up-right-from-square"
+                    size=sm
+                    class="action_icon product_edit"
+                />
+                Site
+            </button>
+            <button @click="goToEditPage(product.id)">
+                <font-awesome
+                    icon="fa-solid fa-pen"
+                    size=sm
+                    class="action_icon product_edit"
+                />
+                Edit
+            </button>
         </div>
     </div>
 </template>
@@ -44,6 +69,8 @@ import ProductPricesGraph from '@/components/ShowProduct/ProductPricesGraph.vue'
 export default defineComponent({
     name: 'ShowProduct',
     components: {
+        ProductInfos,
+        ProductPricesGraph
         ProductInfos,
         ProductPricesGraph
     },
@@ -72,6 +99,7 @@ export default defineComponent({
     methods: {
         async updateProducts() {
             this.isUpdating = true
+            this.isUpdating = true
             this.textUpdateButton = 'Updating'
             try {
                 let response
@@ -88,6 +116,7 @@ export default defineComponent({
                 console.error('Erro ao adicionar produto:', error);
             }
             this.textUpdateButton = 'Update'
+            this.isUpdating = false
             this.isUpdating = false
         },
         redirectToUrl(url: string) {
@@ -116,6 +145,10 @@ export default defineComponent({
 }
 
 button {
+    display: flex;
+    column-gap: 7px;
+    align-items: center;
+
     display: flex;
     column-gap: 7px;
     align-items: center;
