@@ -71,8 +71,6 @@ export default defineComponent({
     components: {
         ProductInfos,
         ProductPricesGraph
-        ProductInfos,
-        ProductPricesGraph
     },
     props: {
         id: {
