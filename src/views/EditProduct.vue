@@ -1,18 +1,18 @@
 <template>
-    <section class="card">
+    <section class="card" v-if="product">
         <h1>Edit product</h1>
         <form @submit.prevent="editProduct()">
             <div class="input_group">
                 <label for="editedProduct.name">Name</label>
-                <input type="text" v-model="editedProduct.name">
+                <input type="text" v-model="product.name">
             </div>
             <div class="input_group">
                 <label for="editedProduct.tags">Tags</label>
-                <input type="text" v-model="editedProduct.tags">
+                <input type="text" v-model="product.tags">
             </div>
             <div class="input_group">
                 <label for="editedProduct.tags">Link</label>
-                <input type="text" v-model="editedProduct.url">
+                <input type="text" v-model="product.url">
             </div>
             <button type="submit">
                 Submit
@@ -24,56 +24,31 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
 import { EDIT_PRODUCT } from '@/store/action-types';
-import IProduct from '@/interfaces/IProduct';
-import axios from 'axios';
 
 export default defineComponent({
     name: 'EditProduct',
     props: {
         id: {
             type: Number,
+            required: true
         },
     },
-    data() {
-        return {
-            product: {} as IProduct,
-            editedProduct: {
-                id: 0,
-                name: "",
-                tags: "",
-                url: ""
-            }
-        }
-    },
-    setup() {
+    setup(props) {
         const store = useStore()
+        const product = computed(() => store.state.products[props.id])
 
         return {
+            product,
             store
         }
-    },
-    async mounted() {
-        try {
-            const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
-            this.product = response.data
-
-            this.editedProduct.id = this.product.id
-            this.editedProduct.name = this.product.name
-            this.editedProduct.tags = this.product.tags
-            this.editedProduct.url = this.product.url
-        }
-        catch (error) {
-            console.error(error)
-        }
-
     },
     methods: {
         async editProduct() {
             try {
-                await this.store.dispatch(EDIT_PRODUCT, this.editedProduct)
+                await this.store.dispatch(EDIT_PRODUCT, this.product)
                 this.$router.go(-1)
             }
             catch (error) {
