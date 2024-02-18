@@ -167,7 +167,8 @@ export default defineComponent({
     },
     methods: {
         sortedProducts(byName: boolean, byOriginalPrice: boolean, byCurrentPrice: boolean, byDiscount: boolean): IProduct[] {
-            return this.products.sort((product1, product2) => {
+            const products = [...this.products]
+            return products.sort((product1, product2) => {
                 let name1, name2
 
                 if (byName) {
