@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="products">
         <HeaderTabs />
         <router-view v-slot="{ Component }">
             <keep-alive exclude="ShowProduct">
