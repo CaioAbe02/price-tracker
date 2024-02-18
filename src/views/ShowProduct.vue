@@ -1,5 +1,5 @@
 <template>
-    <div class="product" v-if="Object.keys(product).length > 0">
+    <div class="product" v-if="product">
         <ProductInfos :product="product" />
         <ProductPricesGraph :product="product"/>
         <div class="buttons">
@@ -14,8 +14,6 @@
 
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
-import axios from 'axios';
-import IProduct from '@/interfaces/IProduct';
 import ProductInfos from '@/components/ShowProduct/ProductInfos.vue'
 import { UPDATE_PRODUCT_PRICE } from '@/store/action-types';
 import ProductPricesGraph from '@/components/ShowProduct/ProductPricesGraph.vue';
@@ -29,14 +27,22 @@ export default defineComponent({
     props: {
         id: {
             type: Number,
+            required: true
         }
     },
     data() {
         return {
-            product: {} as IProduct,
             myProducts: [] as number[],
             isProductFavorite: false,
-            textUpdateButton: 'Update'
+            textUpdateButton: 'Update',
+        }
+    },
+    setup(props) {
+        const store = useStore()
+
+        return {
+            product: computed(() => store.state.products[props.id]),
+            store
         }
     },
     methods: {
@@ -53,15 +59,6 @@ export default defineComponent({
                 }
                 console.log(response)
 
-                if (response.message == "Product price updated successfully") {
-                    try {
-                            const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
-                            this.product = response.data
-                        }
-                    catch (error) {
-                        console.error(error)
-                    }
-                }
             } catch (error) {
                 console.error('Erro ao adicionar produto:', error);
             }
@@ -71,24 +68,6 @@ export default defineComponent({
             window.open(url, '_blank')
         }
     },
-    setup() {
-        const store = useStore()
-
-        return {
-            products: computed(() => store.state.products),
-            store
-        }
-    },
-    async mounted() {
-        // get product
-        try {
-            const response = await axios.get(`${process.env.VUE_APP_API_URL}/products/${this.id}`)
-            this.product = response.data
-        }
-        catch (error) {
-            console.error(error)
-        }
-    }
 })
 </script>
 
