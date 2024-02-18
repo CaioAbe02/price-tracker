@@ -28,31 +28,6 @@
                 />
                 Edit
             </button>
-            <button @click="updateProducts()">
-                <font-awesome
-                    icon="fa-solid fa-rotate"
-                    size=sm
-                    class="action_icon product_edit"
-                    :spin="isUpdating"
-                />
-                {{ textUpdateButton }}
-            </button>
-            <button @click="redirectToUrl(product.url)">
-                <font-awesome
-                    icon="fa-solid fa-arrow-up-right-from-square"
-                    size=sm
-                    class="action_icon product_edit"
-                />
-                Site
-            </button>
-            <button @click="goToEditPage(product.id)">
-                <font-awesome
-                    icon="fa-solid fa-pen"
-                    size=sm
-                    class="action_icon product_edit"
-                />
-                Edit
-            </button>
         </div>
     </div>
 </template>
