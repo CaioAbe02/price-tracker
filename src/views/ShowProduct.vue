@@ -72,7 +72,6 @@ export default defineComponent({
     methods: {
         async updateProducts() {
             this.isUpdating = true
-            this.isUpdating = true
             this.textUpdateButton = 'Updating'
             try {
                 let response
@@ -89,7 +88,6 @@ export default defineComponent({
                 console.error('Erro ao adicionar produto:', error);
             }
             this.textUpdateButton = 'Update'
-            this.isUpdating = false
             this.isUpdating = false
         },
         redirectToUrl(url: string) {
