@@ -3,7 +3,7 @@
         <table>
             <thead>
                 <tr>
-                    <th @click="sortByName()" style="cursor: pointer;">
+                    <th @click="sortByName()" class="clickable_col">
                         Name
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -24,7 +24,7 @@
                             v-if="!byName"
                         />
                     </th>
-                    <th class="original_price_row"  @click="sortByOriginalPrice()" style="cursor: pointer;">
+                    <th class="original_price_row clickable_col"  @click="sortByOriginalPrice()">
                         Original price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -45,7 +45,7 @@
                             v-if="!byOriginalPrice"
                         />
                     </th>
-                    <th class="current_price_row" @click="sortByCurrentPrice()" style="cursor: pointer;">
+                    <th class="current_price_row clickable_col" @click="sortByCurrentPrice()">
                         Current price
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -66,7 +66,7 @@
                             v-if="!byCurrentPrice"
                         />
                     </th>
-                    <th class="discount_row" @click="sortByDiscount()" style="cursor: pointer;">
+                    <th class="discount_row clickable_col" @click="sortByDiscount()">
                         Discount
                         <font-awesome
                             icon="fa-solid fa-caret-up"
@@ -349,6 +349,11 @@ tbody, td, tfoot, th, thead, tr {
     border-color: #343b51;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+}
+
+.clickable_col:hover {
+    cursor: pointer;
+    background-color: #32394E;
 }
 
 .product_row:hover {
