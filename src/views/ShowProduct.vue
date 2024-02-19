@@ -63,9 +63,10 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore()
+        const products = [...store.state.products]
 
         return {
-            product: computed(() => store.state.products[props.id]),
+            product: products.filter((product) => product.id == props.id)[0],
             store
         }
     },
