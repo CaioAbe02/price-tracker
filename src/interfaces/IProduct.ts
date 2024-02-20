@@ -6,7 +6,7 @@ export default interface IProduct {
     new_prices: number[],
     new_prices_dates: string[],
     original_price: number,
-    tags: string,
+    tags: number[],
     url: string,
     available: boolean,
 }
