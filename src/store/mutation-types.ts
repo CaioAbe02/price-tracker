@@ -1,3 +1,3 @@
 /* eslint-disable */
 
-export const DEFINE_PRODUCTS = "DEFINE_PRODUCTS"
+export const DEFINE_DATA = "DEFINE_DATA"
