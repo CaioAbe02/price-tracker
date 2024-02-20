@@ -16,7 +16,7 @@ import { computed, defineComponent } from 'vue';
 import HeaderTabs from './components/HeaderTabs.vue';
 import MyProduct from './components/MyProduct.vue';
 import { useStore } from '@/store';
-import { GET_PRODUCTS } from './store/action-types';
+import { GET_DATA } from './store/action-types';
 
 export default defineComponent({
     name: 'App',
@@ -26,7 +26,7 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        store.dispatch(GET_PRODUCTS)
+        store.dispatch(GET_DATA)
 
         return {
             products: computed(() => store.state.products),
