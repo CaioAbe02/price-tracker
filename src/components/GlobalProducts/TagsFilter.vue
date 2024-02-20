@@ -1,12 +1,12 @@
 <template>
     <div class="tags">
-        <div v-for="tag in tags" class="tag" :key="tag">
-            <span class="tag_text">{{ tag }}</span>
+        <div v-for="tag in tags" class="tag" :key="tag.id">
+            <span class="tag_text">{{ tag.name }}</span>
             <font-awesome
                 icon="fa-solid fa-xmark"
                 size=xs
                 class="delete_tag_icon"
-                @click="sendRemoveTag(tag)"
+                @click="sendRemoveTag(tag.id)"
              />
         </div>
     </div>
@@ -15,18 +15,27 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
+import { useStore } from '@/store';
 
 export default defineComponent({
     name: 'TagsFilter',
     props: {
-        tags: {
+        tags_ids: {
             required: true,
-            type: Array as PropType<string[]>,
+            type: Array as PropType<number[]>,
+        }
+    },
+    setup(props) {
+        const store = useStore()
+
+        return {
+            tags: computed(() => store.state.tags.filter((tag) => props.tags_ids.includes(tag.id))),
+            store
         }
     },
     methods: {
-        sendRemoveTag(tag: string) {
+        sendRemoveTag(tag: number) {
             this.$emit('removeTag', tag)
         }
     }

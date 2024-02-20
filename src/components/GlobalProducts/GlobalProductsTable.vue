@@ -112,7 +112,7 @@
                         Unavailable
                     </td>
                     <td data-label="Tags">
-                        <ProductTags :tags="product.tags" @searchTag="sendSearchTag"/>
+                        <ProductTags :tags_ids="product.tags" @searchTag="sendSearchTag"/>
                     </td>
                     <td data-label="Actions">
                         <div class="actions">

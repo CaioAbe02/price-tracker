@@ -33,7 +33,7 @@
                     Unavailable
                 </span>
             </div>
-            <ProductTags :tags="product.tags" class="product_tags"/>
+            <ProductTags :tags_ids="product.tags" class="product_tags"/>
         </router-link>
         <div class="actions_buttons">
             <font-awesome

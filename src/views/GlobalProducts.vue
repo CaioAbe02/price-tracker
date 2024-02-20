@@ -1,10 +1,10 @@
 <template>
     <div class="products">
         <SearchInput @inputSearchQuery="setSearchQuery" class="search"/>
-        <div class="tags_filter" v-if="searchTag.length">
-            <TagsFilter :tags="searchTag" @removeTag="removeSearchTag"/>
+        <div class="tags_filter" v-if="searchTags.length">
+            <TagsFilter :tags_ids="searchTags" @removeTag="removesearchTags"/>
         </div>
-        <GlobalProductsTable :products="filteredProducts" @searchTagQuery="addSearchTag" v-if="windowWidth > 850"/>
+        <GlobalProductsTable :products="filteredProducts" @searchTagQuery="addsearchTags" v-if="windowWidth > 850"/>
         <GlobalProductsCards :products="filteredProducts" v-if="windowWidth <= 850"/>
     </div>
 </template>
@@ -33,7 +33,7 @@ export default defineComponent({
     data() {
         return {
             searchQuery: '',
-            searchTag: [] as string[],
+            searchTags: [] as number[],
             windowWidth: window.innerWidth
         }
     },
@@ -42,6 +42,7 @@ export default defineComponent({
 
         return {
             products: computed(() => store.state.products),
+            tags: computed(() => store.state.tags),
             store
         }
     },
@@ -56,16 +57,16 @@ export default defineComponent({
         setSearchQuery(searchQuery: string) {
             this.searchQuery = searchQuery
         },
-        addSearchTag(tag: string) {
-            if (!this.searchTag.includes(tag)) {
-                this.searchTag.push(tag)
+        addsearchTags(tag: number) {
+            if (!this.searchTags.includes(tag)) {
+                this.searchTags.push(tag)
             }
         },
-        removeSearchTag(tag: string) {
-            const index = this.searchTag.indexOf(tag, 0)
+        removesearchTags(tag: number) {
+            const index = this.searchTags.indexOf(tag, 0)
 
             if (index > -1) {
-                this.searchTag.splice(index, 1)
+                this.searchTags.splice(index, 1)
             }
         },
         handleResize() {
@@ -74,22 +75,22 @@ export default defineComponent({
     },
     computed: {
         filteredProducts(): IProduct[] {
-            if (this.searchQuery == '' && this.searchTag.length == 0 ) {
+            if (this.searchQuery == '' && this.searchTags.length == 0 ) {
                 return this.products
             }
 
             const searchItems = this.searchQuery.toLowerCase().split(' ')
 
             return this.products
+                // .filter(product => {
+                //     return searchItems.every(item => {
+                //         return product.name.toLowerCase().includes(item) ||
+                //         this.tags.filter(tag => tag.products_ids.includes(product.id)).some(tag => tag.name.includes(item))
+                //     })
+                // })
                 .filter(product => {
-                    return searchItems.every(item => {
-                        return product.name.toLowerCase().includes(item) ||
-                        product.tags.toLocaleLowerCase().includes(item)
-                    })
-                })
-                .filter(product => {
-                    return this.searchTag.every(tag => {
-                        return product.tags.includes(tag)
+                    return this.searchTags.every(searchTag => {
+                        return this.tags.filter(tag => tag.products_ids.includes(product.id)).some(tag => tag.id == searchTag)
                     })
                 })
         }

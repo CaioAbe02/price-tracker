@@ -1,29 +1,33 @@
 <template>
     <div class="tagsContainer">
-        <span v-for="tag in tagsArray" :key="tag" class="tag" @click="sendSearchQuery(tag)">{{ tag }}</span>
+        <span v-for="tag in tags" :key="tag.id" class="tag" @click="sendSearchQuery(tag.id)">{{ tag.name }}</span>
     </div>
 </template>
 
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent } from 'vue';
+import { defineComponent, PropType, computed } from 'vue';
+import { useStore } from '@/store';
 
 export default defineComponent({
     name: 'ProductTags',
     props: {
-        tags: {
+        tags_ids: {
             required: true,
-            type: String
+            type: Array as PropType<number[]>
         },
     },
-    computed: {
-        tagsArray() {
-            return this.tags.split(",").map(tag => tag.trim())
+    setup(props) {
+        const store = useStore()
+
+        return {
+            tags: computed(() => store.state.tags.filter((tag) => props.tags_ids.includes(tag.id))),
+            store
         }
     },
     methods: {
-        sendSearchQuery(tag: string) {
+        sendSearchQuery(tag: number) {
             this.$emit('searchTag', tag)
         }
     }
