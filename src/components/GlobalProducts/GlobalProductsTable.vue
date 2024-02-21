@@ -379,7 +379,7 @@ tbody, td, tfoot, th, thead, tr {
 
 .actions {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     column-gap: 5px;
 }
 

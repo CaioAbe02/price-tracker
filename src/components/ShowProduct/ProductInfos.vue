@@ -160,7 +160,7 @@ h1 {
 .card {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     row-gap: 10px;
 
     background-color: var(--card-background);
