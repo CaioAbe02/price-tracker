@@ -1,8 +1,8 @@
 <template>
     <div class="add_tags_window">
-        <input type="text" v-model="searchTag" placeholder="Search tag" aria-label="search">
+        <input type="text" v-model="searchTag" placeholder="Search tag" aria-label="search" @input="filterTags()">
         <div class="tags">
-            <div v-for="tag in tags" :key="tag.id" class="tag" @click="selectTag(tag.id)">
+            <div v-for="tag in filteredTags" :key="tag.id" class="tag" @click="selectTag(tag.id)">
                 <font-awesome
                     icon="fa-regular fa-square"
                     size=sm
@@ -51,6 +51,9 @@ export default defineComponent({
         }
     },
     methods: {
+        filterTags() {
+            this.tags.filter(tag => this.searchTag.includes(tag.name))
+        },
         isChecked(tag_id: number) {
             return this.checkedTags.includes(tag_id)
         },
@@ -64,6 +67,15 @@ export default defineComponent({
                 this.checkedTags.splice(index, 1)
                 this.$emit('removeTag', tag_id)
             }
+        }
+    },
+    computed: {
+        filteredTags() {
+            if (this.searchTag == '') {
+                return this.tags
+            }
+
+            return this.tags.filter(tag => tag.name.includes(this.searchTag.toLowerCase()))
         }
     }
 })
