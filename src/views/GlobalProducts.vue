@@ -2,7 +2,7 @@
     <div class="products">
         <SearchInput @inputSearchQuery="setSearchQuery" class="search"/>
         <div class="tags_filter" v-if="searchTags.length">
-            <TagsFilter :tags_ids="searchTags" @removeTag="removesearchTags"/>
+            <TagsFilter :tags="searchTags" @removeTag="removesearchTags"/>
         </div>
         <GlobalProductsTable :products="filteredProducts" @searchTagQuery="addsearchTags" v-if="windowWidth > 850"/>
         <GlobalProductsCards :products="filteredProducts" v-if="windowWidth <= 850"/>
@@ -33,7 +33,7 @@ export default defineComponent({
     data() {
         return {
             searchQuery: '',
-            searchTags: [] as number[],
+            searchTags: [] as string[],
             windowWidth: window.innerWidth
         }
     },
@@ -42,7 +42,6 @@ export default defineComponent({
 
         return {
             products: computed(() => store.state.products),
-            tags: computed(() => store.state.tags),
             store
         }
     },
@@ -57,12 +56,12 @@ export default defineComponent({
         setSearchQuery(searchQuery: string) {
             this.searchQuery = searchQuery
         },
-        addsearchTags(tag: number) {
+        addsearchTags(tag: string) {
             if (!this.searchTags.includes(tag)) {
                 this.searchTags.push(tag)
             }
         },
-        removesearchTags(tag: number) {
+        removesearchTags(tag: string) {
             const index = this.searchTags.indexOf(tag, 0)
 
             if (index > -1) {
@@ -82,15 +81,15 @@ export default defineComponent({
             const searchItems = this.searchQuery.toLowerCase().split(' ')
 
             return this.products
-                // .filter(product => {
-                //     return searchItems.every(item => {
-                //         return product.name.toLowerCase().includes(item) ||
-                //         this.tags.filter(tag => tag.products_ids.includes(product.id)).some(tag => tag.name.includes(item))
-                //     })
-                // })
+                .filter(product => {
+                    return searchItems.every(item => {
+                        return product.name.toLowerCase().includes(item) ||
+                        product.tags.some(tag => tag.name.includes(item))
+                    })
+                })
                 .filter(product => {
                     return this.searchTags.every(searchTag => {
-                        return this.tags.filter(tag => tag.products_ids.includes(product.id)).some(tag => tag.id == searchTag)
+                        return product.tags.some(tag => tag.name.includes(searchTag))
                     })
                 })
         }
