@@ -17,7 +17,7 @@ import { useStore } from '@/store';
 import MyProduct from '@/components/MyProduct.vue';
 import GlobalProductsTable from '@/components/GlobalProducts/GlobalProductsTable.vue'
 import GlobalProductsCards from '@/components/GlobalProducts/GlobalProductsCards.vue'
-import SearchInput from '@/components/SearchInput.vue';
+import SearchInput from '@/components/GlobalProducts/SearchInput.vue';
 import TagsFilter from '@/components/GlobalProducts/TagsFilter.vue';
 import IProduct from '@/interfaces/IProduct';
 
