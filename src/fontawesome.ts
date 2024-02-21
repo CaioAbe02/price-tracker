@@ -13,11 +13,14 @@ import {
     faXmark,
     faRotate,
     faArrowUpRightFromSquare,
+    faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
     faCircleXmark,
     faCircleCheck,
+    faSquare,
+    faSquareCheck,
 } from '@fortawesome/free-regular-svg-icons'
 
 const icons = {
@@ -35,6 +38,9 @@ const icons = {
     faXmark,
     faRotate,
     faArrowUpRightFromSquare,
+    faChevronDown,
+    faSquare,
+    faSquareCheck,
 }
 
 export default icons;
