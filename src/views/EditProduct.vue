@@ -3,16 +3,15 @@
         <h1>Edit product</h1>
         <form @submit.prevent="editProduct()">
             <div class="input_group">
-                <label for="editedProduct.name">Name</label>
+                <label for="product.name">Name</label>
                 <input type="text" v-model="product.name">
             </div>
             <div class="input_group">
-                <label for="editedProduct.tags">Tags</label>
-                <input type="text" v-model="product.tags">
+                <label for="product.url">Url</label>
+                <input type="url" v-model="product.url">
             </div>
-            <div class="input_group">
-                <label for="editedProduct.tags">Link</label>
-                <input type="text" v-model="product.url">
+            <div class="tags_box">
+
             </div>
             <button type="submit">
                 Submit
@@ -38,10 +37,9 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore()
-        const products = [...store.state.products]
 
         return {
-            product: products.filter((product) => product.id == props.id)[0],
+            product: computed(() => store.state.products.filter((product) => product.id == props.id)[0]),
             store
         }
     },
