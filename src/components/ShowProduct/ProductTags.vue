@@ -8,23 +8,15 @@
 /* eslint-disable */
 
 import { defineComponent, PropType, computed } from 'vue';
-import { useStore } from '@/store';
+import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'ProductTags',
     props: {
-        tags_ids: {
+        tags: {
             required: true,
-            type: Array as PropType<number[]>
+            type: Array as PropType<ITag[]>
         },
-    },
-    setup(props) {
-        const store = useStore()
-
-        return {
-            tags: computed(() => store.state.tags.filter((tag) => props.tags_ids.includes(tag.id))),
-            store
-        }
     },
     methods: {
         sendSearchQuery(tag: number) {
