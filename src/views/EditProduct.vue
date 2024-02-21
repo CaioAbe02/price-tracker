@@ -15,6 +15,7 @@
                 <draggable
                     v-model="product.tags"
                     item-key="id"
+                    v-bind="dragOptions"
                     class="dragabble_tags_area"
                 >
                     <template #item="{element}">
@@ -123,6 +124,14 @@ export default defineComponent({
 
             return "tags_box_close"
         }
+    },
+    computed: {
+        dragOptions() {
+            return {
+                animation: 200,
+                ghostClass: "ghostTag"
+            }
+        }
     }
 })
 </script>
@@ -226,6 +235,10 @@ input:focus {
 
     cursor: move;
     user-select: none;
+}
+
+.ghostTag {
+    opacity: 0;
 }
 
 .delete_tag_icon {
