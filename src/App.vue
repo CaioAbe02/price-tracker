@@ -1,5 +1,5 @@
 <template>
-    <div v-if="products">
+    <div>
         <HeaderTabs />
         <router-view v-slot="{ Component }">
             <keep-alive exclude="ShowProduct">
@@ -12,7 +12,7 @@
 
 <script lang="ts">
 /* eslint-disable */
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import HeaderTabs from './components/HeaderTabs.vue';
 import MyProduct from './components/MyProduct.vue';
 import { useStore } from '@/store';
@@ -27,11 +27,6 @@ export default defineComponent({
     setup() {
         const store = useStore()
         store.dispatch(GET_DATA)
-
-        return {
-            products: computed(() => store.state.products),
-            store
-        }
     },
 })
 </script>
