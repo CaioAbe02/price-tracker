@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <h1>Register product</h1>
+        <h1>Register a product</h1>
         <form @submit.prevent="addProduct">
             <div class="input_group">
                 <label for="newProduct.name">Name</label>
@@ -10,12 +10,17 @@
                 <label for="newProduct.url">Url</label>
                 <input type="text" v-model="newProduct.url">
             </div>
-            <div class="input_group">
-                <label for="newProduct.tags">Tags</label>
-                <input type="text" v-model="newProduct.tags">
-            </div>
-            <button type="submit">
-                {{ textButton }}
+            <span class="tags_title">Tags</span>
+            <TagsInput :product="newProduct" />
+            <button type="submit" :class="setButtonColor()">
+                <font-awesome
+                    :icon="setIcon()"
+                    size=sm
+                    class="action_icon product_edit"
+                    :spin="textButton == status.SUBMITTING"
+                    v-if="textButton != status.NONE"
+                />
+                <span v-if="textButton == status.NONE">{{ textButton }}</span>
             </button>
         </form>
     </div>
@@ -27,18 +32,36 @@
 import { defineComponent, computed } from 'vue';
 import { ADD_PRODUCT } from '@/store/action-types';
 import { useStore } from '@/store';
+import IProduct from '@/interfaces/IProduct';
+import TagsInput from '@/components/TagsInput.vue';
+
+enum status {
+    NONE = 'Submit',
+    SUBMITTING = 'Submitting',
+    SUCCESS = 'Done',
+    ERROR = 'Error'
+}
 
 export default defineComponent ({
     name: 'AddProduct',
+    components: {
+        TagsInput
+    },
     data() {
+        const newProduct: IProduct = {
+            id: 0,
+            name: '',
+            new_prices: [],
+            new_prices_dates: [],
+            original_price: 0,
+            tags: [],
+            url: '',
+            available: true
+        }
         return {
-            newProduct: {
-                id: 0,
-                name: '',
-                url: '',
-                tags: ''
-            },
-            textButton: 'Submit'
+            newProduct,
+            status,
+            textButton: status.NONE
         }
     },
     setup() {
@@ -51,7 +74,7 @@ export default defineComponent ({
     },
     methods: {
         async addProduct() {
-            this.textButton = "Submiting"
+            this.textButton = status.SUBMITTING
             try {
                 let response
 
@@ -63,14 +86,45 @@ export default defineComponent ({
                         break
                     }
                 }
-                this.textButton = "Submit"
-                console.log(response)
-                this.$router.push('/products/')
+                this.textButton = status.SUCCESS
+                console.log(response.product)
+                this.redirectToProductPage(response.product.id)
 
             }
             catch(error) {
-                this.textButton = "Submit"
+                this.textButton = status.NONE
                 console.error(error)
+            }
+        },
+        async redirectToProductPage(id: number) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.resetForms()
+            this.$router.push(`/products/${id}`)
+        },
+        resetForms() {
+            this.textButton = status.NONE
+            this.newProduct.id = 0
+            this.newProduct.name = ''
+            this.newProduct.url = ''
+            this.newProduct.tags = []
+        },
+        setIcon() {
+            if (this.textButton == status.SUBMITTING) {
+                return "fa-solid fa-rotate"
+            }
+            if (this.textButton == status.SUCCESS) {
+                return "fa-regular fa-circle-check"
+            }
+        },
+        setButtonColor() {
+            if (this.textButton == status.NONE) {
+                return 'none'
+            }
+            if (this.textButton == status.SUBMITTING) {
+                return 'submitting'
+            }
+            if (this.textButton == status.SUCCESS) {
+                return 'success'
             }
         }
     }
@@ -130,9 +184,21 @@ input:focus {
     border: 1px solid var(--purple);
 }
 
+.tags_title {
+    color: white;
+    margin: 5px 0;
+}
+
 button {
     align-self: center;
-    background-color: var(--purple);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7px;
+
+    height: 40px;
+    width: 100px;
 
     padding: 7px 15px;
     border-width: 0px;
@@ -141,6 +207,17 @@ button {
     margin-top: 40px;
 
     cursor: pointer;
+}
+
+.none {
+    background-color: var(--purple);
+}
+
+.submitting {
+    background: var(--purple);
+}
+.success {
+    background-color: var(--green);
 }
 
 </style>
