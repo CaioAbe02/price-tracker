@@ -11,46 +11,7 @@
                 <input type="url" v-model="product.url">
             </div>
             <span class="tags_title">Tags</span>
-            <div class="tags_box" :class="check_tags_box_borders()">
-                <draggable
-                    v-model="product.tags"
-                    item-key="id"
-                    v-bind="dragOptions"
-                    class="dragabble_tags_area"
-                >
-                    <template #item="{element}">
-                        <div class="tag">
-                            {{ element.name }}
-                            <font-awesome
-                                icon="fa-solid fa-xmark"
-                                size=xs
-                                class="delete_tag_icon"
-                                @click="removeTag(id)"
-                            />
-                        </div>
-                    </template>
-                </draggable>
-                <font-awesome
-                    icon="fa-solid fa-chevron-down"
-                    size=lg
-                    class="tags_input_icon"
-                    v-if="!isTagsWindowOpen"
-                    @click="tagsWindow()"
-                />
-                <font-awesome
-                    icon="fa-solid fa-xmark"
-                    size=lg
-                    class="tags_input_icon"
-                    v-if="isTagsWindowOpen"
-                    @click="tagsWindow()"
-                />
-            </div>
-            <TagsSearch
-                v-if="isTagsWindowOpen"
-                :tags_ids="product.tags.map(tag => tag.id)"
-                @addTag="addTag"
-                @removeTag="removeTag"
-            />
+            <TagsInput :product="product" />
             <button type="submit">
                 Submit
             </button>
@@ -64,26 +25,18 @@
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
 import { EDIT_PRODUCT } from '@/store/action-types';
-import draggable from 'vuedraggable'
-import TagsSearch from '@/components/TagsSearch.vue';
+import TagsInput from '@/components/TagsInput.vue';
 
 export default defineComponent({
     name: 'EditProduct',
     components: {
-        draggable,
-        TagsSearch
+        TagsInput,
     },
     props: {
         id: {
             type: Number,
             required: true
         },
-    },
-    data() {
-        return {
-            isTagsWindowOpen: false,
-            searchTag: ''
-        }
     },
     setup(props) {
         const store = useStore()
@@ -112,24 +65,6 @@ export default defineComponent({
 
             if (index !== -1) {
                 this.product.tags.splice(index, 1)
-            }
-        },
-        tagsWindow() {
-            this.isTagsWindowOpen = !this.isTagsWindowOpen
-        },
-        check_tags_box_borders() {
-            if (this.isTagsWindowOpen) {
-                return "tags_box_open"
-            }
-
-            return "tags_box_close"
-        }
-    },
-    computed: {
-        dragOptions() {
-            return {
-                animation: 200,
-                ghostClass: "ghostTag"
             }
         }
     }
@@ -193,61 +128,6 @@ input:focus {
 .tags_title {
     color: white;
     margin: 5px 0;
-}
-
-.tags_box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 10px 15px;
-    border: 1px solid var(--input-border);
-}
-
-.tags_box_close {
-    border-radius: 5px;
-}
-
-.tags_box_open {
-    border-radius: 5px 5px 0 0;
-}
-
-.dragabble_tags_area {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 10px;
-    row-gap: 10px;
-}
-
-.tag {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 10px;
-
-    color: white;
-    font-size: 0.9rem;
-
-    background-color: var(--tag_background);
-
-    padding: 5px 10px;
-    border-radius: 10px;
-
-    cursor: move;
-    user-select: none;
-}
-
-.ghostTag {
-    opacity: 0;
-}
-
-.delete_tag_icon {
-    cursor: pointer;
-}
-
-.tags_input_icon {
-    color: white;
-    cursor: pointer;
 }
 
 button {
