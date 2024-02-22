@@ -27,6 +27,7 @@
 
 import { defineComponent, PropType, computed, ref } from 'vue';
 import { useStore } from '@/store';
+import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'TagsSearch',
@@ -70,7 +71,7 @@ export default defineComponent({
         }
     },
     computed: {
-        filteredTags() {
+        filteredTags(): ITag[] {
             if (this.searchTag == '') {
                 return this.tags
             }
