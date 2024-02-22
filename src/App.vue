@@ -2,7 +2,7 @@
     <div>
         <HeaderTabs />
         <router-view v-slot="{ Component }">
-            <keep-alive exclude="ShowProduct">
+            <keep-alive :exclude="exludeComponents">
                 <component :is="Component" />
             </keep-alive>
         </router-view>
@@ -23,6 +23,11 @@ export default defineComponent({
     components: {
         HeaderTabs,
         MyProduct,
+    },
+    data() {
+        return {
+            exludeComponents: ["ShowProduct", "EditProduct"]
+        }
     },
     setup() {
         const store = useStore()
