@@ -65,8 +65,13 @@ export default defineComponent({
                     }
                     this.updated_products.push(updated_product)
 
-                    response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
-                    console.log(response.message)
+                    for (let i = 0; i < 20; i++) {
+                        response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, product)
+                        console.log(response.message)
+                        if (response.message != "Product price not found" || !product.name.toLowerCase().includes("amazon")) {
+                            break
+                        }
+                    }
 
                     if (response.message == "Product price not found") {
                         console.log(`%c Price for ${product.name} not found`, 'color: red')

@@ -75,7 +75,12 @@ export default defineComponent({
             this.textUpdateButton = 'Updating'
             try {
                 let response
-                response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, this.product)
+                for (let i = 0; i < 20; i++) {
+                    response = await this.store.dispatch(UPDATE_PRODUCT_PRICE, this.product)
+                    if (response.message != "Product price not found") {
+                        break
+                    }
+                }
                 console.log(response)
 
             } catch (error) {
