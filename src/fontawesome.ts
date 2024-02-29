@@ -14,6 +14,7 @@ import {
     faRotate,
     faArrowUpRightFromSquare,
     faChevronDown,
+    faChevronUp,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -41,6 +42,7 @@ const icons = {
     faChevronDown,
     faSquare,
     faSquareCheck,
+    faChevronUp,
 }
 
 export default icons;
