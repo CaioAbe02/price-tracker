@@ -1,8 +1,8 @@
 <template>
-    <div class="add_tags_window">
+    <div  class="add_tags_window" :class="position == 'relative' ? 'add_tags_window_relative' : 'add_tags_window_absolute'">
         <input type="text" v-model="searchTag" placeholder="Search tag" aria-label="search" @input="filterTags()">
         <div class="tags">
-            <div v-for="tag in filteredTags" :key="tag.id" class="tag" @click="selectTag(tag.id)">
+            <div v-for="tag in filteredTags" :key="tag.id" class="tag" @click="selectTag(tag)">
                 <font-awesome
                     icon="fa-regular fa-square"
                     size=sm
@@ -34,7 +34,15 @@ export default defineComponent({
     props: {
         tags_ids: {
             type: Array as PropType<number[]>,
-            required: true
+            default: []
+        },
+        position: {
+            type: String,
+            default: 'relative'
+        },
+        return_tag_id: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
@@ -58,15 +66,25 @@ export default defineComponent({
         isChecked(tag_id: number) {
             return this.checkedTags.includes(tag_id)
         },
-        selectTag(tag_id: number) {
-            const index = this.checkedTags.indexOf(tag_id, 0)
+        selectTag(tag: ITag) {
+            const index = this.checkedTags.indexOf(tag.id, 0)
             if (index == -1) {
-                this.checkedTags.push(tag_id)
-                this.$emit('addTag', tag_id)
+                this.checkedTags.push(tag.id)
+                if (this.return_tag_id) {
+                    this.$emit('addTag', tag.id)
+                }
+                else {
+                    this.$emit('addTag', tag.name)
+                }
             }
             else {
                 this.checkedTags.splice(index, 1)
-                this.$emit('removeTag', tag_id)
+                if (this.return_tag_id) {
+                    this.$emit('removeTag', tag.id)
+                }
+                else {
+                    this.$emit('removeTag', tag.name)
+                }
             }
         }
     },
@@ -84,11 +102,20 @@ export default defineComponent({
 
 <style scoped>
 .add_tags_window {
-    position: relative;
+    background-color: var(--card-background);
 
     padding: 20px;
     border: 1px solid var(--input-border);
-    border-top: 0;
+}
+
+.add_tags_window_relative {
+    position: relative;
+}
+
+.add_tags_window_absolute {
+    position: absolute;
+
+    border-radius: 5px;
 }
 
 input {
