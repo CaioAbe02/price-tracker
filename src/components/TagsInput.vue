@@ -26,7 +26,7 @@
             @click="tagsWindow()"
         />
         <font-awesome
-            icon="fa-solid fa-xmark"
+            icon="fa-solid fa-chevron-up"
             size=lg
             class="tags_input_icon"
             v-if="isTagsWindowOpen"
