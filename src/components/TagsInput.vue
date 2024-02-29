@@ -13,7 +13,7 @@
                         icon="fa-solid fa-xmark"
                         size=xs
                         class="delete_tag_icon"
-                        @click="removeTag(element.id)"
+                        @click="removeTag(element)"
                     />
                 </div>
             </template>
@@ -35,9 +35,7 @@
     </div>
     <TagsSearch
         v-if="isTagsWindowOpen"
-        :tags_ids="product.tags.map(tag => tag.id)"
-        @addTag="addTag"
-        @removeTag="removeTag"
+        :tags_props="product.tags"
     />
 </template>
 
@@ -47,6 +45,7 @@
 import { defineComponent, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
+import ITag from '@/interfaces/ITag';
 import draggable from "vuedraggable";
 import TagsSearch from './TagsSearch.vue';
 
@@ -88,11 +87,8 @@ export default defineComponent({
 
             return "tags_box_close"
         },
-        addTag(tag_id: number) {
-            this.editedProduct.tags.push(this.tags.filter(tag => tag.id == tag_id)[0])
-        },
-        removeTag(tag_id: number) {
-            const index = this.editedProduct.tags.findIndex(tag => tag.id === tag_id)
+        removeTag(removed_tag: ITag) {
+            const index = this.editedProduct.tags.findIndex(tag => tag.id === removed_tag.id)
 
             if (index !== -1) {
                 this.editedProduct.tags.splice(index, 1)

@@ -1,6 +1,6 @@
 <template>
     <div class="tagsContainer">
-        <span v-for="tag in tags" :key="tag.id" class="tag" @click="sendSearchQuery(tag.name)">{{ tag.name }}</span>
+        <span v-for="tag in tags" :key="tag.id" class="tag" @click="sendSearchQuery(tag)">{{ tag.name }}</span>
     </div>
 </template>
 
@@ -19,7 +19,7 @@ export default defineComponent({
         },
     },
     methods: {
-        sendSearchQuery(tag: string) {
+        sendSearchQuery(tag: ITag) {
             this.$emit('searchTag', tag)
         }
     }

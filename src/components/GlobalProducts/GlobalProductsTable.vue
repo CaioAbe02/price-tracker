@@ -142,6 +142,7 @@
 
 import { defineComponent, PropType } from 'vue';
 import IProduct from '@/interfaces/IProduct';
+import ITag from '@/interfaces/ITag';
 import ProductTags from '../ShowProduct/ProductTags.vue';
 
 export default defineComponent({
@@ -305,7 +306,7 @@ export default defineComponent({
             this.byCurrentPrice = false
             this.byDiscount = true
         },
-        sendSearchTag(product_tag: string) {
+        sendSearchTag(product_tag: ITag) {
             this.$emit('searchTagQuery', product_tag)
         }
     },

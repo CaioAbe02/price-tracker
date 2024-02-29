@@ -1,5 +1,5 @@
 <template>
-    <div  class="add_tags_window" :class="position == 'relative' ? 'add_tags_window_relative' : 'add_tags_window_absolute'">
+    <div class="add_tags_window" :class="position == 'relative' ? 'add_tags_window_relative' : 'add_tags_window_absolute'">
         <input type="text" v-model="searchTag" placeholder="Search tag" aria-label="search" @input="filterTags()">
         <div class="tags">
             <div v-for="tag in filteredTags" :key="tag.id" class="tag" @click="selectTag(tag)">
@@ -32,18 +32,14 @@ import ITag from '@/interfaces/ITag';
 export default defineComponent({
     name: 'TagsSearch',
     props: {
-        tags_ids: {
-            type: Array as PropType<number[]>,
+        tags_props: {
+            type: Array as PropType<ITag[]>,
             default: []
         },
         position: {
             type: String,
             default: 'relative'
         },
-        return_tag_id: {
-            type: Boolean,
-            default: true
-        }
     },
     data() {
         return {
@@ -54,7 +50,7 @@ export default defineComponent({
         const store = useStore()
 
         return {
-            checkedTags: ref(prop.tags_ids),
+            checkedTags: ref(prop.tags_props),
             tags: computed(() => store.state.tags),
             store
         }
@@ -64,27 +60,23 @@ export default defineComponent({
             this.tags.filter(tag => this.searchTag.includes(tag.name))
         },
         isChecked(tag_id: number) {
-            return this.checkedTags.includes(tag_id)
+            const index =  this.checkedTags.findIndex(tag => tag.id === tag_id)
+
+            if (index !== -1) {
+                return true
+            }
+
+            return false
         },
         selectTag(tag: ITag) {
-            const index = this.checkedTags.indexOf(tag.id, 0)
+            const index = this.checkedTags.findIndex(checkedTag => checkedTag.id === tag.id)
             if (index == -1) {
-                this.checkedTags.push(tag.id)
-                if (this.return_tag_id) {
-                    this.$emit('addTag', tag.id)
-                }
-                else {
-                    this.$emit('addTag', tag.name)
-                }
+                this.checkedTags.push(tag)
+                this.$emit('addTag', tag)
             }
             else {
                 this.checkedTags.splice(index, 1)
-                if (this.return_tag_id) {
-                    this.$emit('removeTag', tag.id)
-                }
-                else {
-                    this.$emit('removeTag', tag.name)
-                }
+                this.$emit('removeTag', tag)
             }
         }
     },
