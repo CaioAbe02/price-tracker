@@ -27,13 +27,14 @@
 
 import { defineComponent, PropType, computed, ref } from 'vue';
 import { useStore } from '@/store';
+import IProductTag from '@/interfaces/IProductTag';
 import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'TagsSearch',
     props: {
         tags_props: {
-            type: Array as PropType<ITag[]>,
+            type: Array as PropType<IProductTag[]>,
             default: []
         },
         position: {
@@ -71,12 +72,14 @@ export default defineComponent({
         selectTag(tag: ITag) {
             const index = this.checkedTags.findIndex(checkedTag => checkedTag.id === tag.id)
             if (index == -1) {
-                this.checkedTags.push(tag)
-                this.$emit('addTag', tag)
+                this.checkedTags.push({
+                    id: tag.id,
+                    name: tag.name
+                })
+                console.log(this.checkedTags)
             }
             else {
                 this.checkedTags.splice(index, 1)
-                this.$emit('removeTag', tag)
             }
         }
     },

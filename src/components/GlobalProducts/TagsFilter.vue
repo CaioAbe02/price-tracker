@@ -16,18 +16,18 @@
 /* eslint-disable */
 
 import { defineComponent, PropType } from 'vue';
-import ITag from '@/interfaces/ITag';
+import IProductTag from '@/interfaces/IProductTag';
 
 export default defineComponent({
     name: 'TagsFilter',
     props: {
         tags: {
             required: true,
-            type: Array as PropType<ITag[]>,
+            type: Array as PropType<IProductTag[]>,
         }
     },
     methods: {
-        sendRemoveTag(tag: ITag) {
+        sendRemoveTag(tag: IProductTag) {
             this.$emit('removeTag', tag)
         }
     }
