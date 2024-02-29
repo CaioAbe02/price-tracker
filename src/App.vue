@@ -26,7 +26,7 @@ export default defineComponent({
     },
     data() {
         return {
-            exludeComponents: ["ShowProduct", "EditProduct"]
+            exludeComponents: ["ShowProduct", "EditProduct", "MyProducts"]
         }
     },
     setup() {
