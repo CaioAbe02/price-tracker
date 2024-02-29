@@ -126,6 +126,7 @@ export default defineComponent({
 
 .tags_box_open {
     border-radius: 5px 5px 0 0;
+    border-bottom: 0;
 }
 
 .dragabble_tags_area {
