@@ -11,7 +11,7 @@
                 <input type="url" v-model="product.url">
             </div>
             <span class="tags_title">Tags</span>
-            <TagsInput :product="product" />
+            <TagsInput :product="product" @sendAddedTag="addProductId" @sendRemovedTag="removeProductId"/>
             <button type="submit">
                 Submit
             </button>
@@ -24,8 +24,9 @@
 
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
-import { EDIT_PRODUCT } from '@/store/action-types';
+import { EDIT_PRODUCT, EDIT_TAG } from '@/store/action-types';
 import TagsInput from '@/components/TagsInput.vue';
+import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'EditProduct',
@@ -37,6 +38,11 @@ export default defineComponent({
             type: Number,
             required: true
         },
+    },
+    data() {
+        return {
+            edited_tags: [] as ITag[]
+        }
     },
     setup(props) {
         const store = useStore()
@@ -51,21 +57,33 @@ export default defineComponent({
         async editProduct() {
             try {
                 await this.store.dispatch(EDIT_PRODUCT, this.product)
+                for (let tag of this.edited_tags) {
+                    await this.store.dispatch(EDIT_TAG, tag)
+                }
                 this.$router.go(-1)
             }
             catch (error) {
                 console.error(error)
             }
         },
-        addTag(tag_id: number) {
-            this.product.tags.push(this.tags.filter(tag => tag.id == tag_id)[0])
-        },
-        removeTag(tag_id: number) {
-            const index = this.product.tags.findIndex(tag => tag.id === tag_id)
-
+        addProductId(tag: ITag) {
+            const index = this.edited_tags.findIndex(edited_tag => edited_tag.id === tag.id)
             if (index !== -1) {
-                this.product.tags.splice(index, 1)
+                this.edited_tags.splice(index, 1)
             }
+            this.edited_tags.push(tag)
+
+            tag.products_ids.push(this.product.id)
+        },
+        removeProductId(tag: ITag) {
+            const index_tag = this.edited_tags.findIndex(edited_tag => edited_tag.id === tag.id)
+            if (index_tag !== -1) {
+                this.edited_tags.splice(index_tag, 1)
+            }
+            this.edited_tags.push(tag)
+
+            const index_product_id = tag.products_ids.findIndex(product_id => product_id === this.product.id)
+            tag.products_ids.splice(index_product_id, 1)
         }
     }
 })
