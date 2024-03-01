@@ -36,6 +36,8 @@
     <TagsSearch
         v-if="isTagsWindowOpen"
         :tags_props="product.tags"
+        @sendAddedTag="sendAddedTag"
+        @sendRemovedTag="sendRemovedTag"
     />
 </template>
 
@@ -46,6 +48,7 @@ import { defineComponent, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
 import ITag from '@/interfaces/ITag';
+import IProductTag from '@/interfaces/IProductTag';
 import draggable from "vuedraggable";
 import TagsSearch from './TagsSearch.vue';
 
@@ -87,12 +90,20 @@ export default defineComponent({
 
             return "tags_box_close"
         },
-        removeTag(removed_tag: ITag) {
+        removeTag(removed_tag: IProductTag) {
             const index = this.editedProduct.tags.findIndex(tag => tag.id === removed_tag.id)
 
             if (index !== -1) {
                 this.editedProduct.tags.splice(index, 1)
             }
+            this.sendRemovedTag(this.tags.filter(tag => removed_tag.id === tag.id)[0])
+        },
+        sendAddedTag(tag: ITag) {
+            this.$emit('sendAddedTag', tag)
+        },
+        sendRemovedTag(tag: ITag) {
+            console.log(tag)
+            this.$emit('sendRemovedTag', tag)
         }
     },
     computed: {

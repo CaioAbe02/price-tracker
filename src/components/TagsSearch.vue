@@ -76,10 +76,11 @@ export default defineComponent({
                     id: tag.id,
                     name: tag.name
                 })
-                console.log(this.checkedTags)
+                this.$emit('sendAddedTag', tag)
             }
             else {
                 this.checkedTags.splice(index, 1)
+                this.$emit('sendRemovedTag', tag)
             }
         }
     },
