@@ -81,6 +81,10 @@ export default defineComponent({
                         console.log(`%c New price to ${product.name}: R$${Number(response.product.new_price).toFixed(2)}`, 'color: green')
                         updated_product.color = "green"
                     }
+                    else if (response.message == "Product unavailable") {
+                        console.log(`%c ${product.name} unavailable`, 'color: red')
+                        updated_product.color = "red"
+                    }
                     else {
                         console.log(`%c ${product.name} did not change the price`, 'color: white')
                         updated_product.color = "white"
@@ -94,7 +98,7 @@ export default defineComponent({
         },
         getProductText(updated_product: UpdatedProduct) {
             if (updated_product.color == "red") {
-                return 'Price not found'
+                return 'Product unavailable'
             }
             else if (updated_product.color == "white" || updated_product.color == "green") {
                 return `R$${updated_product.product.new_prices.slice(-1)[0].toFixed(2)}`
