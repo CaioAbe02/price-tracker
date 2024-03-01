@@ -56,7 +56,8 @@ html {
     --card-background: #2A3142;
     --input-border: #374151;
     --input-label: #E5E7E9;
-    --purple: #CCCCFF;
+    --purple: #9494ff;
+    --purple-dark: #7676ff;
     --green: #02a499;
     --yellow: #f8b425;
     --red: #ec4561;
