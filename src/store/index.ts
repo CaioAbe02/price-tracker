@@ -5,7 +5,7 @@ import { InjectionKey } from 'vue';
 import { Store, createStore, useStore as vuexUseStore } from 'vuex';
 import IProduct from '@/interfaces/IProduct';
 import ITag from '@/interfaces/ITag';
-import { GET_DATA, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE } from './action-types';
+import { GET_DATA, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE, EDIT_TAG } from './action-types';
 import { DEFINE_DATA } from './mutation-types';
 
 const BASE_URL = process.env.VUE_APP_API_URL
@@ -69,6 +69,21 @@ export const store = createStore<State>({
       return new Promise((resolve, reject) => {
         const url = `${BASE_URL}/products/update_price/${updatedProduct.id}`;
         axios.put(url, updatedProduct)
+          .then(response => {
+            // commit(DEFINE_PRODUCTS, response.data);
+            // console.log(response.data.message)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            reject(error)
+          });
+      })
+    },
+    [EDIT_TAG](context, editedTag: ITag) {
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/tags/edit/${editedTag.id}`;
+        axios.put(url, editedTag)
           .then(response => {
             // commit(DEFINE_PRODUCTS, response.data);
             // console.log(response.data.message)
