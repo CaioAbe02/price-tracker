@@ -1,7 +1,7 @@
 <template>
     <div class="product" v-if="product">
-        <ProductInfos :product="product" />
-        <ProductPricesGraph :product="product"/>
+        <ProductInfos :product="product" :key="product.new_prices.slice(-1)[0]"/>
+        <ProductPricesGraph :product="product" :key="product.new_prices.slice(-1)[0]"/>
         <div class="buttons">
             <button @click="updateProducts()">
                 <font-awesome
@@ -82,8 +82,6 @@ export default defineComponent({
                         break
                     }
                 }
-                console.log(response)
-
             } catch (error) {
                 console.error('Erro ao adicionar produto:', error);
             }
