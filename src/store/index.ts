@@ -6,7 +6,7 @@ import { Store, createStore, useStore as vuexUseStore } from 'vuex';
 import IProduct from '@/interfaces/IProduct';
 import ITag from '@/interfaces/ITag';
 import { GET_DATA, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE, EDIT_TAG } from './action-types';
-import { DEFINE_DATA } from './mutation-types';
+import { DEFINE_DATA, DEFINE_PRODUCT } from './mutation-types';
 
 const BASE_URL = process.env.VUE_APP_API_URL
 
@@ -26,6 +26,9 @@ export const store = createStore<State>({
     [DEFINE_DATA](state, data: State) {
       state.products = data.products
       state.tags = data.tags
+    },
+    [DEFINE_PRODUCT](state, product: IProduct) {
+      state.products[product.id] = product
     }
   },
   actions: {
@@ -65,13 +68,12 @@ export const store = createStore<State>({
           });
       })
     },
-    [UPDATE_PRODUCT_PRICE](context, updatedProduct: IProduct) {
+    [UPDATE_PRODUCT_PRICE]({ commit }, updatedProduct: IProduct) {
       return new Promise((resolve, reject) => {
         const url = `${BASE_URL}/products/update_price/${updatedProduct.id}`;
         axios.put(url, updatedProduct)
           .then(response => {
-            // commit(DEFINE_PRODUCTS, response.data);
-            // console.log(response.data.message)
+            commit(DEFINE_PRODUCT, response.data.product)
             resolve(response.data)
           })
           .catch(error => {
