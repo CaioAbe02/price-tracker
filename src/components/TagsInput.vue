@@ -102,7 +102,6 @@ export default defineComponent({
             this.$emit('sendAddedTag', tag)
         },
         sendRemovedTag(tag: ITag) {
-            console.log(tag)
             this.$emit('sendRemovedTag', tag)
         }
     },
