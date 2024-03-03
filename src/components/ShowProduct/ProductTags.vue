@@ -7,19 +7,19 @@
 <script lang="ts">
 /* eslint-disable */
 
-import { defineComponent, PropType, computed } from 'vue';
-import ITag from '@/interfaces/ITag';
+import { defineComponent, PropType } from 'vue';
+import IProductTag from '@/interfaces/IProductTag';
 
 export default defineComponent({
     name: 'ProductTags',
     props: {
         tags: {
             required: true,
-            type: Array as PropType<ITag[]>
+            type: Array as PropType<IProductTag[]>
         },
     },
     methods: {
-        sendSearchQuery(tag: ITag) {
+        sendSearchQuery(tag: IProductTag) {
             this.$emit('searchTag', tag)
         }
     }
