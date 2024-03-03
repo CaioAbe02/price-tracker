@@ -35,7 +35,7 @@ export default defineComponent({
     },
     props: {
         id: {
-            type: Number,
+            type: String,
             required: true
         },
     },
@@ -48,7 +48,7 @@ export default defineComponent({
         const store = useStore()
 
         return {
-            product: computed(() => store.state.products.filter((product) => product.id == props.id)[0]),
+            product: computed(() => store.state.products.filter((product) => product.id == Number(props.id))[0]),
             tags: computed(() => store.state.tags),
             store
         }
