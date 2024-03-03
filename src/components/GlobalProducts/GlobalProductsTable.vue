@@ -3,6 +3,29 @@
         <table>
             <thead>
                 <tr>
+                    <th @click="sortById()" class="clickable_col">
+                        <div class="th_name">
+                            <span>Id</span>
+                            <font-awesome
+                                icon="fa-solid fa-caret-up"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byId && !orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-caret-down"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byId && orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-minus"
+                                size=sm
+                                class="minus_icon"
+                                v-if="!byId"
+                            />
+                        </div>
+                    </th>
                     <th @click="sortByName()" class="clickable_col">
                         Name
                         <font-awesome
@@ -93,6 +116,9 @@
             </thead>
             <tbody>
                 <tr v-for="product in sortedProducts(byName, byOriginalPrice, byCurrentPrice, byDiscount)" :key="product.id" class="product_row">
+                    <td>
+                        {{ product.id }}
+                    </td>
                     <td @click="goToProductPage(product.id)" class="product_name" data-label="Name">
                         {{ product.name }}
                     </td>
@@ -159,6 +185,7 @@ export default defineComponent({
     data() {
         return {
             myProductsIds: [] as number[],
+            byId: false,
             byName: true,
             byOriginalPrice: false,
             byCurrentPrice: false,
@@ -278,8 +305,17 @@ export default defineComponent({
             const parsed = JSON.stringify(this.myProductsIds)
             localStorage.setItem('myProductsIds', parsed)
         },
+        sortById() {
+            this.orderDesc = !this.orderDesc
+            this.byId = true
+            this.byName = false
+            this.byOriginalPrice = false
+            this.byCurrentPrice = false
+            this.byDiscount = false
+        },
         sortByName() {
             this.orderDesc = !this.orderDesc
+            this.byId = false
             this.byName = true
             this.byOriginalPrice = false
             this.byCurrentPrice = false
@@ -287,6 +323,7 @@ export default defineComponent({
         },
         sortByOriginalPrice() {
             this.orderDesc = !this.orderDesc
+            this.byId = false
             this.byName = false
             this.byOriginalPrice = true
             this.byCurrentPrice = false
@@ -294,6 +331,7 @@ export default defineComponent({
         },
         sortByCurrentPrice() {
             this.orderDesc = !this.orderDesc
+            this.byId = false
             this.byName = false
             this.byOriginalPrice = false
             this.byCurrentPrice = true
@@ -301,6 +339,7 @@ export default defineComponent({
         },
         sortByDiscount() {
             this.orderDesc = !this.orderDesc
+            this.byId = false
             this.byName = false
             this.byOriginalPrice = false
             this.byCurrentPrice = false
@@ -361,21 +400,14 @@ tbody, td, tfoot, th, thead, tr {
     background-color: #32394E;
 }
 
+.th_name {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
 .product_name {
     cursor: pointer;
-}
-
-.original_price_row {
-    min-width: 140px;
-}
-
-.current_price_row {
-    min-width: 140px;
-}
-
-.discount_row {
-    min-width: 100px;
-
 }
 
 .actions {
