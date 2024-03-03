@@ -49,7 +49,7 @@
                             />
                         </div>
                     </th>
-                    <th class="original_price_row clickable_col"  @click="sortByOriginalPrice()">
+                    <th class="clickable_col"  @click="sortByOriginalPrice()">
                         <div class="th_name">
                             Original price
                             <font-awesome
@@ -72,7 +72,7 @@
                             />
                         </div>
                     </th>
-                    <th class="current_price_row clickable_col" @click="sortByCurrentPrice()">
+                    <th class="clickable_col" @click="sortByCurrentPrice()">
                         <div class="th_name">
                             Current price
                             <font-awesome
@@ -95,7 +95,7 @@
                             />
                         </div>
                     </th>
-                    <th class="discount_row clickable_col" @click="sortByDiscount()">
+                    <th class="clickable_col" @click="sortByDiscount()">
                         <div class="th_name">
                             Discount
                             <font-awesome
@@ -119,7 +119,7 @@
                         </div>
                     </th>
                     <th>Tags</th>
-                    <th class="actions_col">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
