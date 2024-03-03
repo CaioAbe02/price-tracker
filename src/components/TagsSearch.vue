@@ -19,6 +19,7 @@
                 <label>{{ tag.name }}</label>
             </div>
         </div>
+        <PurpleButton v-if="appearButton()" class="create_tag_button" @click.prevent="createTag()" type="button" :button_text=buttonText />
     </div>
 </template>
 
@@ -27,11 +28,15 @@
 
 import { defineComponent, PropType, computed, ref } from 'vue';
 import { useStore } from '@/store';
+import PurpleButton from './Buttons/PurpleButton.vue';
 import IProductTag from '@/interfaces/IProductTag';
 import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'TagsSearch',
+    components: {
+        PurpleButton,
+    },
     props: {
         tags_props: {
             type: Array as PropType<IProductTag[]>,
@@ -41,6 +46,10 @@ export default defineComponent({
             type: String,
             default: 'relative'
         },
+        create_tag: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
@@ -82,6 +91,22 @@ export default defineComponent({
                 this.checkedTags.splice(index, 1)
                 this.$emit('sendRemovedTag', tag)
             }
+        },
+        appearButton(): boolean {
+            return (!this.tags.some(tag => tag.name == this.searchTag) && this.searchTag.length > 0 && this.create_tag)
+        },
+        createTag() {
+            const new_tag : ITag = {
+                id: this.tags.length,
+                name: this.searchTag,
+                products_ids: []
+            }
+            this.tags.push(new_tag)
+            this.checkedTags.push({
+                id: new_tag.id,
+                name: new_tag.name
+            })
+            this.$emit('sendNewTag', new_tag)
         }
     },
     computed: {
@@ -91,6 +116,9 @@ export default defineComponent({
             }
 
             return this.tags.filter(tag => tag.name.includes(this.searchTag.toLowerCase()))
+        },
+        buttonText(): string {
+            return `Create and add tag: ${this.searchTag}`
         }
     }
 })
@@ -140,6 +168,8 @@ input:focus {
 
     display: grid;
     grid-template-columns: 1fr 1fr;
+
+    margin: 10px 0px;
 }
 
 .tag {
@@ -167,5 +197,9 @@ input:focus {
 
 label {
     color: white;
+}
+
+.create_tag_button {
+    width: 100%;
 }
 </style>

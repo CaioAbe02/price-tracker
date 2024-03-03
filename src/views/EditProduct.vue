@@ -11,10 +11,13 @@
                 <input type="url" v-model="product.url">
             </div>
             <span class="tags_title">Tags</span>
-            <TagsInput :product="product" @sendAddedTag="addProductId" @sendRemovedTag="removeProductId"/>
-            <button type="submit">
-                Submit
-            </button>
+            <TagsInput
+                :product="product"
+                @sendAddedTag="addProductId"
+                @sendRemovedTag="removeProductId"
+                @sendNewTag="pushNewTag"
+            />
+            <PurpleButton button_text="Submit" class="submit_button" type="submit"/>
         </form>
     </section>
 </template>
@@ -24,14 +27,16 @@
 
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
-import { EDIT_PRODUCT, EDIT_TAG } from '@/store/action-types';
+import { ADD_TAG, EDIT_PRODUCT, EDIT_TAG } from '@/store/action-types';
 import TagsInput from '@/components/TagsInput.vue';
+import PurpleButton from '@/components/Buttons/PurpleButton.vue';
 import ITag from '@/interfaces/ITag';
 
 export default defineComponent({
     name: 'EditProduct',
     components: {
         TagsInput,
+        PurpleButton
     },
     props: {
         id: {
@@ -41,7 +46,8 @@ export default defineComponent({
     },
     data() {
         return {
-            edited_tags: [] as ITag[]
+            edited_tags: [] as ITag[],
+            new_tags: [] as ITag[]
         }
     },
     setup(props) {
@@ -59,6 +65,9 @@ export default defineComponent({
                 await this.store.dispatch(EDIT_PRODUCT, this.product)
                 for (let tag of this.edited_tags) {
                     await this.store.dispatch(EDIT_TAG, tag)
+                }
+                for (let tag of this.new_tags) {
+                    await this.store.dispatch(ADD_TAG, tag)
                 }
                 this.$router.go(-1)
             }
@@ -84,6 +93,10 @@ export default defineComponent({
 
             const index_product_id = tag.products_ids.findIndex(product_id => product_id === this.product.id)
             tag.products_ids.splice(index_product_id, 1)
+        },
+        pushNewTag(tag: ITag) {
+            tag.products_ids.push(this.product.id)
+            this.new_tags.push(tag)
         }
     }
 })
@@ -148,17 +161,9 @@ input:focus {
     margin: 5px 0;
 }
 
-button {
+.submit_button {
     align-self: center;
-    background-color: var(--purple);
-
-    padding: 7px 15px;
-    border-width: 0px;
-    border-radius: 5px;
 
     margin-top: 40px;
-
-    cursor: pointer;
-    user-select: none;
 }
 </style>

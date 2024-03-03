@@ -38,6 +38,7 @@
         :tags_props="product.tags"
         @sendAddedTag="sendAddedTag"
         @sendRemovedTag="sendRemovedTag"
+        @sendNewTag="sendNewTag"
     />
 </template>
 
@@ -54,7 +55,7 @@ import TagsSearch from './TagsSearch.vue';
 
 export default defineComponent({
     name: 'TagsInput',
-    emits: ['sendAddedTag', 'sendRemovedTag'],
+    emits: ['sendAddedTag', 'sendRemovedTag', 'sendNewTag'],
     components: {
         draggable,
         TagsSearch
@@ -104,6 +105,9 @@ export default defineComponent({
         },
         sendRemovedTag(tag: ITag) {
             this.$emit('sendRemovedTag', tag)
+        },
+        sendNewTag(tag: ITag) {
+            this.$emit('sendNewTag', tag)
         }
     },
     computed: {

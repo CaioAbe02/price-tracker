@@ -5,7 +5,7 @@ import { InjectionKey } from 'vue';
 import { Store, createStore, useStore as vuexUseStore } from 'vuex';
 import IProduct from '@/interfaces/IProduct';
 import ITag from '@/interfaces/ITag';
-import { GET_DATA, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE, EDIT_TAG } from './action-types';
+import { GET_DATA, ADD_PRODUCT, EDIT_PRODUCT, UPDATE_PRODUCT_PRICE, ADD_TAG, EDIT_TAG } from './action-types';
 import { DEFINE_DATA, DEFINE_PRODUCT } from './mutation-types';
 
 const BASE_URL = process.env.VUE_APP_API_URL
@@ -37,10 +37,10 @@ export const store = createStore<State>({
       await axios.get(url)
         .then(response => commit(DEFINE_DATA, response.data))
     },
-    [ADD_PRODUCT](context, newProduct) {
+    [ADD_PRODUCT](context, new_product) {
       return new Promise((resolve, reject) => {
         const url = `${BASE_URL}/products`
-        axios.post(url, newProduct)
+        axios.post(url, new_product)
           .then(response => {
             // commit(DEFINE_PRODUCTS, response.data);
             //console.log(response)
@@ -53,13 +53,11 @@ export const store = createStore<State>({
 
       })
     },
-    [EDIT_PRODUCT](context, updatedProduct: IProduct) {
+    [EDIT_PRODUCT](context, updated_product: IProduct) {
       return new Promise((resolve, reject) => {
-        const url = `${BASE_URL}/products/edit/${updatedProduct.id}`;
-        axios.put(url, updatedProduct)
+        const url = `${BASE_URL}/products/edit/${updated_product.id}`;
+        axios.put(url, updated_product)
           .then(response => {
-            // commit(DEFINE_PRODUCTS, response.data);
-            // console.log(response.data.message)
             resolve(response.data)
           })
           .catch(error => {
@@ -68,10 +66,10 @@ export const store = createStore<State>({
           });
       })
     },
-    [UPDATE_PRODUCT_PRICE]({ commit }, updatedProduct: IProduct) {
+    [UPDATE_PRODUCT_PRICE]({ commit }, updated_product: IProduct) {
       return new Promise((resolve, reject) => {
-        const url = `${BASE_URL}/products/update_price/${updatedProduct.id}`;
-        axios.put(url, updatedProduct)
+        const url = `${BASE_URL}/products/update_price/${updated_product.id}`;
+        axios.put(url, updated_product)
           .then(response => {
             commit(DEFINE_PRODUCT, response.data.product)
             resolve(response.data)
@@ -82,13 +80,25 @@ export const store = createStore<State>({
           });
       })
     },
-    [EDIT_TAG](context, editedTag: ITag) {
+    [ADD_TAG](context, new_tag: ITag) {
       return new Promise((resolve, reject) => {
-        const url = `${BASE_URL}/tags/edit/${editedTag.id}`;
-        axios.put(url, editedTag)
+        const url = `${BASE_URL}/tags`
+        axios.post(url, new_tag)
           .then(response => {
-            // commit(DEFINE_PRODUCTS, response.data);
-            // console.log(response.data.message)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.error('Error:', error)
+            reject(error)
+          });
+
+      })
+    },
+    [EDIT_TAG](context, edited_tag: ITag) {
+      return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/tags/edit/${edited_tag.id}`;
+        axios.put(url, edited_tag)
+          .then(response => {
             resolve(response.data)
           })
           .catch(error => {
