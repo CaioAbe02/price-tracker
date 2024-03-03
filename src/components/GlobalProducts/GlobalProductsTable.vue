@@ -5,7 +5,7 @@
                 <tr>
                     <th @click="sortById()" class="clickable_col">
                         <div class="th_name">
-                            <span>Id</span>
+                            Id
                             <font-awesome
                                 icon="fa-solid fa-caret-up"
                                 size=sm
@@ -27,88 +27,96 @@
                         </div>
                     </th>
                     <th @click="sortByName()" class="clickable_col">
-                        Name
-                        <font-awesome
-                            icon="fa-solid fa-caret-up"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byName && !orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-caret-down"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byName && orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-minus"
-                            size=sm
-                            class="minus_icon"
-                            v-if="!byName"
-                        />
+                        <div class="th_name">
+                            Name
+                            <font-awesome
+                                icon="fa-solid fa-caret-up"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byName && !orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-caret-down"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byName && orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-minus"
+                                size=sm
+                                class="minus_icon"
+                                v-if="!byName"
+                            />
+                        </div>
                     </th>
                     <th class="original_price_row clickable_col"  @click="sortByOriginalPrice()">
-                        Original price
-                        <font-awesome
-                            icon="fa-solid fa-caret-up"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byOriginalPrice && !orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-caret-down"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byOriginalPrice && orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-minus"
-                            size=sm
-                            class="minus_icon"
-                            v-if="!byOriginalPrice"
-                        />
+                        <div class="th_name">
+                            Original price
+                            <font-awesome
+                                icon="fa-solid fa-caret-up"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byOriginalPrice && !orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-caret-down"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byOriginalPrice && orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-minus"
+                                size=sm
+                                class="minus_icon"
+                                v-if="!byOriginalPrice"
+                            />
+                        </div>
                     </th>
                     <th class="current_price_row clickable_col" @click="sortByCurrentPrice()">
-                        Current price
-                        <font-awesome
-                            icon="fa-solid fa-caret-up"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byCurrentPrice && !orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-caret-down"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byCurrentPrice && orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-minus"
-                            size=sm
-                            class="minus_icon"
-                            v-if="!byCurrentPrice"
-                        />
+                        <div class="th_name">
+                            Current price
+                            <font-awesome
+                                icon="fa-solid fa-caret-up"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byCurrentPrice && !orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-caret-down"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byCurrentPrice && orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-minus"
+                                size=sm
+                                class="minus_icon"
+                                v-if="!byCurrentPrice"
+                            />
+                        </div>
                     </th>
                     <th class="discount_row clickable_col" @click="sortByDiscount()">
-                        Discount
-                        <font-awesome
-                            icon="fa-solid fa-caret-up"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byDiscount && !orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-caret-down"
-                            size=sm
-                            class="caret_icon"
-                            v-if="byDiscount && orderDesc"
-                        />
-                        <font-awesome
-                            icon="fa-solid fa-minus"
-                            size=sm
-                            class="minus_icon"
-                            v-if="!byDiscount"
-                        />
+                        <div class="th_name">
+                            Discount
+                            <font-awesome
+                                icon="fa-solid fa-caret-up"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byDiscount && !orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-caret-down"
+                                size=sm
+                                class="caret_icon"
+                                v-if="byDiscount && orderDesc"
+                            />
+                            <font-awesome
+                                icon="fa-solid fa-minus"
+                                size=sm
+                                class="minus_icon"
+                                v-if="!byDiscount"
+                            />
+                        </div>
                     </th>
                     <th>Tags</th>
                     <th class="actions_col">Actions</th>
@@ -210,13 +218,13 @@ export default defineComponent({
                 }
 
                 else if (byCurrentPrice) {
-                    name1 = product1.new_prices.slice(-1)[0]
-                    name2 = product2.new_prices.slice(-1)[0]
+                    name1 = product1.available ? product1.new_prices.slice(-1)[0] : 99999
+                    name2 = product2.available ? product2.new_prices.slice(-1)[0] : 99999
                 }
 
                 else if (byDiscount) {
-                    name1 = parseFloat(this.getDiscount(product1).slice(0, -1))
-                    name2 = parseFloat((this.getDiscount(product2).slice(0, -1)))
+                    name1 = product1.available ? parseFloat(this.getDiscount(product1).slice(0, -1)) : 99999
+                    name2 = product2.available ? parseFloat(this.getDiscount(product2).slice(0, -1)) : 99999
                 }
 
                 else {
