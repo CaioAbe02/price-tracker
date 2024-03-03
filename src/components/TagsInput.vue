@@ -54,6 +54,7 @@ import TagsSearch from './TagsSearch.vue';
 
 export default defineComponent({
     name: 'TagsInput',
+    emits: ['sendAddedTag', 'sendRemovedTag'],
     components: {
         draggable,
         TagsSearch
