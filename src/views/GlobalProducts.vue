@@ -22,6 +22,7 @@
         <TagsSearch
             :tags_props="searchTags"
             :position="'absolute'"
+            :create_tag="false"
             class="tags_filter_window"
             :class="isTagsSearchWindowOpen ? 'tags_filter_window_on' : 'tags_filter_window_off'"
         />
