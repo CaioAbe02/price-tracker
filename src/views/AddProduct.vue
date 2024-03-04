@@ -11,7 +11,12 @@
                 <input type="text" v-model="newProduct.url">
             </div>
             <span class="tags_title">Tags</span>
-            <TagsInput :product="newProduct" />
+            <TagsInput
+                :product="newProduct"
+                @sendAddedTag="addProductId"
+                @sendRemovedTag="removeProductId"
+                @sendNewTag="pushNewTag"
+            />
             <button type="submit" :class="setButtonColor()">
                 <font-awesome
                     :icon="setIcon()"
@@ -30,10 +35,11 @@
 /* eslint-disable */
 
 import { defineComponent, computed } from 'vue';
-import { ADD_PRODUCT } from '@/store/action-types';
+import { ADD_PRODUCT, ADD_TAG, EDIT_TAG } from '@/store/action-types';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
 import TagsInput from '@/components/TagsInput.vue';
+import ITag from '@/interfaces/ITag';
 
 enum status {
     NONE = 'Submit',
@@ -49,7 +55,7 @@ export default defineComponent ({
     },
     data() {
         const newProduct: IProduct = {
-            id: 0,
+            id: this.products.length,
             name: '',
             new_prices: [],
             new_prices_dates: [],
@@ -61,7 +67,9 @@ export default defineComponent ({
         return {
             newProduct,
             status,
-            textButton: status.NONE
+            textButton: status.NONE,
+            edited_tags: [] as ITag[],
+            new_tags: [] as ITag[]
         }
     },
     setup() {
@@ -78,13 +86,18 @@ export default defineComponent ({
             try {
                 let response
 
-                this.newProduct.id = this.products.length
                 for (let i = 0; i < 100; i++) {
                     response = await this.store.dispatch(ADD_PRODUCT, this.newProduct)
 
                     if (response.message == "Product added successfully") {
                         break
                     }
+                }
+                for (let tag of this.edited_tags) {
+                    await this.store.dispatch(EDIT_TAG, tag)
+                }
+                for (let tag of this.new_tags) {
+                    await this.store.dispatch(ADD_TAG, tag)
                 }
                 this.textButton = status.SUCCESS
                 console.log(response.product)
@@ -126,6 +139,29 @@ export default defineComponent ({
             if (this.textButton == status.SUCCESS) {
                 return 'success'
             }
+        },
+        addProductId(tag: ITag) {
+            const index = this.edited_tags.findIndex(edited_tag => edited_tag.id === tag.id)
+            if (index !== -1) {
+                this.edited_tags.splice(index, 1)
+            }
+            this.edited_tags.push(tag)
+
+            tag.products_ids.push(this.newProduct.id)
+        },
+        removeProductId(tag: ITag) {
+            const index_tag = this.edited_tags.findIndex(edited_tag => edited_tag.id === tag.id)
+            if (index_tag !== -1) {
+                this.edited_tags.splice(index_tag, 1)
+            }
+            this.edited_tags.push(tag)
+
+            const index_product_id = tag.products_ids.findIndex(product_id => product_id === this.newProduct.id)
+            tag.products_ids.splice(index_product_id, 1)
+        },
+        pushNewTag(tag: ITag) {
+            tag.products_ids.push(this.newProduct.id)
+            this.new_tags.push(tag)
         }
     }
 })
