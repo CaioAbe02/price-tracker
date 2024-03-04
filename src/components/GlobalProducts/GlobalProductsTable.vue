@@ -123,7 +123,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="product in sortedProducts(byName, byOriginalPrice, byCurrentPrice, byDiscount)" :key="product.id" class="product_row">
+                <tr v-for="product in sortedProducts()" :key="product.id" class="product_row">
                     <td>
                         {{ product.id }}
                     </td>
@@ -202,27 +202,32 @@ export default defineComponent({
         }
     },
     methods: {
-        sortedProducts(byName: boolean, byOriginalPrice: boolean, byCurrentPrice: boolean, byDiscount: boolean): IProduct[] {
+        sortedProducts(): IProduct[] {
             const products = [...this.products]
             return products.sort((product1, product2) => {
                 let name1, name2
 
-                if (byName) {
+                if (this.byId) {
+                    name1 = product1.id
+                    name2 = product2.id
+                }
+
+                else if (this.byName) {
                     name1 = product1.name.toUpperCase()
                     name2 = product2.name.toUpperCase()
                 }
 
-                else if (byOriginalPrice) {
+                else if (this.byOriginalPrice) {
                     name1 = product1.original_price
                     name2 = product2.original_price
                 }
 
-                else if (byCurrentPrice) {
+                else if (this.byCurrentPrice) {
                     name1 = product1.available ? product1.new_prices.slice(-1)[0] : 99999
                     name2 = product2.available ? product2.new_prices.slice(-1)[0] : 99999
                 }
 
-                else if (byDiscount) {
+                else if (this.byDiscount) {
                     name1 = product1.available ? parseFloat(this.getDiscount(product1).slice(0, -1)) : 99999
                     name2 = product2.available ? parseFloat(this.getDiscount(product2).slice(0, -1)) : 99999
                 }
