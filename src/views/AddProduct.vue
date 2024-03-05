@@ -116,7 +116,7 @@ export default defineComponent ({
         },
         resetForms() {
             this.textButton = status.NONE
-            this.newProduct.id = 0
+            this.newProduct.id = this.products.length
             this.newProduct.name = ''
             this.newProduct.url = ''
             this.newProduct.tags = []
