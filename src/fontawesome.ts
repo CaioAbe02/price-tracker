@@ -15,6 +15,8 @@ import {
     faArrowUpRightFromSquare,
     faChevronDown,
     faChevronUp,
+    faArrowTrendUp,
+    faArrowTrendDown,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -43,6 +45,8 @@ const icons = {
     faSquare,
     faSquareCheck,
     faChevronUp,
+    faArrowTrendUp,
+    faArrowTrendDown,
 }
 
 export default icons;
