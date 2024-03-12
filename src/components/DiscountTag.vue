@@ -70,6 +70,10 @@ export default defineComponent({
 .discount_tag {
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    width: min-content;
+    height: min-content;
 
     border-radius: 10px;
     padding: 3px 4px;
@@ -92,7 +96,7 @@ export default defineComponent({
 }
 
 .discount {
-    font-size: 0.8rem;
+    font-size: 12px;
 }
 
 span {
