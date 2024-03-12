@@ -6,7 +6,6 @@
                 <component :is="Component" />
             </keep-alive>
         </router-view>
-
     </div>
 </template>
 
@@ -54,6 +53,7 @@ html {
     --header-color: #36394C;
     --background-color: #252735;
     --card-background: #2A3142;
+    --card-background-darker: #262C3B;
     --input-border: #374151;
     --input-label: #E5E7E9;
     --purple: #9494ff;
