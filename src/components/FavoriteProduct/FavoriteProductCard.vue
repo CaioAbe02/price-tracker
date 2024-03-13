@@ -138,9 +138,11 @@ export default defineComponent({
     text-decoration: none;
 
     transition: background-color .2s ease-in-out;
+    transition: transform .2s ease-in;
 
     &:hover {
         background-color: var(--card-background-darker);
+        transform: translateY(-10px);
     }
 }
 
