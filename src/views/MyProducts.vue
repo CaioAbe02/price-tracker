@@ -125,7 +125,8 @@ h1 {
     font-size: 32px;
     color: white;
 
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .myproducts_background {
