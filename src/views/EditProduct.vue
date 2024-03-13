@@ -17,7 +17,7 @@
                 @sendRemovedTag="removeProductId"
                 @sendNewTag="pushNewTag"
             />
-            <PurpleButton button_text="Submit" class="submit_button" type="submit"/>
+            <SubmitButton :button_text="button_status" class="submit_button" />
         </form>
     </section>
 </template>
@@ -29,14 +29,15 @@ import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
 import { ADD_TAG, EDIT_PRODUCT, EDIT_TAG } from '@/store/action-types';
 import TagsInput from '@/components/TagsInput.vue';
-import PurpleButton from '@/components/Buttons/PurpleButton.vue';
+import SubmitButton from '@/components/Buttons/SubmitButton.vue';
 import ITag from '@/interfaces/ITag';
+import submit_status from '@/enums/SubmitStatus';
 
 export default defineComponent({
     name: 'EditProduct',
     components: {
         TagsInput,
-        PurpleButton
+        SubmitButton
     },
     props: {
         id: {
@@ -47,7 +48,8 @@ export default defineComponent({
     data() {
         return {
             edited_tags: [] as ITag[],
-            new_tags: [] as ITag[]
+            new_tags: [] as ITag[],
+            button_status: submit_status.NONE
         }
     },
     setup(props) {
@@ -61,6 +63,7 @@ export default defineComponent({
     },
     methods: {
         async editProduct() {
+            this.button_status = submit_status.SUBMITTING
             try {
                 await this.store.dispatch(EDIT_PRODUCT, this.product)
                 for (let tag of this.edited_tags) {
@@ -69,9 +72,11 @@ export default defineComponent({
                 for (let tag of this.new_tags) {
                     await this.store.dispatch(ADD_TAG, tag)
                 }
-                this.$router.go(-1)
+                this.button_status = submit_status.SUCCESS
+                this.redirectBack()
             }
             catch (error) {
+                this.button_status = submit_status.NONE
                 console.error(error)
             }
         },
@@ -97,7 +102,11 @@ export default defineComponent({
         pushNewTag(tag: ITag) {
             tag.products_ids.push(this.product.id)
             this.new_tags.push(tag)
-        }
+        },
+        async redirectBack() {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.$router.go(-1)
+        },
     }
 })
 </script>

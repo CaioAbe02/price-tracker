@@ -17,16 +17,7 @@
                 @sendRemovedTag="removeProductId"
                 @sendNewTag="pushNewTag"
             />
-            <button type="submit" :class="setButtonColor()">
-                <font-awesome
-                    :icon="setIcon()"
-                    size=sm
-                    class="action_icon product_edit"
-                    :spin="textButton == status.SUBMITTING"
-                    v-if="textButton != status.NONE"
-                />
-                <span v-if="textButton == status.NONE">{{ textButton }}</span>
-            </button>
+            <SubmitButton :button_text="button_status" class="submit_button" />
         </form>
     </div>
 </template>
@@ -39,19 +30,15 @@ import { ADD_PRODUCT, ADD_TAG, EDIT_TAG } from '@/store/action-types';
 import { useStore } from '@/store';
 import IProduct from '@/interfaces/IProduct';
 import TagsInput from '@/components/TagsInput.vue';
+import SubmitButton from '@/components/Buttons/SubmitButton.vue';
 import ITag from '@/interfaces/ITag';
-
-enum status {
-    NONE = 'Submit',
-    SUBMITTING = 'Submitting',
-    SUCCESS = 'Done',
-    ERROR = 'Error'
-}
+import submit_status from '@/enums/SubmitStatus';
 
 export default defineComponent ({
     name: 'AddProduct',
     components: {
-        TagsInput
+        TagsInput,
+        SubmitButton
     },
     data() {
         const newProduct: IProduct = {
@@ -66,8 +53,7 @@ export default defineComponent ({
         }
         return {
             newProduct,
-            status,
-            textButton: status.NONE,
+            button_status: submit_status.NONE,
             edited_tags: [] as ITag[],
             new_tags: [] as ITag[]
         }
@@ -82,7 +68,7 @@ export default defineComponent ({
     },
     methods: {
         async addProduct() {
-            this.textButton = status.SUBMITTING
+            this.button_status = submit_status.SUBMITTING
             try {
                 let response
 
@@ -99,13 +85,12 @@ export default defineComponent ({
                 for (let tag of this.new_tags) {
                     await this.store.dispatch(ADD_TAG, tag)
                 }
-                this.textButton = status.SUCCESS
-                console.log(response.product)
+                this.button_status = submit_status.SUCCESS
                 this.redirectToProductPage(response.product.id)
 
             }
             catch(error) {
-                this.textButton = status.NONE
+                this.button_status = submit_status.NONE
                 console.error(error)
             }
         },
@@ -115,30 +100,11 @@ export default defineComponent ({
             this.$router.push(`/products/${id}`)
         },
         resetForms() {
-            this.textButton = status.NONE
+            this.button_status = submit_status.NONE
             this.newProduct.id = this.products.length
             this.newProduct.name = ''
             this.newProduct.url = ''
             this.newProduct.tags = []
-        },
-        setIcon() {
-            if (this.textButton == status.SUBMITTING) {
-                return "fa-solid fa-rotate"
-            }
-            if (this.textButton == status.SUCCESS) {
-                return "fa-regular fa-circle-check"
-            }
-        },
-        setButtonColor() {
-            if (this.textButton == status.NONE) {
-                return 'none'
-            }
-            if (this.textButton == status.SUBMITTING) {
-                return 'submitting'
-            }
-            if (this.textButton == status.SUCCESS) {
-                return 'success'
-            }
         },
         addProductId(tag: ITag) {
             const index = this.edited_tags.findIndex(edited_tag => edited_tag.id === tag.id)
@@ -225,35 +191,9 @@ input:focus {
     margin: 5px 0;
 }
 
-button {
+.submit_button {
     align-self: center;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 7px;
-
-    height: 40px;
-    width: 100px;
-
-    padding: 7px 15px;
-    border-width: 0px;
-    border-radius: 5px;
-
     margin-top: 40px;
-
-    cursor: pointer;
 }
-
-.none {
-    background-color: var(--purple);
-}
-
-.submitting {
-    background: var(--purple);
-}
-.success {
-    background-color: var(--green);
-}
-
 </style>
