@@ -137,7 +137,7 @@ export default defineComponent({
 
     text-decoration: none;
 
-    transition: all .2s ease-in-out;
+    transition: background-color .2s ease-in-out;
 
     &:hover {
         background-color: var(--card-background-darker);
