@@ -1,10 +1,10 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--white);
   background-color: #252735;
 
   font-synthesis: none;
@@ -12,7 +12,26 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --margin-main: 20px
+    --product-icon-size: 48px;
+    --product-tag-color: #e5e5e5;
+    --product-tag-separator: #4d4d4d;
+
+    --card-background: #323648;
+
+    --input-color: #383d54;
+    --input-color-hover: #404664;
+
+    --white: rgba(255, 255, 255, 0.87);
+    --purple: #9494ff;
+    --purple-dark: #7676ff;
+    --green: #02a499;
+    --yellow: #f8b425;
+    --red: #ec4561;
+}
+
+* {
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -20,13 +39,38 @@ a {
   color: rgba(255, 255, 255, 0.87);
 }
 
-body {
-  margin: 0 5%;
-}
-
 h1 {
   font-size: 3em;
   line-height: 1.1;
+}
+
+ul {
+    list-style: none;
+}
+
+.product_red {
+    background-color: var(--red);
+    color: var(--red);
+}
+
+.product_green {
+    background-color: var(--green);
+    color: var(--green);
+}
+
+.product_yellow {
+    background-color: var(--yellow);
+    color: var(--yellow);
+}
+
+.product_white {
+    background-color: white;
+    color: white;
+}
+
+.product_gray {
+    background-color: gray;
+    color: gray;
 }
 
 button {
