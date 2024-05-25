@@ -21,7 +21,7 @@ export function getDiscount(product: IProduct): string {
 }
 
 export function getColor(product: IProduct): string {
-    const lowest_price = Math.min(...product.new_prices)
+    const lowest_price = lowestPrice(product)
     const current_price = product.new_prices.slice(-1)[0]
     const discount = parseFloat(getDiscount(product))
 
@@ -53,4 +53,8 @@ export function getIcon(color: string): string {
     }
 
     return 'fa-solid fa-minus'
+}
+
+export function lowestPrice(product: IProduct): number {
+    return Math.min(...product.new_prices)
 }
