@@ -156,6 +156,7 @@ export default defineComponent({
             'filters sort'
             'filters products';
         grid-template-columns: 25% 1fr;
+        grid-template-rows: auto 60px 40px auto;
 
         margin: 0 5%;
     }
