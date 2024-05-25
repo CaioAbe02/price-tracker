@@ -6,6 +6,8 @@ import {
     faAngleUp,
     faAngleDown,
     faCheck,
+    faSquare,
+    faSquareCheck,
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
@@ -16,6 +18,8 @@ const icons = {
     faAngleUp,
     faAngleDown,
     faCheck,
+    faSquare,
+    faSquareCheck,
 }
 
 export default icons;
