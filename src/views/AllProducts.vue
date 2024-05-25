@@ -2,7 +2,21 @@
     <main>
         <h1>Products</h1>
         <aside class="filters">
-
+            <h2>Filters</h2>
+            <section class="filters_checkboxes">
+                <h3>Stores</h3>
+                <CheckboxInput v-model="filter_amazon" label="Amazon" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_kabum" label="Kabum" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_mercado_livre" label="Mercado Livre" :initiate_checked="true"/>
+            </section>
+            <section class="filters_checkboxes">
+                <h3>Prices</h3>
+                <CheckboxInput v-model="filter_best_prices" label="Best Prices" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_low_prices" label="Low Prices" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_same_prices" label="Same Prices" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_high_prices" label="High Prices" :initiate_checked="true"/>
+                <CheckboxInput v-model="filter_unavailable_prices" label="Unavailable Prices" :initiate_checked="true"/>
+            </section>
         </aside>
         <section class="search">
             <input type="search" placeholder="Search products..." v-model="search_query" class="search_input">
@@ -22,9 +36,10 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { productsStore } from '../store';
-import { getDiscount } from '../utils';
+import { getDiscount, lowestPrice } from '../utils';
 import ProductCard from '../components/AllProducts/ProductCard.vue';
-import SelectInput from '../components/SelectInput.vue';
+import SelectInput from '../components/Inputs/SelectInput.vue';
+import CheckboxInput from '../components/Inputs/CheckboxInput.vue';
 import IProduct from '../interfaces/IProduct';
 import IOption from '../interfaces/IOption';
 
@@ -32,13 +47,22 @@ export default defineComponent({
     name: 'AllProducts',
     components: {
         ProductCard,
-        SelectInput
+        SelectInput,
+        CheckboxInput
     },
     data() {
         return {
             search_query: '',
             sort_by: 'name',
-            sort_order: 'asc'
+            sort_order: 'asc',
+            filter_amazon: true,
+            filter_kabum: true,
+            filter_mercado_livre: true,
+            filter_best_prices: true,
+            filter_low_prices: true,
+            filter_same_prices: true,
+            filter_high_prices: true,
+            filter_unavailable_prices: true
         }
     },
     setup() {
@@ -62,6 +86,11 @@ export default defineComponent({
             sort_orders
         }
     },
+    methods: {
+        isLowestPrice(product: IProduct) : boolean {
+            return (lowestPrice(product) === product.new_prices.slice(-1)[0])
+        }
+    },
     computed: {
         sortedProducts(): IProduct[] {
             const products = [...this.products]
@@ -81,30 +110,38 @@ export default defineComponent({
                     item2 = product2.available ? parseFloat(getDiscount(product2)) : 99999
                 }
 
-                if (this.sort_order == 'asc') {
-                    if (item1 > item2) {
-                        return 1
-                    }
-                    if (item1 < item2) {
-                        return -1
-                    }
-                    return 0
+                if (this.sort_order === 'asc') {
+                    return item1 > item2 ? 1 : item1 < item2 ? -1 : 0;
                 }
-                if (item1 < item2) {
-                    return 1
+                else {
+                    return item1 < item2 ? 1 : item1 > item2 ? -1 : 0;
                 }
-                if (item1 > item2) {
-                    return -1
-                }
-                return 0
             })
         },
         filteredProducts(): IProduct[] {
-            if (this.search_query == '') {
-                return this.sortedProducts
+            let products: IProduct[] = this.sortedProducts
+
+            products = products.filter(product => {
+                if (this.filter_amazon && product.name.toLowerCase().includes("amazon")) return true
+                if (this.filter_kabum && product.name.toLowerCase().includes("kabum")) return true
+                if (this.filter_mercado_livre && product.name.toLowerCase().includes("mercado livre")) return true
+            })
+
+            products = products.filter(product => {
+                const discount = product.available ? parseFloat(getDiscount(product)) : -1
+                if (this.filter_best_prices && this.isLowestPrice(product) && discount !== 0 && product.available) return true
+                if (this.filter_low_prices && discount < 0 && product.available && !this.isLowestPrice(product)) return true
+                if (this.filter_same_prices && discount === 0 && product.available) return true
+                if (this.filter_high_prices && discount > 0 && product.available) return true
+                if (this.filter_unavailable_prices && !product.available) return true
+                return false;
+            })
+
+            if (this.search_query !== '') {
+                products = products.filter(product => product.name.toLowerCase().includes(this.search_query.toLowerCase()))
             }
 
-            return this.sortedProducts.filter(product => product.name.toLowerCase().includes(this.search_query.toLowerCase()))
+            return products
         }
     }
 })
@@ -125,11 +162,39 @@ export default defineComponent({
 
     h1 {
         grid-area: title;
+
+        margin-bottom: 16px;
     }
 
     .filters {
         grid-area: filters;
+
+        padding-right: 32px;
     }
+
+        .filters h2 {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--product-tag-separator);
+
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        .filters h3 {
+            padding-bottom: 16px;
+
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .filters_checkboxes {
+            display: flex;
+            flex-direction: column;
+            row-gap: 4px;
+
+            padding: 16px 0;
+            border-bottom: 1px solid var(--product-tag-separator);
+        }
 
     .search {
         grid-area: search;
