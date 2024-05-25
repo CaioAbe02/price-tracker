@@ -129,7 +129,6 @@ export default defineComponent({
 
     .filters {
         grid-area: filters;
-
     }
 
     .search {
@@ -175,6 +174,7 @@ export default defineComponent({
 
         display: flex;
         align-items: center;
+        column-gap: 8px;
     }
 
     .products {
