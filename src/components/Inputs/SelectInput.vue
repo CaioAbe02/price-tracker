@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import IOption from '../interfaces/IOption';
+import IOption from '../../interfaces/IOption';
 
 export default defineComponent({
     name: 'SelectInput',
@@ -178,4 +178,4 @@ export default defineComponent({
 .transform_animation {
     transform: translateY(-100%);
 }
-</style>
+</style>../../interfaces/IOption
