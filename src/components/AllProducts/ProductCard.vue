@@ -11,7 +11,7 @@
         <span class="product_current_price" :class="product_color">{{ current_price }}</span>
         <DiscountTag :discount="discount" :tag_color="product_color" class="product_discount" v-if="product.available" />
         <ul class="product_tags">
-            <li v-for="tag in product.tags" :key="tag.id" class="product_tag">{{ tag.name }}</li>
+            <li v-for="tag in product.tags" :key="tag.id" class="product_tag" @click="emitTag(tag)">{{ tag.name }}</li>
         </ul>
     </div>
 </template>
@@ -21,6 +21,7 @@ import { defineComponent } from 'vue';
 import IProduct from '../../interfaces/IProduct';
 import { getCurrentPrice, getDiscount, getColor, getIcon } from '../../utils';
 import DiscountTag from '../DiscountTag.vue';
+import IProductTag from '../../interfaces/IProductTag';
 
 export default defineComponent({
     name: 'ProductCard',
@@ -46,6 +47,11 @@ export default defineComponent({
         this.discount = getDiscount(this.product)
         this.product_color = getColor(this.product)
         this.product_icon = getIcon(this.product_color)
+    },
+    methods: {
+        emitTag(tag: IProductTag) {
+            this.$emit('emit_tag', tag, -1)
+        }
     }
 })
 </script>
@@ -119,6 +125,8 @@ export default defineComponent({
         .product_tag {
             font-size: 14px;
             color: var(--product-tag-color);
+
+            cursor: pointer;
         }
 
         .product_tag:not(:last-child)::after {
