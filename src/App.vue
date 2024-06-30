@@ -6,7 +6,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HeaderApp from './components/HeaderApp.vue'
-import { productsStore } from './store';
+import { productsStore, tagsStore } from './store';
 
 export default defineComponent({
     name: 'App',
@@ -14,9 +14,11 @@ export default defineComponent({
         HeaderApp,
     },
     setup() {
-        const store = productsStore()
+        const products_store = productsStore()
+        const tags_store = tagsStore()
 
-        store.getProducts()
+        products_store.getProducts()
+        tags_store.getTags()
     }
 })
 </script>
