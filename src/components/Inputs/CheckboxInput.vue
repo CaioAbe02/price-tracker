@@ -1,54 +1,25 @@
 <template>
-    <div class="checkbox_container" @click="selectCheckbox()">
+    <div class="checkbox_container" @click="isChecked = !isChecked">
         <font-awesome
-            :icon="getCheckboxIcon()"
+            :icon="isChecked ? 'fa-solid fa-square-check' : 'fa-solid fa-square'"
             size=lg
             :class="isChecked ? 'checkbox_icon_checked' : 'checkbox_icon_square'"
         />
-        <input type="checkbox" :checked="isChecked">
+        <input type="checkbox" v-model="isChecked">
         <label>{{ label }}</label>
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
 
-export default defineComponent({
-    name: 'CheckboxInput',
-    emits: ['update:modelValue'],
-    props: {
-        label: {
-            type: String,
-            required: true
-        },
-        initiate_checked: {
-            type: Boolean,
-            required: true
-        },
-        modelValue: {
-            type: Boolean
-        }
-    },
-    setup(props) {
-        const isChecked = ref(props.initiate_checked)
-        return {
-            isChecked
-        }
-    },
-    methods: {
-        selectCheckbox() {
-            this.isChecked = !this.isChecked
-            this.$emit('update:modelValue', this.isChecked)
-        },
-        getCheckboxIcon() {
-            if (this.isChecked) {
-                return 'fa-solid fa-square-check'
-            }
-
-            return 'fa-solid fa-square'
-        }
+defineProps({
+    label: {
+        type: String,
+        required: true
     }
 })
+
+const isChecked = defineModel('isChecked')
 </script>
 
 <style scoped>
