@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import AllProducts from '../views/AllProducts.vue';
+import Product from '../views/Product.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/products',
     name: 'AllProducts',
     component: AllProducts,
+  },
+  {
+    path: '/products/:id',
+    name: 'ShowProduct',
+    component: Product,
+    props: true,
   },
 ];
 
