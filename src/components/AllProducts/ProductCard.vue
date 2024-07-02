@@ -7,7 +7,7 @@
                 class="product_icon"
             />
         </div>
-        <span class="product_name">{{ product.name }}</span>
+        <router-link :to="`/products/${product.id}`" class="product_name">{{ product.name }}</router-link>
         <span class="product_current_price" :class="product_color">{{ current_price }}</span>
         <DiscountTag :discount="discount" :tag_color="product_color" class="product_discount" v-if="product.available" />
         <ul class="product_tags">
