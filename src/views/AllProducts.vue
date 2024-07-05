@@ -20,13 +20,15 @@
             <section class="filters_checkboxes filter_tags">
                 <h3>Tags</h3>
                 <TextInput placeholder="Search tags..." v-model="search_tags" class="search_tags" />
-                <CheckboxInput
-                    v-for="filtered_tag in filteredTags"
-                    :key="filtered_tag.tag.id"
-                    :label="filtered_tag.tag.name"
-                    v-model:isChecked="filter_tags_bool[filtered_tag.index]"
-                    @click="selectTagToFilter(filtered_tag.tag, filtered_tag.index)"
-                />
+                <div class="tags_checkboxes">
+                    <CheckboxInput
+                        v-for="filtered_tag in filteredTags"
+                        :key="filtered_tag.tag.id"
+                        :label="filtered_tag.tag.name"
+                        v-model:isChecked="filter_tags_bool[filtered_tag.index]"
+                        @click="selectTagToFilter(filtered_tag.tag, filtered_tag.index)"
+                    />
+                </div>
             </section>
         </aside>
         <section class="search">
@@ -271,7 +273,7 @@ export default defineComponent({
         grid-template-columns: 25% 1fr;
         grid-template-rows: auto 60px minmax(0, auto) 40px auto;
 
-        margin: 0 5%;
+        margin: 0 10%;
     }
 
     h1 {
@@ -312,7 +314,6 @@ export default defineComponent({
 
             .filter_tags {
                 max-height: 400px;
-                overflow-y: scroll;
             }
 
                 .search_tags {
@@ -320,6 +321,21 @@ export default defineComponent({
                     margin-bottom: 4px;
 
                     font-size: 14px;
+                }
+
+                .tags_checkboxes {
+                    overflow-y: scroll;
+
+                    &::-webkit-scrollbar {
+                        width: 8px;
+                    }
+
+                    &::-webkit-scrollbar-thumb {
+                        background: var(--scrollbar-thumb);
+                    }
+                    &::-webkit-scrollbar-thumb:hover {
+                        background-color: var(--scrollbar-thumb-hover);
+                    }
                 }
 
     .search {
