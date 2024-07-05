@@ -178,4 +178,4 @@ export default defineComponent({
 .transform_animation {
     transform: translateY(-100%);
 }
-</style>../../interfaces/IOption
+</style>
