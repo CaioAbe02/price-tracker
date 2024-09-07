@@ -8,6 +8,7 @@ import {
     faCheck,
     faSquare,
     faSquareCheck,
+    faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
 
 const icons = {
@@ -20,6 +21,7 @@ const icons = {
     faCheck,
     faSquare,
     faSquareCheck,
+    faArrowUpRightFromSquare,
 }
 
 export default icons;
