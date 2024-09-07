@@ -58,3 +58,18 @@ export function getIcon(color: string): string {
 export function lowestPrice(product: IProduct): number {
     return Math.min(...product.new_prices)
 }
+
+export function highestPrice(product: IProduct): number {
+    return Math.max(...product.new_prices)
+}
+
+export function averagePrice(product: IProduct): number {
+    const size = product.new_prices.length
+    let total = 0
+
+    for (let price of product.new_prices) {
+        total += price
+    }
+
+    return total / size
+}
