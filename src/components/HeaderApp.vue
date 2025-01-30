@@ -1,10 +1,15 @@
 <template>
-    <header class="tabs">
-        <router-link
-            to="/products"
-        >
-            Products
-        </router-link>
+    <header>
+        <div class="home">
+            <router-link to="/">
+                Price Tracker
+            </router-link>
+        </div>
+        <div class="routes">
+            <router-link to="/products">
+                Products
+            </router-link>
+        </div>
     </header>
 </template>
 
@@ -17,5 +22,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
+    header {
+        display: grid;
+        grid-template-columns: min-content auto;
 
+        padding: 16px;
+    }
+
+    .home {
+        justify-self: start;
+        white-space: nowrap;
+    }
+
+    .routes {
+        justify-self: center;
+    }
 </style>
